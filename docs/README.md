@@ -17,6 +17,7 @@ Dokumen ini ditulis dalam bahasa Indonesia karena pembacanya adalah kamu dan tim
 | Memanggil API Joomla sendiri | [06 — API Joomla](06-api-joomla.md) |
 | Menyentuh kode frontend | [07 — Frontend](07-frontend.md) |
 | Deploy, backup, atau ada yang rusak | [08 — Operasional](08-operasional.md) |
+| **Tahu kelemahan CMS-nya & rencana perbaikan** | [09 — Audit CMS & Rencana](09-audit-cms-ux.md) |
 
 ## Aturan utama proyek ini
 
