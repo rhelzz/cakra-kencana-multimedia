@@ -184,9 +184,13 @@ export function fieldValue(field: unknown): string | undefined {
  */
 export const stripTags = (html = '') =>
   html
+    // Batas blok jadi spasi lebih dulu; tanpa ini "No. 11</p><p>Telp" menempel jadi "No. 11Telp".
+    // Hanya tag blok — mengganti tag inline juga akan menyisipkan spasi di tengah kalimat.
+    .replace(/<br\s*\/?>|<\/(?:p|li|div|h[1-6]|tr|td)>/gi, ' ')
     .replace(/<[^>]*>/g, '')
     .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
     .replace(/&([a-z]+);/gi, (match, name) => ENTITIES[name.toLowerCase()] ?? match)
+    .replace(/\s+/g, ' ')
     .trim();
 
 /** Joomla appends "#joomlaImage://…" metadata to media URLs. Browsers ignore it; next/image won't. */

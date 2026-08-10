@@ -229,9 +229,10 @@ Ikon resmi LinkedIn **tidak tersedia** di library brand yang dipakai (dihapus at
 LinkedIn sendiri). Entri LinkedIn akan memakai ikon globe. Pilih `Website / other` supaya
 konsisten.
 
-### URL sekarang masih dummy
-Kelima akun (`facebook.com/cakrakencanamultimedia`, dst.) adalah placeholder. **Ganti dengan
-URL asli sebelum situs dipublikasikan.**
+### Status akun
+Instagram, Facebook, dan WhatsApp sudah memakai akun asli perusahaan.
+**YouTube dan TikTok field Link-nya sengaja dikosongkan** karena akun resminya belum
+ditemukan — ikonnya otomatis tidak tampil. Isi field Link-nya kalau akunnya sudah ada.
 
 ---
 

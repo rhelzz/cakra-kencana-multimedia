@@ -254,7 +254,8 @@ scrolling that respects `prefers-reduced-motion`, and per-locale `hreflang`.
   speaker. Printing terms especially (胶印, 丝网印刷, 车间).
 - **Service detail pages are thin** — Joomla only has `introtext` filled. They become useful
   when editors write the part after "Read more".
-- **Social URLs are placeholders** (`facebook.com/cakrakencanamultimedia` etc.).
+- **YouTube and TikTok have no `link` value** — no official account found, so their icons are
+  hidden by design. Instagram, Facebook and WhatsApp use the company's real accounts.
 - **Customer logos are other companies' trademarks**, used here as dummy content.
 - **No tests, no CI, not a git repository.**
 - `getArticle()` pulls up to 200 articles and filters in JS. Fine at this size; revisit if the

@@ -59,9 +59,12 @@ di database itu.
 
 Belum siap produksi. Urut berdasarkan dampak:
 
-### 1. Ganti URL sosmed dummy
-Kelima akun masih placeholder (`facebook.com/cakrakencanamultimedia`, dst.).
-**Content → Articles**, kategori Social, field **Link**.
+### 1. ~~Ganti URL sosmed dummy~~ — selesai
+Instagram, Facebook, WhatsApp sudah memakai akun asli. YouTube dan TikTok dikosongkan
+(ikon tersembunyi) sampai akun resminya ada.
+
+**Sisa yang perlu dikonfirmasi ke klien:** apakah 0838 9996 6999 memang nomor WhatsApp
+aktif — sekarang dipakai sebagai tujuan tombol WhatsApp.
 
 ### 2. Review terjemahan
 Teks Indonesia dan Mandarin ditulis mesin dan **belum pernah diperiksa penutur asli**.
