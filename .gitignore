@@ -1,0 +1,21 @@
+# Secrets — the Joomla API token and the revalidate secret live here.
+.env
+.env.*
+!.env.example
+
+# Dependencies / build output
+node_modules/
+.next/
+out/
+build/
+*.tsbuildinfo
+
+# Editor & OS noise
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*

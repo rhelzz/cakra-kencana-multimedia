@@ -1,0 +1,27 @@
+# Joomla 5 — ignore everything, then re-add only what WE wrote.
+#
+# The official github/gitignore Joomla template enumerates core paths, but it dates from
+# Joomla 3 (protostar, isis, hathor, fof) and rots with every release. Inverting it is
+# release-proof: Joomla core is ~109 MB of vendor code that `joomla update` replaces
+# wholesale, and nothing here is ever hand-edited. Re-download the matching Joomla version,
+# drop these files in, restore the database — that is the whole recovery procedure.
+#
+# NEVER un-ignore configuration.php: it holds the DB credentials and $secret.
+
+/*
+!.gitignore
+
+# --- our system plugin (revalidates the Next.js frontend on save)
+!/plugins/
+/plugins/*
+!/plugins/system/
+/plugins/system/*
+!/plugins/system/nextrevalidate/
+
+# --- our uploaded media, but none of Joomla's stock images
+!/images/
+/images/*
+!/images/customers/
+!/images/gallery/
+!/images/logo.png
+!/images/hero.jpg

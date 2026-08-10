@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="plugin" group="system" method="upgrade">
+	<name>plg_system_nextrevalidate</name>
+	<author>company-profile</author>
+	<version>1.0.0</version>
+	<description>Pings the Next.js frontend to rebuild cached pages whenever content is saved.</description>
+	<namespace path="src">Joomla\Plugin\System\NextRevalidate</namespace>
+	<files>
+		<folder plugin="nextrevalidate">services</folder>
+		<folder>src</folder>
+	</files>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field
+					name="url"
+					type="url"
+					label="Revalidate URL"
+					description="e.g. http://localhost:3000/api/revalidate"
+					default="http://localhost:3000/api/revalidate"
+				/>
+				<field
+					name="secret"
+					type="password"
+					label="Shared secret"
+					description="Must match REVALIDATE_SECRET in the frontend's .env.local"
+				/>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
