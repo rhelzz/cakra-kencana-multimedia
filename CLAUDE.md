@@ -13,6 +13,10 @@ Every visible string and image comes from Joomla. Editors change content in the 
 nobody redeploys. If you are about to hardcode copy or an image path, stop — check whether
 it belongs in Joomla instead.
 
+**Longer human-facing docs live in [`docs/`](docs/README.md)** (Indonesian — the audience is
+the owner and the content team). This file is the condensed version for agents; `docs/` has
+the per-section CRUD guide, the full Joomla customisation inventory, and the API reference.
+
 ---
 
 ## 1. Running it
