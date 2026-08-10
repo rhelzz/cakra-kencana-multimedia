@@ -173,7 +173,21 @@ Artinya skrip yang mengandalkan status 204 sebagai bukti terhapus akan salah. Di
 sendiri tidak berpengaruh — artikel yang di-Trash langsung hilang dari halaman, karena
 endpoint daftar hanya mengembalikan yang Published.
 
-### 12. Nilai custom field aman kalau tidak dikenal
+### 12. Endpoint daftar mengembalikan artikel **Unpublished**
+
+Kejanggalan paling berbahaya kedua setelah batas 20. `GET /content/articles` memakai model
+sisi administrator, sehingga statusnya default `[0, 1]` — Published **dan** Unpublished.
+
+```
+filter[category]=10                 -> 27 artikel  (termasuk yang di-unpublish)
+filter[category]=10&filter[state]=1 -> 26 artikel
+```
+
+Akibatnya konten yang sengaja disembunyikan editor tetap tayang di situs. Trash (`-2`) memang
+sudah tersaring sendiri, tapi Unpublished (`0`) dan Archived (`2`) tidak. Semua panggilan
+daftar sekarang membawa `filter[state]=1`.
+
+### 13. Nilai custom field aman kalau tidak dikenal
 
 Bukan bug, tapi penting: nilai `icon` yang tidak ada di peta kode **tidak** membuat halaman
 error — jatuh ke ikon fallback. Ini disengaja, supaya editor yang mengetik salah tidak

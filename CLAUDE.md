@@ -136,7 +136,11 @@ service-road-signs-zh
 
 `baseAlias()` strips the suffix; `pickTranslations()` picks per item with this priority:
 
-1. requested language → 2. `*` (language-neutral) → 3. Indonesian → 4. anything else
+1. requested language → 2. `*` (language-neutral) → 3. Indonesian → 4. **nothing**
+
+There is deliberately no "any other language" rung: showing Chinese to an Indonesian visitor
+is a leak, not a fallback. An item with none of the three simply does not exist for that
+locale — which is also what makes unpublishing the Indonesian article remove it from `/`.
 
 Fallback is **per item, not per page** — a missing Chinese article shows only that one block
 in Indonesian. Joomla Associations are not used and not needed.

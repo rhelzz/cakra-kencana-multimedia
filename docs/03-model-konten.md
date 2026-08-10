@@ -132,7 +132,12 @@ Alias tanpa akhiran itulah yang mengikat satu set terjemahan. Fungsinya `baseAli
 1. bahasa yang diminta
 2. `*` (tanpa bahasa — dipakai bersama semua locale)
 3. Indonesia
-4. apa pun yang tersisa
+4. **tidak ditampilkan**
+
+Sengaja **tidak ada** tingkat "bahasa apa pun yang tersisa". Menampilkan Mandarin kepada
+pengunjung Indonesia itu kebocoran, bukan cadangan. Konsekuensi praktisnya: meng-*unpublish*
+artikel Indonesia membuat item itu hilang dari `/`, sementara versi Inggris dan Mandarinnya
+tetap tayang di `/en` dan `/zh`.
 
 Efeknya: terjemahan Mandarin yang belum ada hanya membuat **blok itu** tampil Indonesia.
 Halaman tetap utuh.

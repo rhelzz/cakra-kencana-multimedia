@@ -88,18 +88,20 @@ export const baseAlias = (alias: string) => alias.replace(/-(id|en|zh)$/, '');
 function pickTranslations(articles: Article[], locale: Locale) {
   const want = JOOMLA_LANG[locale];
   const fallback = JOOMLA_LANG[DEFAULT_LOCALE];
+  // Peringkat 3 = bahasa lain yang bukan bahasa utama. Itu BUKAN cadangan yang sah:
+  // menampilkan Mandarin kepada pengunjung Indonesia lebih buruk daripada tidak menampilkan
+  // apa-apa. Kalau sebuah item tidak punya versi yang diminta, versi netral, maupun versi
+  // Indonesia, berarti item itu memang tidak punya isi untuk locale ini.
+  const rank = (l?: string) => (l === want ? 0 : l === '*' ? 1 : l === fallback ? 2 : 3);
   const chosen = new Map<string, Article>();
 
   for (const article of articles) {
+    if (rank(article.attributes.language) === 3) continue;
     const key = baseAlias(article.attributes.alias);
-    const lang = article.attributes.language;
     const current = chosen.get(key);
-    if (!current) {
+    if (!current || rank(article.attributes.language) < rank(current.attributes.language)) {
       chosen.set(key, article);
-      continue;
     }
-    const rank = (l?: string) => (l === want ? 0 : l === '*' ? 1 : l === fallback ? 2 : 3);
-    if (rank(lang) < rank(current.attributes.language)) chosen.set(key, article);
   }
   return [...chosen.values()];
 }
@@ -110,7 +112,7 @@ function pickTranslations(articles: Article[], locale: Locale) {
  * once the site grows past a single page.
  */
 export async function getArticle(alias: string, locale: Locale) {
-  const all = await joomla<Article[]>('/content/articles?page[limit]=200');
+  const all = await joomla<Article[]>('/content/articles?filter[state]=1&page[limit]=200');
   const matches = all.filter((a) => baseAlias(a.attributes.alias) === alias);
   return pickTranslations(matches, locale)[0] ?? null;
 }
@@ -120,8 +122,11 @@ export async function getCategory(catid: number, locale: Locale) {
   // One request for every language: filtering server-side would drop "*" articles, and
   // the fallback needs to see the Indonesian rows anyway.
   // ponytail: single page of 200; add page[offset] paging if a category ever outgrows it.
+  // filter[state]=1 wajib: tanpa itu API mengembalikan artikel Unpublished juga, sehingga
+  // konten yang sengaja disembunyikan editor tetap tayang. Trash (-2) memang sudah tersaring
+  // sendiri, tapi Unpublished (0) dan Archived (2) tidak.
   const all = await joomla<Article[]>(
-    `/content/articles?filter[category]=${catid}&list[ordering]=ordering&list[direction]=asc&page[limit]=200`,
+    `/content/articles?filter[category]=${catid}&filter[state]=1&list[ordering]=ordering&list[direction]=asc&page[limit]=200`,
   );
   return pickTranslations(all, locale);
 }

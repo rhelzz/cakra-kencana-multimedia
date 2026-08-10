@@ -6,6 +6,9 @@ http://company-profile.test/backend/administrator
 ## Aturan yang berlaku di semua section
 
 1. **Status harus Published.** Artikel berstatus Unpublished/Archived/Trashed tidak muncul.
+   Meng-unpublish versi Indonesia menghilangkan item itu dari `/` saja — versi Inggris dan
+   Mandarinnya tetap tayang di `/en` dan `/zh`. Untuk menyembunyikannya dari semua bahasa,
+   unpublish ketiga-tiganya.
 2. **Bahasa wajib diisi** — `Bahasa Indonesia`, `English`, `中文`, atau `All`.
    Artikel tanpa bahasa yang benar bisa muncul di locale yang salah atau tidak muncul sama sekali.
 3. **Kategori menentukan section.** Salah kategori = muncul di tempat yang salah.

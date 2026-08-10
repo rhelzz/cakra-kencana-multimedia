@@ -76,16 +76,24 @@ kesalahan paling manusiawi.
 
 ---
 
-### T2 — Artikel satu bahasa bocor ke semua bahasa (TINGGI)
+### T2 — ~~Artikel satu bahasa bocor ke semua bahasa~~ (SUDAH DIPERBAIKI)
 
 **Sebab.** Set terjemahan beranggota satu selalu terpilih untuk semua locale.
 
 **Dampak.** Editor membuat layanan baru hanya dalam bahasa Indonesia. Layanan itu **langsung
 muncul di halaman Inggris dan Mandarin dalam bahasa Indonesia**, tanpa penanda apa pun.
 
-**Ini sebenarnya perilaku yang dirancang** — fallback per-item yang membuat halaman tidak
-pernah bolong. Yang salah bukan logikanya, melainkan **tidak ada yang memberi tahu editor**
-bahwa pekerjaannya belum selesai. Tidak ada daftar "belum diterjemahkan" di mana pun.
+**Fallback ke bahasa Indonesia memang dirancang** — itu yang membuat halaman tidak bolong.
+Yang salah adalah tingkat terakhirnya: "bahasa apa pun yang tersisa". Itu membuat artikel yang
+hanya ada dalam bahasa Mandarin muncul di halaman Indonesia, dalam bahasa Mandarin.
+
+Ditemukan saat pemilik proyek meng-*unpublish* satu layanan versi Indonesia: kartunya tetap
+muncul di `/`, berganti menjadi teks Mandarin. Tingkat terakhir itu sudah dihapus — sekarang
+item tanpa versi yang diminta, versi netral, maupun versi Indonesia tidak ditampilkan sama
+sekali untuk locale tersebut.
+
+Yang tersisa dari temuan ini: **masih tidak ada daftar "belum diterjemahkan"** di mana pun.
+Itu tugas pemeriksa konsistensi di Fase 0.
 
 ---
 
