@@ -159,7 +159,21 @@ teks, React meng-escape ulang tanda `&`-nya, sehingga pengunjung melihat `&amp;`
 Bug ini muncul dua kali: pertama pada `&amp;` di daftar "Why choose us", lalu pada `&copy;`
 di baris hak cipta.
 
-### 11. Nilai custom field aman kalau tidak dikenal
+### 11. `DELETE` diam-diam gagal untuk artikel yang masih Published
+
+`DELETE /content/articles/{id}` membalas **HTTP 204 (sukses)** tetapi artikelnya tetap ada.
+Joomla mensyaratkan artikel berada di Trash lebih dulu:
+
+```bash
+curl -X PATCH .../content/articles/80 -d '{"state":-2}'   # Trash
+curl -X DELETE .../content/articles/80                     # baru benar-benar terhapus
+```
+
+Artinya skrip yang mengandalkan status 204 sebagai bukti terhapus akan salah. Di situs
+sendiri tidak berpengaruh — artikel yang di-Trash langsung hilang dari halaman, karena
+endpoint daftar hanya mengembalikan yang Published.
+
+### 12. Nilai custom field aman kalau tidak dikenal
 
 Bukan bug, tapi penting: nilai `icon` yang tidak ada di peta kode **tidak** membuat halaman
 error — jatuh ke ikon fallback. Ini disengaja, supaya editor yang mengetik salah tidak

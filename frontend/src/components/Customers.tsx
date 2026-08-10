@@ -22,9 +22,10 @@ export default async function Customers({ locale }: { locale: Locale }) {
           {heading}
         </h2>
 
-        <ul className="mt-14 grid grid-cols-2 items-center gap-x-8 gap-y-12 sm:grid-cols-3 lg:grid-cols-6">
+        {/* flex-wrap, bukan grid kolom tetap: deretan logo tetap rata tengah berapa pun jumlahnya. */}
+        <ul className="mt-14 flex flex-wrap items-center justify-center gap-x-12 gap-y-10">
           {logos.map((logo) => (
-            <li key={logo.id} className="flex h-14 items-center justify-center">
+            <li key={logo.id} className="flex h-14 w-32 items-center justify-center sm:w-36">
               {/* brightness-0 + invert flattens any logo to solid white, so a row of mixed
                   brand colours reads as one set instead of a ransom note. Only works on
                   outline/wordmark logos — a filled block with knockout text becomes a blob.
