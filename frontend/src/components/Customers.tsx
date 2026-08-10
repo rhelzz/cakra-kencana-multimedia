@@ -1,4 +1,4 @@
-import { CATEGORY, cleanImage, getCategory, getHeading } from '@/lib/joomla';
+import { CATEGORY, getCategory, getHeading, imageOf } from '@/lib/joomla';
 import type { Locale } from '@/lib/i18n';
 
 export default async function Customers({ locale }: { locale: Locale }) {
@@ -8,7 +8,7 @@ export default async function Customers({ locale }: { locale: Locale }) {
   ]);
 
   const logos = customers.flatMap((c) => {
-    const src = cleanImage(c.attributes.images?.image_intro ?? c.attributes.images?.image_fulltext);
+    const src = imageOf(c);
     return src ? [{ id: c.id, src, alt: c.attributes.title }] : [];
   });
 

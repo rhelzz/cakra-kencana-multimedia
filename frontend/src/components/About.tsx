@@ -1,5 +1,5 @@
 import { CircleCheck } from 'lucide-react';
-import { bodyOf, CATEGORY, cleanImage, getCategory, listItems, type Article } from '@/lib/joomla';
+import { bodyOf, CATEGORY, getCategory, imageAltOf, imageOf, listItems, type Article } from '@/lib/joomla';
 import { t, type Locale } from '@/lib/i18n';
 import { Gallery, type Slide } from '@/components/Gallery';
 
@@ -12,10 +12,8 @@ export default async function About({ locale }: { locale: Locale }) {
   if (blocks.length === 0) return null;
 
   const slides: Slide[] = gallery.flatMap((a) => {
-    const src = cleanImage(a.attributes.images?.image_intro ?? a.attributes.images?.image_fulltext);
-    return src
-      ? [{ id: a.id, src, alt: a.attributes.images?.image_fulltext_alt || a.attributes.title }]
-      : [];
+    const src = imageOf(a);
+    return src ? [{ id: a.id, src, alt: imageAltOf(a) }] : [];
   });
 
   return (

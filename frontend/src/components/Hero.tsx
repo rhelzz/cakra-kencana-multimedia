@@ -1,12 +1,12 @@
-import { cleanImage, getArticle, stripTags } from '@/lib/joomla';
+import { getArticle, imageOf, stripTags } from '@/lib/joomla';
 import type { Locale } from '@/lib/i18n';
 
 export default async function Hero({ locale }: { locale: Locale }) {
   const hero = await getArticle('home-hero', locale);
   if (!hero) return null;
 
-  const { title, images, text, articletext, introtext } = hero.attributes;
-  const bg = cleanImage(images?.image_fulltext ?? images?.image_intro);
+  const { title, text, articletext, introtext } = hero.attributes;
+  const bg = imageOf(hero);
   const subtitle = stripTags(text ?? articletext ?? introtext);
 
   return (

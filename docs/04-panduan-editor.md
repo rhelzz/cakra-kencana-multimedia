@@ -80,8 +80,8 @@ Kategori **Gallery**. Satu artikel = satu slide. Berbahasa `All`.
 
 | Yang tampil | Diambil dari |
 |---|---|
-| Gambar slide | tab **Images and Links** → **Intro Image** |
-| Teks `alt` | **Intro Image → Image Description (Alt)**, cadangan: Title |
+| Gambar slide | tab **Images and Links** → **Intro Image** *atau* **Full Article Image** (mana saja yang diisi) |
+| Teks `alt` | **Image Description (Alt)** dari slot yang diisi, cadangan: Title |
 
 ### Create — menambah slide
 1. **New** → Title mis. `Finishing`
@@ -149,7 +149,7 @@ Kategori **Our customers**. Berbahasa `All`.
 
 | Yang tampil | Diambil dari |
 |---|---|
-| Logo | tab **Images and Links** → **Intro Image** |
+| Logo | tab **Images and Links** → **Intro Image** *atau* **Full Article Image** |
 | `alt` logo | **Title** |
 
 ### Create

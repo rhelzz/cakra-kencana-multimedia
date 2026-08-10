@@ -28,7 +28,12 @@ export type Article = {
     introtext?: string;
     articletext?: string;
     // Joomla already returns absolute URLs here.
-    images?: { image_intro?: string; image_fulltext?: string; image_fulltext_alt?: string };
+    images?: {
+      image_intro?: string;
+      image_intro_alt?: string;
+      image_fulltext?: string;
+      image_fulltext_alt?: string;
+    };
     // Custom fields land at top level under their own name; a list field arrives as { value: label }.
     icon?: Record<string, string> | string;
     map?: string;
@@ -195,6 +200,20 @@ export const stripTags = (html = '') =>
 
 /** Joomla appends "#joomlaImage://…" metadata to media URLs. Browsers ignore it; next/image won't. */
 export const cleanImage = (url?: string) => url?.split('#')[0];
+
+/**
+ * Whichever image slot the editor actually filled — Intro Image or Full Article Image.
+ * Must be `||`, not `??`: Joomla returns "" for an unset slot, never undefined, so `??`
+ * would keep the empty string and the image would silently never render.
+ */
+export const imageOf = (a: Article) =>
+  cleanImage(a.attributes.images?.image_intro || a.attributes.images?.image_fulltext);
+
+/** Alt text from whichever slot has it, falling back to the article title. */
+export const imageAltOf = (a: Article) =>
+  a.attributes.images?.image_intro_alt ||
+  a.attributes.images?.image_fulltext_alt ||
+  a.attributes.title;
 
 /** Pull the <li> texts out of an article written as a bullet list in the Joomla editor. */
 export const listItems = (html = '') =>
