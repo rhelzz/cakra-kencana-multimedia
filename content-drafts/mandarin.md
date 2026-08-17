@@ -57,291 +57,290 @@ Yogyakarta, Malang, Bali, Makassar, Lampung, Palembang, Pekanbaru, Medan, Balikp
 
 # SERVICES
 
-## Indoor / Outdoor Reklame
+## 室内 / 户外广告
+室内外广告媒体的制作与安装，从永久性标识到短期品牌宣传，根据材料与安装场地量身配置。
 
+### 广告牌与临时看板
+用于路边及重点地段的大型广告牌——固定广告牌适合长期投放，临时看板适合短期活动。
 
-### Billboard & Baliho
+### 灯箱与霓虹招牌
+适用于店铺、办公室与零售门店的发光标识，昼夜均清晰可见。
 
+### 字体灯箱与立体字
+三维立体字（背光或实心），用于建筑外立面、大堂及前台区域的品牌标识。
 
-### Neon Box & Neon Sign
+### 门头招牌与店招
+适用于商铺、摊位与零售门店的名称招牌，从简约样式到贴合品牌的定制设计。
 
+### 图腾柱 / 立柱标识
+独立式标识结构，用于标示商业场所、加油站、商业区与停车场。
 
-### Letter Box & Huruf Timbul
+### A字牌与薄板牌
+可移动的宣传展板，适用于店门口与公共区域，可随需求灵活挪动。
 
+### 电子屏与视频墙
+大型LED屏幕，用于数字广告、公共信息发布及室内外动态内容展示。
 
-### Signboard & Shopsign
+### LED走字屏
+滚动式LED显示屏，循环播放促销或信息文字。
 
+### 串旗 / 竖幅旗
+竖式旗帜，用于活动布置、产品推广与场所标示。
 
-### Totem / Pylon
+### 横幅与墙面广告布
+短期促销用印刷媒介，可独立支架安装或张贴于墙面及建筑外立面。
 
+### 车身广告
+车辆贴膜与整车包覆，让品牌随车队流动展示。
 
-### A-Board & Thinplate
+### 墙绘与其他品牌方案
+墙面彩绘及标准标识类别之外的定制品牌方案，按客户需求执行。
 
+## 税务、许可、IMB 与 PBG 服务
+室内外广告的许可与税务代办服务，投放期限按需设定，并包含IMB与PBG建筑审批办理。
 
-### Videotron & Videowall
+### 广告税代办
+依据投放期限与安装地点，向相关机构办理广告税缴纳与申报。
 
+### 广告许可代办
+办理室内外广告安装许可，含已过期许可的续期。
 
-### Running Text
+### IMB 建筑许可代办
+为广告牌、图腾柱等永久性广告结构办理建筑施工许可。
 
+### PBG 建筑审批代办
+按现行法规办理建筑物审批（IMB的替代制度），适用于广告结构及配套建筑。
 
-### Umbul-umbul
+## 数码印刷
+大幅面数码打印，服务于促销、活动与门店陈列，涵盖横幅到异形切割贴纸。
 
+### 横幅与竖幅
+即装即用的短期促销印刷品，提供横式与竖式两种版式。
 
-### Banner & Wall Banner
+### X展架、易拉宝与三脚架展架
+配便携支架的独立式展架，适用于展会、展位与演示区域。
 
+### 背景板与吊挂横幅
+用于舞台背景、拍照区及活动吊挂装饰的印刷媒介。
 
-### Car Branding
+### 货架跳跳卡
+安装于货架的小型促销物料，用于突出特定商品。
 
+### 飞帆旗与空飘气球
+远距离吸引注意力的空中宣传媒介，适用于开阔的户外场地。
 
-### Painting & Alternative Branding
+### 灯箱布与围挡
+用于发光标识的背光布印刷，以及施工或宣传区域的围挡板。
 
+### 迷你X展架
+小尺寸X展架，适用于收银台、服务台及空间有限的区域。
 
-## Tax, Permit, IMB & PBG Service
+### 活动展台与便携展位
+用于活动、展会与品牌活动的便携式展台与展位。
 
+### 促销帐篷、Sarnafil 帐篷与咖啡篷
+定制印刷帐篷，适用于活动、户外促销与餐饮经营场所。
 
-### Pengurusan Pajak Reklame
+### 便携背景墙
+用于展位与品牌展示区的便携式背景墙。
 
+### 旗帜
+定制印刷旗帜，用于宣传、活动与位置标示。
 
-### Pengurusan Izin Reklame
+### 地贴
+地面贴纸，用于公共或零售区域的导向、促销与信息提示。
 
+### Ritrama 贴纸与单向透视贴
+玻璃与透明媒介贴纸，含用于车窗及橱窗的单向透视膜。
 
-### Pengurusan IMB
+### 印刷切割贴、刻字贴与磨砂贴
+按图形轮廓切割的定制贴纸，含用于玻璃遮光的磨砂膜。
 
+## 丝网印刷
+面向包装、周边商品与宣传物料的大批量丝网印刷，成品耐久。
 
-### Pengurusan PBG
+### 串旗与横幅
+户外宣传用印刷布料媒介，涵盖竖式串旗与横式条幅。
 
+### 店面遮阳篷与迷你薄板牌
+布制店面遮阳篷与小型金属标识板。
 
-## Digital Printing
+### 塑料包装与购物袋
+面向零售商品的定制印刷塑料包装及购物手提袋。
 
+### 产品包装
+贴合产品品牌形象的定制印刷包装。
 
-### Banner & Vertical Banner
+### 挂绳
+印刷挂绳，用于员工与活动证件卡。
 
+### T恤与礼品袋
+印刷周边商品，用于制服、活动与促销赠品。
 
-### X Banner, Roll Up Banner & Tripod Banner
+## 胶版印刷
+面向企业文件与大批量印刷品的胶版印刷，成品精准且批次一致。
 
+### 标签与吊旗串
+用于包装与陈列的产品标签及吊挂标签串。
 
-### Visual Backdrop & Hanging Banner
+### 单页传单
+单张促销印刷品，用于市场推广与快速信息分发。
 
+### 折页手册
+折叠式促销印刷品，信息量高于单页传单。
 
-### Shelf Talker
+### 名片与证件卡
+用于企业、员工及商务往来的身份卡片。
 
+### 证件挂绳
+用于员工与访客证件卡的颈挂绳。
 
-### Flying Banner & Balon Udara
+### 企业画册与产品目录
+用于市场与销售的企业介绍印刷品及产品目录。
 
+### 文件夹与信封
+支持办公行政与正式往来的印刷物料。
 
-### Backlight Fabric & Hoarding
+### 年鉴与宗教书籍
+装订成册的印刷服务，适用于企业纪念与宗教用途。
 
+### 海报与挂历
+用于办公室或居家墙面的促销印刷品与年度纪念品。
 
-### Mini X Banner
+### 台历
+桌面尺寸的年度纪念品，适合作为企业赠礼。
 
+### 纸盒包装与纸袋
+贴合产品与品牌形象的定制纸盒包装及纸袋。
 
-### Event Desk & Portable Booth
+### 无纺布袋
+定制无纺布购物袋，比纸袋或塑料袋更环保的选择。
 
+### 桌卡
+独立摆放的桌面卡片，用于餐厅与酒店的产品信息或促销。
 
-### Tenda Promosi, Tenda Sarnafil & Tenda Café
+### 请柬
+面向企业与私人场合的定制印刷请柬。
 
+### 记事本与收据簿
+日常办公行政所需的印刷物料。
 
-### Backwall Portable
+### 送货单与签收单
+用于货物配送与交接的印刷单据。
 
+## POP 周边商品
+面向促销、企业赠礼与特殊场合的定制周边商品与纪念品。
 
-### Bendera
+### 摇摇卡与价格牌
+货架与橱窗用小型物料，用于突出商品信息或价格。
 
+### 保温杯与徽章
+用于促销与活动赠礼的定制周边商品。
 
-### Floor Sticker
+### 奖牌与奖杯
+定制奖项，用于表彰员工、合作伙伴或活动获奖者。
 
+### 纪念品
+贴合活动主题或品牌形象的定制纪念品。
 
-### Sticker Ritrama & Sticker One Way
+### 钥匙扣与瓶塞
+用于周边商品与客户赠礼的小型宣传配件。
 
+### 海报框
+用于展示宣传物料或纪实资料的画框。
 
-### Sticker Print & Cut, Cutting Sticker & Sunblast Sticker
+### 精装请柬书册与婚礼礼盒
+面向婚礼与特殊场合的定制封面与礼盒。
 
+## POP 陈列展示
+面向零售、展会与门店品牌活动的销售点陈列。
 
-## Screen Printing
+### 展位陈列与便携展位
+面向展会与品牌活动的定制展位，需要机动性时提供便携版本。
 
+### 巨型展位与集装箱展位
+面向大型活动与长期陈列需求的大规模展位。
 
-### Umbul-umbul & Spanduk
+### 陈列架与柜台展示
+用于零售区域商品陈列的货架与柜台展示单元。
 
+### 立式陈列与货架装饰
+独立式陈列架与货架装饰配件，提升商品陈列观感。
 
-### Shopblind & Mini Thinplate
+### 试用装陈列架
+专为零售区域试用装或样品设计的陈列架。
 
+## 平面设计
+面向品牌形象、印刷物料与陈列施工规划的二维与三维设计。
 
-### Plastik Packaging & Kantong Plastik
+### 二维设计 — 标志与企业画册
+品牌形象设计与企业介绍物料。
 
+### 二维设计 — 横幅与传单
+横幅与传单版式促销印刷品的设计。
 
-### Kemasan Produk
+### 二维设计 — T恤
+面向周边商品与制服的图形设计。
 
+### 三维设计 — 室内与门店布局
+室内空间与零售门店的布局设计。
 
-### Tali ID
+### 三维设计 — 展位与办公空间
+展会展位与办公空间的三维设计。
 
+### 三维设计 — 广告牌钢架与图腾柱
+广告牌钢结构与图腾柱标识的结构设计。
 
-### T-Shirt & Goodie Bag
+### 三维设计 — 灯箱
+定制灯箱生产的技术设计。
 
+## 标识与安全标志
+面向各类设施的定制导向与安全标识，符合各区域适用标准。
 
-## Offset Printing
+### 商场与公寓标识
+面向商业与住宅建筑的导向与安全标识。
 
+### 道路交通标志
+符合安全标准的交通与导向路牌。
 
-### Label & Flag Chain
+### 办公与工厂标识
+面向办公及工业环境的安全与区域标识。
 
+### 公共设施标识
+面向卫生间、停车场与疏散通道等公共设施的导向标识。
 
-### Flyer & Leaflet
+## 综合承包
+面向商业建筑、仓库与商业陈列的施工与制作服务。
 
+### 咖啡馆与餐厅
+面向餐饮业的室内外施工与翻新。
 
-### Brosur
+### 门店与零售店
+零售门店的施工与装修交付。
 
+### 酒店与公寓
+面向住宅与住宿类物业的施工与翻新。
 
-### Kartu Nama & ID Card
+### 办公空间
+办公空间的施工与装修交付。
 
+### 仓库与钢结构工程
+仓储设施的仓库施工与钢结构工程。
 
-### Tali ID Card
+### 钢结构 — 厂房与店铺
+面向厂房建筑与商业店铺的钢结构工程。
 
+### 广告牌与铝塑板工程
+广告牌钢结构及铝塑板外立面包覆工程。
 
-### Company Profile & Catalog Produk
+### 仓储货架与钢柜
+面向仓储与办公用途的货架及钢柜制作。
 
+### 防盗网与围栏
+用于安防与区域界定的钢制品加工。
 
-### Map & Amplop
+### 雨棚与栏杆
+建筑外部雨棚与护栏的加工制作。
 
-
-### Buku Tahunan & Buku Yasin
-
-
-### Poster & Kalender Dinding
-
-
-### Kalender Meja
-
-
-### Karton Kemasan & Paper Bag
-
-
-### Tas Spinbond
-
-
-### Tent Card
-
-
-### Undangan
-
-
-### Agenda & Nota
-
-
-### Surat Jalan & Surat Tanda Terima
-
-
-## POP Merchandise
-
-
-### Wobler & Priceboard
-
-
-### Tumbler & Pin Button
-
-
-### Plakat & Tropy
-
-
-### Souvenir
-
-
-### Gantungan Kunci & Stopper
-
-
-### Frame Poster
-
-
-### Hard Cover Undangan dan Buku & Box Hantaran Nikah
-
-
-## POP Display
-
-
-### Booth Display & Portable Booth
-
-
-### Giant Booth & Booth Container
-
-
-### Rak Display & Counter Display
-
-
-### Standing Display & Dress Up Rak Display
-
-
-### Tester Display
-
-
-## Design Graphics
-
-
-### Design 2D — Logo & Company Profile
-
-
-### Design 2D — Banner & Flyer
-
-
-### Design 2D — T-Shirt
-
-
-### Design 3D — Layout Interior & Outlet
-
-
-### Design 3D — Booth & Office
-
-
-### Design 3D — Rangka Billboard & Totem / Pylon
-
-
-### Design 3D — Neon Box
-
-
-## Rambu-Rambu
-
-
-### Rambu Mall & Rambu Apartment
-
-
-### Rambu Jalan Raya
-
-
-### Rambu Office & Rambu Pabrik
-
-
-### Rambu Fasilitas Umum
-
-
-## General Contractor
-
-
-### Café & Restaurant
-
-
-### Outlet & Store
-
-
-### Hotel & Apartment
-
-
-### Office
-
-
-### Warehouse & Konstruksi Baja — Gudang
-
-
-### Konstruksi Baja — Pabrik & Konstruksi Baja — Store
-
-
-### Konstruksi Billboard & Konstruksi ACP
-
-
-### Rak Gudang & Lemari Besi
-
-
-### Tralis & Pagar
-
-
-### Kanopi & Railing
-
-
-### Fasade
-
-
+### 建筑外立面
+定制建筑外立面的施工与安装。

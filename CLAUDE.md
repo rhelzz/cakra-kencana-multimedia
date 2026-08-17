@@ -60,7 +60,7 @@ frontend/src/
 │   │   ├── layout.tsx            Root layout: <html lang>, fonts, ThemeProvider, Navbar, Footer
 │   │   ├── page.tsx              Home = Hero + About + Services + Customers + Offices
 │   │   ├── services/page.tsx     Service listing (all services, no limit)
-│   │   └── services/[id]/page.tsx  Service detail: hero image + body + sub-service grid
+│   │   └── services/[slug]/page.tsx Service detail: hero image + body + sub-service grid
 │   └── api/revalidate/route.ts   Webhook target for the Joomla plugin
 ├── components/
 │   ├── Navbar.tsx → SiteHeader.tsx   server fetch → client shell (scroll state, sheet)
@@ -96,7 +96,7 @@ Categories (ids are hardcoded in `CATEGORY` in `lib/joomla.ts` — do not renumb
 | 12 | Our offices | 4 locations | Offices, Footer |
 | 13 | Social | 5 social accounts | SocialLinks |
 | 14 | Headings | translated section headings | `getHeading()` |
-| 15 | Service sub-items | 145 sub-services (e.g. "Neon Box" under "Indoor / Outdoor Reklame") | sub-service grid on the service detail page |
+| 15 | Service sub-items | 86 sub-services (e.g. "Neon Box" under "Indoor / Outdoor Reklame") | sub-service grid on the service detail page |
 
 ### Custom fields (Content → Fields)
 
@@ -159,6 +159,25 @@ service-road-signs-zh
 `baseAlias()` strips the suffix; `pickTranslations()` picks per item with this priority:
 
 1. requested language → 2. `*` (language-neutral) → 3. Indonesian → 4. **nothing**
+
+**Detail URLs use the base alias, never the article id.** Joomla gives each translation of a
+set its own id (238 / 479 / 575 for one service), so an id in the URL only resolves in the
+language it was created for — the language switcher, which swaps the locale prefix and keeps
+the rest of the path, therefore 404'd on every service detail page. `serviceSlug()` in
+`joomla.ts` returns the base alias with the `service-` prefix stripped, and the route is
+`[slug]`. Match by comparing `serviceSlug()`, never by rebuilding an alias from a slug: an
+article that breaks the naming convention then fails to match instead of matching the wrong one.
+
+**Order follows the Indonesian spine, not the API's.** Joomla assigns every translation its own
+`ordering` when it is created, so sorting on that made `/en` and `/zh` list services in a
+different order from `/` — and reshuffled it again on every import. `pickTranslations()` now
+takes the position of each item's Indonesian (or `*`) article and applies it to every locale.
+
+**Translations are imported, not hand-entered:** `python scripts/import-translations.py --apply`
+reads `content-drafts/`, matches indonesian.md to Joomla **by title** and to the other drafts
+**by position** (their headings are translated, so there is nothing else to match on), and
+refuses to run if the three files are out of sync. It is idempotent — an existing alias is
+PATCHed. It also repairs the two silent Joomla quirks in §8 and verifies both afterwards.
 
 There is deliberately no "any other language" rung: showing Chinese to an Indonesian visitor
 is a leak, not a fallback. An item with none of the three simply does not exist for that
@@ -300,7 +319,7 @@ Measured end to end: ~3.3s from save to updated page.
 | Custom field values appear at **top level under the field name**, list fields as `{value: label}` | `fieldValue()` exists for this |
 | `urls` (Link A/B/C) is returned by the **single-article** endpoint but **not by the list** | Map links moved to a custom field |
 | `catid` and `ordering` are not in the article response at all | Fetch by category instead of by id; the service detail page finds its article inside the category list |
-| Default page size is **20** | Every list call passes `page[limit]=200`. This already caused the hero to vanish once the site passed 20 articles |
+| Default page size is **20**, and any single `page[limit]` is a silent ceiling | `getCategory()` goes through `joomlaPaged()`, which follows `page[offset]` until the pages run out. A fixed limit has failed twice: the hero vanished past 20 articles, then the sub-service grid emptied on `/` when category 15 hit 258 rows (86 × 3 languages) against a limit of 200. Every new locale multiplies every category |
 | Alias must be unique per category, **language is not part of the key** | The `-id`/`-en`/`-zh` suffix convention |
 | `PATCH /menus/site/items/{id}` returns **500**, always | Menu items must be edited in the admin UI, or via direct SQL |
 | Writing `urls.targeta` as `_blank` is rejected | It expects a numeric code |
@@ -345,12 +364,10 @@ per-locale `hreflang`.
   speaker. Printing terms especially (胶印, 丝网印刷, 车间).
 - **Service detail pages are thin** — Joomla only has `introtext` filled. They become useful
   when editors write the part after "Read more".
-- **145 sub-service descriptions are placeholder text** (`"<Name> — bagian dari layanan <Service>."`),
-  auto-generated when the Services/Sub-services section was rewritten. Real copy is being staged
-  in `content-drafts/indonesian.md` before re-import — see that file's own instructions.
-- **English and Mandarin translations for all 10 services and 145 sub-services don't exist yet**
-  in Joomla (only Indonesian does). They fall back to Indonesian per item on `/en` and `/zh` —
-  intentional per §4, not a bug. Staged in `content-drafts/english.md` and `mandarin.md`.
+- **Chinese service copy is machine-written and unreviewed.** All 10 services and 86
+  sub-services now exist in all three languages, imported from `content-drafts/` by
+  `scripts/import-translations.py`. The English reads naturally; the Mandarin printing terms
+  (胶版印刷, 丝网印刷, 数码印刷) have never been checked by a native speaker.
 - **YouTube and TikTok have no `link` value** — no official account found, so their icons are
   hidden by design. Instagram, Facebook and WhatsApp use the company's real accounts.
 - **Customer logos are other companies' trademarks**, used here as dummy content.

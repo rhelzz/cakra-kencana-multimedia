@@ -14,6 +14,32 @@ export async function joomla<T = unknown>(path: string, revalidate = 60): Promis
   return data as T;
 }
 
+/**
+ * Every row of a list endpoint, following `page[offset]` until the pages run out.
+ *
+ * A single `page[limit]` is not a safe way to read a category, because the failure mode is
+ * silent: Joomla returns the first N rows and says nothing about the rest, so the site simply
+ * stops showing some content. That has now bitten this project twice — first the hero vanished
+ * when the site passed the default limit of 20, then the sub-service grid emptied out on `/`
+ * when category 15 reached 258 articles (86 sub-services × 3 languages) against a limit of 200.
+ * Translations multiply every category by the number of locales, so a fixed ceiling is only
+ * ever a question of when.
+ *
+ * The page cap is a guard against an endpoint that ignores `page[offset]` and hands back the
+ * same page forever; it is not a content limit, and 20 pages is 4000 articles.
+ */
+async function joomlaPaged<T>(path: string, pageSize = 200): Promise<T[]> {
+  const rows: T[] = [];
+  for (let page = 0; page < 20; page++) {
+    const batch = await joomla<T[]>(
+      `${path}&page[limit]=${pageSize}&page[offset]=${page * pageSize}`,
+    );
+    rows.push(...batch);
+    if (batch.length < pageSize) return rows;
+  }
+  return rows;
+}
+
 /** Joomla's public web root, derived from the API URL — for files served straight from media. */
 export const mediaUrl = (path: string) =>
   `${process.env.JOOMLA_API!.replace(/\/api\/index\.php\/v1\/?$/, '')}/${path.replace(/^\//, '')}`;
@@ -83,6 +109,22 @@ function hrefFor({ type, link }: MenuItem['attributes']) {
 export const baseAlias = (alias: string) => alias.replace(/-(id|en|zh)$/, '');
 
 /**
+ * The URL segment for a service detail page.
+ *
+ * Deliberately NOT the article id: Joomla gives each translation of a set its own id
+ * (238 / 479 / 575 for the same service), so an id in the URL only resolves in the language
+ * it was created for — switching language on a detail page 404s. The base alias is the one
+ * identity shared across a translation set, which is the same thing `pickTranslations()` and
+ * `getSubServices()` key on. The `service-` prefix is dropped because it says nothing in a URL.
+ *
+ * Compare with this function rather than rebuilding an alias from a slug — that way an
+ * article whose alias does not follow the convention simply never matches, instead of
+ * matching the wrong thing.
+ */
+export const serviceSlug = (article: Article) =>
+  baseAlias(article.attributes.alias).replace(/^service-/, '');
+
+/**
  * One article per translation set, preferring the requested language and falling back to
  * Indonesian — so a page never goes blank because a translation is missing. Articles with
  * no language ("*", e.g. logos) are shared by every locale.
@@ -97,6 +139,19 @@ function pickTranslations(articles: Article[], locale: Locale) {
   const rank = (l?: string) => (l === want ? 0 : l === '*' ? 1 : l === fallback ? 2 : 3);
   const chosen = new Map<string, Article>();
 
+  // Urutan mengikuti tulang punggung: posisi artikel Indonesia (atau "*") yang menentukan,
+  // bukan artikel mana yang kebetulan muncul lebih dulu di respons API. Joomla memberi
+  // `ordering` sendiri ke setiap terjemahan saat dibuat, jadi tanpa ini /en dan /zh
+  // menampilkan layanan dengan urutan yang berbeda dari / — dan urutan itu ikut berubah
+  // setiap kali ada terjemahan baru ditambahkan.
+  const spine = new Map<string, number>();
+  for (const article of articles) {
+    const lang = article.attributes.language;
+    if (lang !== fallback && lang !== '*') continue;
+    const key = baseAlias(article.attributes.alias);
+    if (!spine.has(key)) spine.set(key, spine.size);
+  }
+
   for (const article of articles) {
     if (rank(article.attributes.language) === 3) continue;
     const key = baseAlias(article.attributes.alias);
@@ -105,7 +160,12 @@ function pickTranslations(articles: Article[], locale: Locale) {
       chosen.set(key, article);
     }
   }
-  return [...chosen.values()];
+
+  // Item tanpa versi Indonesia tidak punya posisi di tulang punggung; Array.sort stabil,
+  // jadi item seperti itu tetap di urutan kemunculannya, di belakang yang punya.
+  return [...chosen.entries()]
+    .sort(([a], [b]) => (spine.get(a) ?? Infinity) - (spine.get(b) ?? Infinity))
+    .map(([, article]) => article);
 }
 
 /**
@@ -124,12 +184,11 @@ export async function getArticle(alias: string, locale: Locale, catid: number) {
 export async function getCategory(catid: number, locale: Locale) {
   // One request for every language: filtering server-side would drop "*" articles, and
   // the fallback needs to see the Indonesian rows anyway.
-  // ponytail: single page of 200; add page[offset] paging if a category ever outgrows it.
   // filter[state]=1 wajib: tanpa itu API mengembalikan artikel Unpublished juga, sehingga
   // konten yang sengaja disembunyikan editor tetap tayang. Trash (-2) memang sudah tersaring
   // sendiri, tapi Unpublished (0) dan Archived (2) tidak.
-  const all = await joomla<Article[]>(
-    `/content/articles?filter[category]=${catid}&filter[state]=1&list[ordering]=ordering&list[direction]=asc&page[limit]=200`,
+  const all = await joomlaPaged<Article>(
+    `/content/articles?filter[category]=${catid}&filter[state]=1&list[ordering]=ordering&list[direction]=asc`,
   );
   return pickTranslations(all, locale);
 }

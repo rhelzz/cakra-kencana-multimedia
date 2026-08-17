@@ -10,6 +10,7 @@ import {
   getSubServices,
   imageAltOf,
   imageOf,
+  serviceSlug,
   stripTags,
   getHeading,
 } from '@/lib/joomla';
@@ -27,32 +28,35 @@ function Icon({ field, className }: { field: unknown; className?: string }) {
   return <Glyph className={className} />;
 }
 
-/** One request gives both the service and its siblings, and doubles as the 404 check. */
-async function load(id: string, locale: Locale) {
+/**
+ * One request gives both the service and its siblings, and doubles as the 404 check.
+ * Matched on the base alias, not the article id — see serviceSlug() for why.
+ */
+async function load(slug: string, locale: Locale) {
   const services = await getCategory(CATEGORY.services, locale);
-  const service = services.find((s) => String(s.id) === id);
+  const service = services.find((s) => serviceSlug(s) === slug);
   if (!service) notFound();
   return { service, siblings: services.filter((s) => s.id !== service.id) };
 }
 
 export async function generateMetadata({
   params,
-}: PageProps<'/[locale]/services/[id]'>): Promise<Metadata> {
-  const { id, locale } = await params;
+}: PageProps<'/[locale]/services/[slug]'>): Promise<Metadata> {
+  const { slug, locale } = await params;
   if (!isLocale(locale)) return {};
-  const { service } = await load(id, locale);
+  const { service } = await load(slug, locale);
   return {
     title: service.attributes.title,
     description: stripTags(bodyOf(service)),
   };
 }
 
-export default async function ServicePage({ params }: PageProps<'/[locale]/services/[id]'>) {
-  const { id, locale } = await params;
+export default async function ServicePage({ params }: PageProps<'/[locale]/services/[slug]'>) {
+  const { slug, locale } = await params;
   if (!isLocale(locale)) notFound();
 
   const [{ service, siblings }, heading] = await Promise.all([
-    load(id, locale),
+    load(slug, locale),
     getHeading('services', locale),
   ]);
   const subServices = await getSubServices(baseAlias(service.attributes.alias), locale);
@@ -202,7 +206,7 @@ export default async function ServicePage({ params }: PageProps<'/[locale]/servi
               {siblings.map((s) => (
                 <li key={s.id}>
                   <Link
-                    href={`${base}/services/${s.id}`}
+                    href={`${base}/services/${serviceSlug(s)}`}
                     className="group flex items-center gap-4 border-b border-border py-4 text-sm font-medium transition-colors duration-200 ease-exit hover:text-primary"
                   >
                     <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-accent text-primary transition-transform duration-500 ease-settle group-hover:scale-110 motion-reduce:transition-none">

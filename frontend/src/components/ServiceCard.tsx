@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { bodyOf, stripTags, type Article } from '@/lib/joomla';
+import { bodyOf, serviceSlug, stripTags, type Article } from '@/lib/joomla';
 import { iconFrom } from '@/lib/icons';
 import { t, type Locale } from '@/lib/i18n';
 
@@ -48,7 +48,7 @@ export default function ServiceCard({
       </p>
 
       <Link
-        href={`${base}/services/${service.id}`}
+        href={`${base}/services/${serviceSlug(service)}`}
         // `after:absolute after:inset-0` stretches the hit area over the whole card — a
         // finger-sized target on mobile — while the link itself stays a normal inline
         // element in the reading order.

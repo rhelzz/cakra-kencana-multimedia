@@ -2,7 +2,15 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowRight, ChevronLeft, Slash } from 'lucide-react';
-import { bodyOf, CATEGORY, getCategory, getHeading, stripTags, type Article } from '@/lib/joomla';
+import {
+  bodyOf,
+  CATEGORY,
+  getCategory,
+  getHeading,
+  serviceSlug,
+  stripTags,
+  type Article,
+} from '@/lib/joomla';
 import { iconFrom } from '@/lib/icons';
 import { isLocale, localePath, t, type Locale } from '@/lib/i18n';
 
@@ -149,7 +157,7 @@ function ServiceRow({
       />
 
       <Link
-        href={`${base}/services/${service.id}`}
+        href={`${base}/services/${serviceSlug(service)}`}
         // Real padding, on one scale: 4 → 6 → 8 across the breakpoints horizontally and
         // 12 → 16 vertically. The ordinal is the leftmost thing on the row, so without this
         // it sits flush against the container edge with nothing to breathe into.
