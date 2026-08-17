@@ -92,30 +92,27 @@ izin, atau ganti dengan klien yang memang menyetujui.
 Token dan secret sekarang dibuat untuk lingkungan lokal. Buat yang baru saat deploy dan
 jangan pernah memakai ulang yang lama.
 
-## Deploy (belum dikerjakan)
+## Deploy
 
-Belum pernah dilakukan. Yang perlu dipikirkan:
+Langkah lengkapnya pindah ke **[11 — Deploy & Serah Terima](11-deploy.md)**: paket apa yang
+dikirim saat menyerahkan proyek, urutan pasang backend lalu frontend, cara menyambungkan
+webhook, dan checklist verifikasi 10 langkah.
 
-**Frontend.** Vercel adalah jalur termudah untuk Next.js. `JOOMLA_API` harus menunjuk domain
-Joomla yang bisa diakses publik (bukan `.test`), dan `revalidatePath` bekerja normal di sana.
+Tiga hal yang paling sering menggagalkan deploy, diringkas di sini:
 
-**Backend.** Joomla butuh hosting PHP + MySQL biasa. Yang wajib diatur:
-- pola `location ~ \.php(/|$)` (nginx) atau `.htaccess` bawaan (Apache — biasanya sudah benar)
-- HTTPS, karena token API lewat di header
-- `images/` bisa diakses publik (frontend memuat gambar langsung dari sana)
-- URL plugin Next Revalidate diarahkan ke domain frontend produksi
-
-**Yang paling mudah terlewat:** ID kategori di server produksi hampir pasti berbeda dari
-lokal kalau kontennya dibuat ulang, bukan di-restore dari dump. Restore dump database jauh
-lebih aman daripada membuat ulang manual.
+1. **nginx** butuh `location ~ \.php(/|$)`, bukan `\.php$` — kalau tidak, seluruh API 404.
+2. **Restore dump database**, jangan buat ulang konten manual. ID kategori ditulis mati di
+   `joomla.ts`; ID yang berbeda membuat halaman kosong tanpa pesan error.
+3. **Token API harus dibuat ulang** di server baru. Token diturunkan dari `$secret` situs, jadi
+   token lama dari dump tidak akan pernah bekerja pada instalasi yang secret-nya berbeda.
 
 ## Utang teknis yang sudah ditandai
 
 | Lokasi | Isi |
 |---|---|
-| `joomla.ts` — `getCategory()` | `ponytail:` satu halaman 200 item; tambahkan paging kalau kategori melampauinya |
+| ~~`joomla.ts` — `getCategory()`~~ | ~~satu halaman 200 item~~ — selesai, sekarang lewat `joomlaPaged()` yang mengikuti `page[offset]` |
 | `joomla.ts` — `getArticle()` | Menarik 200 artikel lalu menyaring di JS; tidak ada filter alias di API |
-| `services/[id]/page.tsx` | `eslint-disable` untuk `react-hooks/static-components`, dengan alasan tertulis |
+| `services/[slug]/page.tsx` | `eslint-disable` untuk `react-hooks/static-components`, dengan alasan tertulis |
 | `eslint.config.mjs` | `src/components/ui/**` dikecualikan — kode generate shadcn |
 
 ## Yang belum ada sama sekali
