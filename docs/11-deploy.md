@@ -12,8 +12,57 @@ Pengunjung  →  Next.js (Node)  ──HTTP + token──→  Joomla (PHP + MySQ
                     └────── webhook revalidate ───────────┘
 ```
 
-Keduanya bisa berada di server berbeda, bahkan penyedia berbeda. Yang mengikat cuma tiga hal:
-URL API, token, dan satu secret webhook.
+Yang mengikat keduanya cuma tiga hal: URL API, token, dan satu secret webhook.
+
+## Tata letak di hosting — baca ini sebelum meng-upload apa pun
+
+Di laptop, `backend/` dan `frontend/` bersebelahan supaya satu repo bisa memuat semuanya.
+**Di hosting keduanya adalah dua deployment terpisah** dan tidak perlu punya folder induk
+bersama.
+
+### Jangan bertingkat dua
+
+```
+❌ SALAH — dua lapis, bikin repot tanpa manfaat
+public_html/company-profile/backend/
+public_html/company-profile/frontend/
+
+✅ BENAR — satu lapis (nama folder bebas)
+public_html/backend/
+public_html/frontend/
+
+✅ PALING BERSIH — subdomain sendiri-sendiri
+cms.domain-anda.com   →  document root langsung ke folder Joomla
+www.domain-anda.com   →  aplikasi Next
+```
+
+Alasannya praktis, bukan selera. Setiap lapis tambahan berarti satu penyesuaian lagi di
+konfigurasi nginx: `root` harus digeser, blok `location` harus dicocokkan ulang, dan aturan
+PHP di Bagian B langkah 4 harus dipastikan tetap mengenai path yang benar. Folder induk
+`company-profile/` tidak memberi apa pun sebagai gantinya — di server tidak ada yang perlu
+"mengelompokkan" keduanya, karena mereka memang tidak saling menyentuh di disk.
+
+Nama foldernya bebas. `backend`/`frontend`, `cms`/`web`, apa pun. Yang penting **satu lapis**.
+
+### Akibatnya ke `JOOMLA_API`
+
+URL API mengikuti ke mana Joomla mendarat, jadi nilainya berbeda per tata letak:
+
+| Joomla ditaruh di | `JOOMLA_API` |
+|---|---|
+| Subdomain sendiri (disarankan) | `https://cms.domain-anda.com/api/index.php/v1` |
+| `public_html/backend/` | `https://domain-anda.com/backend/api/index.php/v1` |
+| ❌ `public_html/company-profile/backend/` | `https://domain-anda.com/company-profile/backend/api/index.php/v1` |
+
+Baris terakhir bekerja secara teknis, tapi itulah yang membuat konfigurasi nginx dan URL gambar
+jadi panjang tanpa alasan.
+
+⚠️ **Jangan menebak nilainya.** Uji dulu dengan `curl` di Bagian B langkah 8, lalu salin URL
+yang terbukti berhasil itu apa adanya. Menyalin dari `.env.local` lokal dan hanya mengganti
+nama domain adalah cara tercepat mendapat 404 di semua endpoint.
+
+Gambar mengikut otomatis: `mediaUrl()` menurunkan URL gambar dari `JOOMLA_API`, jadi begitu
+satu nilai itu benar, seluruh path gambar ikut benar tanpa ada yang perlu diubah.
 
 ---
 
@@ -22,13 +71,18 @@ URL API, token, dan satu secret webhook.
 Menjawab pertanyaan "kirim apa saja". **Jangan kirim seluruh folder `backend/`** — isinya 9.862
 file dan hampir semuanya kode inti Joomla yang bisa diunduh ulang.
 
-| Kirim | Isi | Kenapa |
+Kolom terakhir menunjukkan ke mana isinya pergi, karena tujuannya dua tempat berbeda:
+
+| Kirim | Isi | Berakhir di |
 |---|---|---|
-| `frontend/` | tanpa `node_modules/` dan `.next/` | Seluruh frontend, buatan sendiri |
-| `backend/plugins/system/nextrevalidate/` | 3 file | Satu-satunya kode PHP buatan sendiri |
-| `backend/images/` | 13 file | Logo, hero, galeri, logo klien |
-| `joomla_db.sql` | ±5 MB | Semua konten, konfigurasi, dan pengaturan plugin |
-| `configuration.php` | 1 file | **Opsional** — lihat catatan di bawah |
+| `frontend/` | tanpa `node_modules/` dan `.next/` | **Host frontend** — jadi root aplikasi Node |
+| `backend/plugins/system/nextrevalidate/` | 3 file | **Host Joomla** → `<root>/plugins/system/nextrevalidate/` |
+| `backend/images/` | 13 file | **Host Joomla** → `<root>/images/` |
+| `joomla_db.sql` | ±5 MB | **Host Joomla** — database |
+| `configuration.php` | 1 file | **Host Joomla** — opsional, lihat catatan di bawah |
+
+Perhatikan pemetaan path pada dua baris tengah: awalan `backend/` **dibuang**. Yang di repo
+ada di `backend/plugins/...` akan berada di `plugins/...` relatif terhadap root Joomla di server.
 
 ✅ Terverifikasi: `backend/.gitignore` memang sudah dirancang begitu — ignore semuanya, lalu
 re-add hanya empat hal itu. Jadi **repo GitHub sudah berisi paket lengkap ini**; yang tidak ada
@@ -104,12 +158,23 @@ Unduh **Joomla 5.4.7 persis** dari joomla.org — bukan "versi terbaru". ✅ Ver
 dari `backend/libraries/src/Version.php`. Dump database membawa nomor versi skema; inti yang
 lebih baru akan menuntut migrasi, yang lebih lama akan gagal.
 
-Ekstrak ke web root, lalu timpa dengan dua folder dari repo:
+Ekstrak ke folder Joomla yang sudah ditentukan di bagian tata letak di atas — satu lapis,
+misalnya `public_html/backend/`, atau langsung document root sebuah subdomain. Lalu timpa
+dengan dua folder dari repo. **Awalan `backend/` milik repo dibuang**, karena folder Joomla di
+server sudah menjadi root-nya sendiri:
 
 ```
-plugins/system/nextrevalidate/     ← 3 file
-images/                            ← 13 file (customers/, gallery/, logo.png, logo-footer.png, hero.jpg)
+repo                                        →  server (relatif ke root Joomla)
+backend/plugins/system/nextrevalidate/      →  plugins/system/nextrevalidate/     (3 file)
+backend/images/                             →  images/                            (13 file)
 ```
+
+Jadi kalau Joomla ada di `public_html/backend/`, file plugin berakhir di
+`public_html/backend/plugins/system/nextrevalidate/` — bukan `.../backend/backend/...`.
+
+Isi `images/` yang harus ada: `customers/` (6), `gallery/` (4), `logo.png`, `logo-footer.png`,
+`hero.jpg`. Kalau salah satu hilang, gambarnya kosong di situs tanpa pesan error apa pun —
+artikel Joomla hanya menyimpan path, bukan filenya.
 
 ### 2. Jalankan installer Joomla
 
@@ -191,12 +256,23 @@ terbaca siapa pun di jalur jaringan.
 ```bash
 curl -s -H "X-Joomla-Token: TOKEN_BARU" \
      -H "Accept: application/vnd.api+json" \
-     "https://domain-joomla.com/api/index.php/v1/content/articles?filter[category]=10&page[limit]=1" \
+     "https://cms.domain-anda.com/api/index.php/v1/content/articles?filter[category]=10&page[limit]=1" \
      | head -c 300
 ```
 
-Harus keluar JSON berisi satu artikel. Kalau 404 → kembali ke langkah 4. Kalau 401 → token.
-Kalau "Could not match accept header" → header `Accept` hilang.
+Ganti URL-nya sesuai tata letak yang dipilih. Harus keluar JSON berisi satu artikel.
+Kalau 404 → periksa dua hal: aturan nginx di langkah 4, dan apakah path folder Joomla-nya sudah
+benar (kurang atau kelebihan satu segmen). Kalau 401 → token. Kalau "Could not match accept
+header" → header `Accept` hilang.
+
+Catat URL yang berhasil ini apa adanya — persis itulah nilai `JOOMLA_API` di Bagian C.
+
+Sekalian pastikan gambar bisa diakses publik tanpa login:
+
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" https://cms.domain-anda.com/images/logo.png
+# 200 → benar.  401/403 → frontend akan tampil tanpa satu pun gambar.
+```
 
 ---
 
@@ -213,15 +289,36 @@ Kalau "Could not match accept header" → header `Accept` hilang.
 **Artinya butuh runtime Node, bukan hosting file statis.** Tidak bisa ditaruh di shared hosting
 cPanel biasa berdampingan dengan Joomla.
 
+### Root aplikasi
+
+Di server frontend, **isi folder `frontend/` menjadi root aplikasi** — `package.json` berada
+tepat di root, tidak ada lagi folder bernama `frontend`. Ada dua cara mencapainya:
+
+| Cara | Yang dilakukan |
+|---|---|
+| Upload isinya saja | Salin **isi** `frontend/`, bukan foldernya, ke root aplikasi |
+| Deploy dari repo | Set **Root Directory = `frontend`** di panel hosting |
+
+⚠️ Di Vercel, pengaturan itu ada di **Settings → General → Root Directory**. Kalau dilewatkan,
+build gagal dengan "No package.json found" karena Vercel mencari di root repo, tempat yang hanya
+berisi `backend/`, `docs/`, dan `frontend/`.
+
+Semua perintah di bawah dijalankan dari root aplikasi itu — bukan dari root repo.
+
 ### Variabel lingkungan
 
-Buat `frontend/.env.local` di server (tidak pernah ada di Git):
+Buat `.env.local` di root aplikasi (tidak pernah ada di Git). Pada hosting yang punya panel env
+seperti Vercel, isikan lewat panelnya, jangan buat file.
 
 ```
-JOOMLA_API=https://domain-joomla.com/api/index.php/v1
+JOOMLA_API=https://cms.domain-anda.com/api/index.php/v1
 JOOMLA_TOKEN=<token dari Bagian B langkah 6>
 REVALIDATE_SECRET=<string acak baru, dipakai lagi di Bagian D>
 ```
+
+⚠️ `JOOMLA_API` = URL yang **terbukti berhasil** di Bagian B langkah 8, disalin apa adanya.
+Boleh mengandung `/backend` atau tidak, tergantung tata letak yang dipilih. Jangan mengarangnya
+dari nilai lokal.
 
 Bangkitkan secret yang layak:
 
@@ -232,7 +329,7 @@ openssl rand -hex 32
 ### Build
 
 ```bash
-cd frontend
+# dijalankan dari root aplikasi (tempat package.json berada)
 npm ci
 npm run build
 npm start          # default port 3000
@@ -246,9 +343,13 @@ halaman kosong. Urutannya tidak bisa dibalik: backend dulu, baru frontend.
 
 | Pilihan | Cocok kalau | Catatan |
 |---|---|---|
-| **Vercel** | jalur termudah | Push repo, isi 3 env var. `revalidatePath` jalan normal |
-| VPS + PM2 | ingin satu server untuk keduanya | `pm2 start npm --name web -- start`, nginx reverse proxy ke :3000 |
+| **Vercel** | jalur termudah | Push repo, **set Root Directory = `frontend`**, isi 3 env var |
+| VPS + PM2 | punya akses root ke sebuah server | `pm2 start npm --name web -- start`, nginx reverse proxy ke :3000 |
 | Node hosting lain | — | Pastikan mendukung Next 16 dan proses jangka panjang |
+
+Joomla dan Next boleh berada di penyedia yang sama atau berbeda; keduanya tidak saling
+memerlukan selain lewat HTTPS. Yang tidak bisa: menaruh Next di shared hosting yang hanya
+melayani file statis dan PHP.
 
 ⚠️ Kalau memakai kontainer atau ingin artefak ramping, tambahkan `output: 'standalone'` di
 `next.config.ts` (sekarang file itu masih kosong) agar `.next/standalone` bisa dijalankan tanpa
@@ -340,6 +441,20 @@ diakses publik**, dan kalau Joomla di balik autentikasi, semua gambar hilang.
 **Token tidak boleh sampai ke browser.** Pengambilan data hanya di server component. Jangan
 pernah menambahkan prefix `NEXT_PUBLIC_` pada `JOOMLA_TOKEN`.
 
+**Karena kedua sisi terpisah, jaringan jadi bagian dari sistem.** Tiga hal yang di lokal
+gratis dan di produksi tidak:
+
+| Arah | Kapan dipakai | Kalau diblokir |
+|---|---|---|
+| Next → Joomla | setiap build dan setiap render | Situs gagal build atau halaman kosong |
+| Joomla → Next | setiap editor menyimpan artikel | Perubahan baru muncul setelah 60 detik |
+| Pengunjung → Joomla | memuat setiap gambar | Semua gambar rusak |
+
+Baris ketiga sering terlewat: gambar **tidak** diproksikan oleh Next, browser pengunjung
+mengambilnya langsung dari domain Joomla. Jadi domain Joomla harus publik, ber-HTTPS, dan tidak
+di balik Basic Auth atau firewall kantor. Menaruh Joomla di jaringan internal "karena itu cuma
+CMS" akan mematikan seluruh gambar di situs publik.
+
 ---
 
 ## Rollback
@@ -351,8 +466,15 @@ mysqldump -uroot -p --default-character-set=utf8mb4 --add-drop-table nama_db > b
 tar czf images-$(date +%F).tar.gz images/
 ```
 
+Dijalankan **di host Joomla**, dari root situsnya.
+
 Memulihkan = impor dump + kembalikan `images/`. Kode inti Joomla tidak perlu di-backup; unduh
-ulang 5.4.7. Frontend cukup `git checkout` commit sebelumnya lalu build ulang.
+ulang 5.4.7.
+
+Frontend di-rollback terpisah dan tidak menyentuh database sama sekali: `git checkout` commit
+sebelumnya lalu build ulang, atau pakai fitur rollback bawaan hosting kalau ada. Karena kedua
+sisi berdiri sendiri, **frontend boleh di-rollback tanpa menyentuh Joomla**, dan sebaliknya —
+asal `JOOMLA_API`, token, dan secret webhook tetap cocok.
 
 ---
 

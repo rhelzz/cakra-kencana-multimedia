@@ -44,6 +44,10 @@ c:\laragon\www\company-profile\
 Sisanya di `backend/` adalah file core Joomla (~109 MB) yang **tidak dilacak git** dan tidak
 pernah kita sentuh.
 
+Peta di atas adalah tata letak **lokal**. Di hosting, `backend/` dan `frontend/` jadi dua
+deployment terpisah dan tidak ditumpuk di dalam satu folder proyek — lihat
+[11 — Deploy & Serah Terima](11-deploy.md).
+
 ## Status verifikasi
 
 Angka-angka di dokumen ini (ID kategori, ID field, ID artikel) diverifikasi langsung terhadap

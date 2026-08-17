@@ -20,6 +20,10 @@
 **Template Joomla tidak pernah dirender.** Pengunjung tidak pernah menyentuh `backend/`,
 kecuali untuk mengambil file gambar dari `backend/images/`.
 
+> **Nama `backend/` dan `frontend/` hanya berlaku di komputer lokal.** Di hosting keduanya
+> adalah dua deployment terpisah dengan root masing-masing, dan sebaiknya tidak berada di dalam
+> satu folder induk bersama. Lihat [11 — Deploy](11-deploy.md#tata-letak-di-hosting--baca-ini-sebelum-meng-upload-apa-pun).
+
 ## Kenapa headless, bukan Next.js "di atas" Joomla
 
 Tidak ada cara memasang Next.js di dalam Joomla — Joomla merender template PHP-nya sendiri.

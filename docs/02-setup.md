@@ -17,6 +17,10 @@ hanya vhost itu yang punya perbaikan nginx di bawah.
 
 ## Variabel environment
 
+> Halaman ini khusus **lingkungan lokal**. Untuk server sungguhan, nilai-nilainya berbeda
+> (terutama `JOOMLA_API`, yang mengikuti letak folder Joomla di hosting) — lihat
+> [11 — Deploy & Serah Terima](11-deploy.md).
+
 `frontend/.env.local` (tidak masuk git — contohnya ada di `frontend/.env.example`):
 
 ```env
