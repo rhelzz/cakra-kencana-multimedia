@@ -16,8 +16,8 @@ export default async function Footer({ locale }: { locale: Locale }) {
   const [items, offices, hero, copyright, siteName] = await Promise.all([
     getMenu(locale),
     getCategory(CATEGORY.offices, locale),
-    getArticle('home-hero', locale),
-    getArticle('footer-copyright', locale),
+    getArticle('home-hero', locale, CATEGORY.uncategorised),
+    getArticle('footer-copyright', locale, CATEGORY.uncategorised),
     getSiteName(),
   ]);
 
@@ -39,12 +39,12 @@ export default async function Footer({ locale }: { locale: Locale }) {
       <div className="mx-auto max-w-6xl">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
+            {/* The stacked lockup, not the navbar mark: it carries the full legal name and the
+                "advertising and general contractor" line, which is worth the extra height here
+                and would never fit in a nav bar. Needs more height than the plain mark because
+                that tagline is a thin strip at the bottom of the artwork. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={mediaUrl('images/logo.png')}
-              alt={siteName}
-              className="h-12 w-auto rounded-md bg-white p-1"
-            />
+            <img src={mediaUrl('images/logo-footer.png')} alt={siteName} className="h-24 w-auto" />
             {tagline && (
               <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
                 {tagline}
@@ -60,7 +60,7 @@ export default async function Footer({ locale }: { locale: Locale }) {
                 <li key={i.id}>
                   <a
                     href={resolve(i.href)}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    className="inline-block text-sm text-muted-foreground transition duration-500 ease-settle hover:translate-x-1 hover:text-primary motion-reduce:transition-none motion-reduce:hover:translate-x-0"
                   >
                     {i.title}
                   </a>

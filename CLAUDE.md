@@ -17,6 +17,11 @@ it belongs in Joomla instead.
 the owner and the content team). This file is the condensed version for agents; `docs/` has
 the per-section CRUD guide, the full Joomla customisation inventory, and the API reference.
 
+**Content drafts live in `content-drafts/`** (`indonesian.md`, `english.md`, `mandarin.md`) —
+staging files for the owner/content team to write real copy before it's imported into Joomla
+by alias. Not rendered anywhere, not the source of truth once imported — Joomla admin is.
+See §3 for the format.
+
 ---
 
 ## 1. Running it
@@ -54,11 +59,13 @@ frontend/src/
 │   ├── [locale]/
 │   │   ├── layout.tsx            Root layout: <html lang>, fonts, ThemeProvider, Navbar, Footer
 │   │   ├── page.tsx              Home = Hero + About + Services + Customers + Offices
-│   │   └── services/[id]/page.tsx  Service detail
+│   │   ├── services/page.tsx     Service listing (all services, no limit)
+│   │   └── services/[id]/page.tsx  Service detail: hero image + body + sub-service grid
 │   └── api/revalidate/route.ts   Webhook target for the Joomla plugin
 ├── components/
 │   ├── Navbar.tsx → SiteHeader.tsx   server fetch → client shell (scroll state, sheet)
 │   ├── Hero / About / Services / Customers / Offices / Footer   section components
+│   ├── ServiceCard.tsx           shared card, used by Services.tsx and services/page.tsx
 │   ├── Gallery.tsx               carousel (client, autoplay)
 │   ├── SocialLinks.tsx, LanguageSwitcher.tsx, ThemeToggle.tsx
 │   └── ui/                       shadcn-generated — DO NOT hand-edit, excluded from lint
@@ -84,11 +91,12 @@ Categories (ids are hardcoded in `CATEGORY` in `lib/joomla.ts` — do not renumb
 | 2 | Uncategorised | `home-hero`, `footer-copyright` | Hero, Footer |
 | 8 | Gallery | carousel slides (image only) | Gallery |
 | 9 | About | the 3 text blocks | About |
-| 10 | Services | 9 services | Services, service detail |
+| 10 | Services | 10 services (rewritten from the client's poster, no longer the original 9) | Services, `/services`, service detail |
 | 11 | Our customers | 6 client logos | Customers |
 | 12 | Our offices | 4 locations | Offices, Footer |
 | 13 | Social | 5 social accounts | SocialLinks |
 | 14 | Headings | translated section headings | `getHeading()` |
+| 15 | Service sub-items | 145 sub-services (e.g. "Neon Box" under "Indoor / Outdoor Reklame") | sub-service grid on the service detail page |
 
 ### Custom fields (Content → Fields)
 
@@ -97,9 +105,23 @@ Categories (ids are hardcoded in `CATEGORY` in `lib/joomla.ts` — do not renumb
 | `icon` | list | Services, Offices, Social | 23 curated options; value must match a key in `lib/icons.ts` or `BRAND_PATHS` in `lib/social.ts` |
 | `map` | url | Offices | Google Maps link. **Empty = the Open Map button disappears** |
 | `link` | url | Social | Profile URL. **Empty = that icon disappears** |
+| `parent-service` | list | Service sub-items (15) | Which of the 10 services this sub-item belongs to; value is the service's base alias (e.g. `service-digital-printing`). **Named `parent-service` with a hyphen, not `parent_service`** — Joomla slugified it on creation regardless of what was requested. Read via `attributes['parent-service']`, see `getSubServices()` in `joomla.ts`. |
 
 Adding an icon option takes two edits: import it in `lib/icons.ts` **and** add the same
 value in the Joomla field. That two-step is the deliberate price of a curated list — see §6.
+
+### Services → Sub-services
+
+```
+Service (category 10)                       "Digital Printing"
+  └── Sub-service (category 15)              "Roll Up Banner", "X Banner", … (26 of them)
+```
+
+Two levels only, by design — a sub-service does not get its own detail page, it's a card
+(title + description, **no image**) in a masonry grid on its parent service's page. Matched by
+`getSubServices(baseAlias(service.attributes.alias), locale)` filtering category 15 on the
+`parent-service` field. Full rationale and the poster-derived content list are in
+[`docs/10-rencana-restrukturisasi-layanan.md`](docs/10-rencana-restrukturisasi-layanan.md).
 
 ### Per-article conventions
 
@@ -194,8 +216,63 @@ Measured end to end: ~3.3s from save to updated page.
 - **Images use plain `<img>`, not `next/image`.** Sources are runtime Joomla URLs; `next/image`
   would need `remotePatterns` for the Joomla host. Add it if optimisation becomes worth it.
 - **Hero background is a CSS `background-image`**, so no image config is needed at all.
-- **The white plate behind the logo** keeps a dark full-colour logo legible over the hero photo
-  and in dark mode. Drop it if a transparent white/mono logo is supplied.
+- **The navbar mark cross-fades: type over the hero, logo once solid.** The dark full-colour
+  logo never read over the hero photo, so while the bar is transparent the mark is the site
+  name as white type (`getSiteName()`, from Joomla Global Configuration — not a string in the
+  component). Both are always rendered, stacked in one grid cell and toggled by opacity, so
+  the link width never jumps. The `<img>` is `alt=""` (decorative); the always-present text
+  names the link. No plate behind the logo — the PNG is transparent, so navbar/footer render
+  it bare at its own aspect ratio. Footer is `h-16 w-auto`. Downscaling the 731×341 source
+  was tried and reverted — it made nothing better. The logo looked rough because it was
+  *rendered* at 40px: its "KENCANA MULTIMEDIA" wordmark is ~8% of the image height, so below
+  ~48px it falls under the legibility floor no matter how the pixels are resampled.
+  **The navbar shrinks on scroll** (FAASRI pattern): `h-24 md:h-32` while it floats transparent
+  over the hero, then `h-16` + solid once past ~60% of the viewport. Because the logo is
+  `h-full`, it shrinks with the bar for free — one size class, nothing to keep in sync. The
+  trigger is `innerHeight * 0.6`, not a pixel count, since the hero is sized in `svh`.
+  Known risk: the navy wordmark is dark-on-dark over the hero photo and in dark mode. Ask the
+  client for a white/mono variant if it reads badly.
+- **Two easing curves, site-wide, and no others.** `--ease-settle` (`cubic-bezier(0.22, 1, 0.36, 1)`)
+  for anything that moves — indents, lifts, slides, growing rules. `--ease-exit` for colour and
+  opacity. Tailwind's default curve applied uniformly at one duration is what makes an interface
+  read as mechanical; the first pass at `/services` did exactly that and the hover felt stiff.
+  Transforms run ~500ms on `ease-settle`, colour ~200-300ms on `ease-exit`. Do not introduce a
+  third curve without a reason.
+- **Measure changes with the job on the service detail page.** `max-w-6xl` for the header band,
+  the sub-service masonry and the sibling list; `max-w-5xl` for the hero image; `max-w-3xl` for
+  prose only, because a paragraph is uncomfortable past ~65 characters however wide the page is.
+  The page previously ran at `max-w-3xl` top to bottom, and that single unchanging width was
+  what made it read as flat. The hero image is pulled up over the header edge with a negative
+  margin — that is why the header carries the extra bottom padding; change one and change both.
+- **`.pattern-diagonal` is a content choice, not decoration.** Diagonal hairlines are the visual
+  language of signage and print — cutting marks, safety banding, registration guides — so the
+  `/services` header says what the company does without another photograph. It only works
+  faded: the `mask-image` is half the utility, and at more than ~8% opacity it stops reading as
+  paper stock and starts shouting.
+- **Hover states stay restrained.** A full-width colour wash across a `/services` row was tried
+  and rejected — at that scale it reads as loud, not premium. The pattern is: a hairline of red
+  drawing along the row's own edge, a near-invisible ground, and a few pixels of indent.
+- **Scroll reveals are CSS-only** (`.reveal` / `.reveal-stagger` in `globals.css`), driven by
+  `animation-timeline: view()` — no IntersectionObserver, no state, and crucially no
+  `'use client'` leaking into the server components that render the sections. The un-animated
+  state is the **default** and the animation is layered on inside
+  `@supports (animation-timeline: view())`, so a browser without scroll timelines (Firefox as
+  of now) shows the content normally instead of stranding it at `opacity: 0`. Stagger is a
+  per-item `animation-range`, not a scheduled delay: `--reveal-i` on `nth-child` stretches each
+  item's range a little further than the last. Do not "fix" this by adding a JS reveal library.
+  **`animation-fill-mode` is `backwards`, never `both`** — a running animation outranks normal
+  declarations, so a forwards fill keeps owning `transform` after the reveal ends and silently
+  kills every `hover:-translate-y-*` on the same element. This already broke the service-card
+  hover lift once.
+- **`scroll-mt-20` on every anchor target, and `pt-20` on every non-home `<main>`, must match
+  the solid navbar height** (`h-20`). If the navbar height changes, these change with it or
+  in-page links land under the header and page headings sit behind the bar.
+- **`/services` is a one-per-row zig-zag list, not the home page's card grid.** Ten entries that
+  all matter equally get skimmed in a grid; alternating the side each row enters from and sits
+  on forces the eye to reset per item. It uses `.reveal-alternate`, whose scroll-linked
+  `view()` timeline replays in reverse when you scroll back up — that is free, and is why there
+  is no "already animated" flag anywhere. The container needs `overflow-x-clip` or the ±3.5rem
+  horizontal travel adds a page-wide horizontal scrollbar on narrow screens.
 - **`src/components/ui/**` is excluded from ESLint** — generated by the shadcn CLI, and its
   carousel violates `react-hooks/set-state-in-effect`.
 - **shadcn uses Base UI, not Radix.** Composition is `render={<Button/>}`, **not** `asChild`.
@@ -230,6 +307,10 @@ Measured end to end: ~3.3s from save to updated page.
 | POST/PATCH require `Accept: application/vnd.api+json` | Otherwise "Could not match accept header" |
 | Media URLs come back with a `#joomlaImage://…` fragment | `cleanImage()` strips it |
 | TinyMCE emits HTML entities | `stripTags()` decodes them; React would otherwise print `&amp;` literally |
+| `POST /content/categories` and `POST /fields/{context}` reply HTTP 500 **even when they succeed** | Never trust the status code for these two endpoints — verify with `GET` or the DB |
+| `assigned_cat_ids` in a field's POST body is silently ignored | The field saves but isn't attached to any category. Insert the row into `#__fields_categories` (`field_id`, `category_id`) directly |
+| Articles created via `POST /content/articles` get **no row in `#__workflow_associations`**, so they never appear in any `GET /content/articles` response (not a `filter[state]` issue — they're excluded from the join entirely) | After seeding, run: `INSERT INTO n213k_workflow_associations (item_id, stage_id, extension) SELECT c.id, 1, 'com_content.article' FROM n213k_content c LEFT JOIN n213k_workflow_associations wa ON wa.item_id=c.id AND wa.extension='com_content.article' WHERE wa.item_id IS NULL AND c.catid IN (<your categories>);` |
+| `com_fields` in the POST/PATCH body **has stopped writing custom field values** in this environment (confirmed against the exact example that used to work) | Verify `#__fields_values` after every create; if empty, `INSERT INTO n213k_fields_values (field_id, item_id, value) VALUES (…)` directly |
 
 ---
 
@@ -239,15 +320,21 @@ Home page sections, all dynamic, all three languages:
 
 1. **Hero** — title, subtitle, background image from article `home-hero`
 2. **About** — 3 blocks from category 9 + a 4-slide autoplay carousel from category 8
-3. **Services** — 9 cards with icons; each links to a detail page
+3. **Services** — up to 6 cards with icons on the home page; a **"Lebih banyak" button** appears
+   and links to `/services` (full listing, no limit) once there are more than 6. Each card links
+   to a detail page.
 4. **Our customers** — 6 logos on a permanently dark band
 5. **Our offices** — 4 locations, icon per type, Open Map only when a link exists
 6. **Footer** — logo, tagline, social icons, menu, head office, `{year}` copyright
 
-Plus: **service detail page** (`/services/[id]`, icon + title + body + 8 sibling services +
-per-service metadata + 404 on a bad id), sticky navbar that floats over the hero and turns
-solid on scroll, mobile sheet menu, light/dark toggle, language switcher, smooth in-page
-scrolling that respects `prefers-reduced-motion`, and per-locale `hreflang`.
+Plus: **`/services`** (listing page, all 10 services), **service detail page** (`/services/[id]`,
+icon + title + hero image + body + a masonry grid of that service's sub-services, text-only
+cards, no per-sub-service image + 9 sibling services + per-service metadata + 404 on a bad id),
+sticky navbar that floats transparent over the home page hero and turns solid on scroll —
+**solid immediately on every other page**, since only the home page has a dark hero to float
+over (`SiteHeader.tsx`: `scrolled = scrolledPast || !atHome`) — mobile sheet menu, light/dark
+toggle, language switcher, smooth in-page scrolling that respects `prefers-reduced-motion`, and
+per-locale `hreflang`.
 
 ## 10. Known gaps
 
@@ -258,9 +345,13 @@ scrolling that respects `prefers-reduced-motion`, and per-locale `hreflang`.
   speaker. Printing terms especially (胶印, 丝网印刷, 车间).
 - **Service detail pages are thin** — Joomla only has `introtext` filled. They become useful
   when editors write the part after "Read more".
+- **145 sub-service descriptions are placeholder text** (`"<Name> — bagian dari layanan <Service>."`),
+  auto-generated when the Services/Sub-services section was rewritten. Real copy is being staged
+  in `content-drafts/indonesian.md` before re-import — see that file's own instructions.
+- **English and Mandarin translations for all 10 services and 145 sub-services don't exist yet**
+  in Joomla (only Indonesian does). They fall back to Indonesian per item on `/en` and `/zh` —
+  intentional per §4, not a bug. Staged in `content-drafts/english.md` and `mandarin.md`.
 - **YouTube and TikTok have no `link` value** — no official account found, so their icons are
   hidden by design. Instagram, Facebook and WhatsApp use the company's real accounts.
 - **Customer logos are other companies' trademarks**, used here as dummy content.
-- **No tests, no CI, not a git repository.**
-- `getArticle()` pulls up to 200 articles and filters in JS. Fine at this size; revisit if the
-  article count grows by an order of magnitude.
+- **No tests, no CI.** Is a git repository now (was not when this file was first written).

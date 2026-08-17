@@ -41,6 +41,17 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  /* Tailwind's default curve is applied to everything at the same duration, which is what
+     makes an interface read as mechanical: every element responds with identical inertia.
+     These two are the whole motion vocabulary of the site — nothing else should invent one.
+       · settle  — fast departure, long gentle landing. Transforms: indents, slides, lifts.
+       · exit    — symmetric and quick. Colour and opacity, where travel isn't the point. */
+  --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 0.2, 1);
+  /* Tinted, not black-at-low-opacity: the shadow carries the brand red, so a lifted
+     card reads as lit by the same accent the rest of the page uses. */
+  --shadow-brand: 0 1px 2px oklch(0.552 0.216 26.5 / 0.06),
+    0 18px 40px -24px oklch(0.552 0.216 26.5 / 0.4);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -136,5 +147,114 @@
     html {
       scroll-behavior: smooth;
     }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Scroll reveal — CSS only.
+
+   `animation-timeline: view()` drives the animation from the element's own
+   position in the viewport, so there is no IntersectionObserver, no state, and
+   no `'use client'` boundary leaking into the server components that render
+   these sections. Everything below is layered as progressive enhancement:
+   the un-animated element is the *default* state, so a browser without
+   scroll-timeline support (Firefox, today) simply shows the content — it never
+   gets stuck at `opacity: 0`, which is the classic way this pattern breaks.
+   --------------------------------------------------------------------------- */
+/* Diagonal hairline rules in brand red. This is not a random texture: diagonal striping is
+   the visual language of signage and print — cutting marks, safety banding, registration
+   guides — so it says what the company does without another photograph. Kept at 1px on a
+   14px pitch and faded out by a mask, it reads as paper stock rather than as a pattern.
+   `mask-image` is the fading half; without it the stripes run into the content and shout. */
+.pattern-diagonal {
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--color-primary) 0 1px,
+    transparent 1px 14px
+  );
+  -webkit-mask-image: linear-gradient(115deg, black, transparent 62%);
+  mask-image: linear-gradient(115deg, black, transparent 62%);
+}
+
+/* The travelling tick inside the hero's scroll cue. */
+@keyframes scroll-cue {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(250%);
+  }
+}
+
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    /* transform/opacity only: composited, never triggers layout. */
+    transform: translateY(1.75rem);
+  }
+}
+
+@keyframes reveal-from-left {
+  from {
+    opacity: 0;
+    transform: translateX(-3.5rem);
+  }
+}
+
+@keyframes reveal-from-right {
+  from {
+    opacity: 0;
+    transform: translateX(3.5rem);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    /* `backwards`, NOT `both`. A running animation outranks normal declarations in the
+       cascade, so a `forwards` fill would keep owning `transform` after the reveal finished
+       and silently kill every `hover:-translate-y-*` on the same element — the card lift
+       would simply never fire. `backwards` holds the from-state before the element enters
+       the range (so it still fades in) and then lets go entirely, handing `transform` back
+       to hover. The last keyframe equals the element's natural state, so releasing the fill
+       causes no visual jump. */
+    .reveal,
+    .reveal-stagger > * {
+      animation: reveal-rise linear backwards;
+      animation-timeline: view();
+      animation-range: entry 5% cover 22%;
+    }
+
+    /* Items in one grid row cross the same scroll offset together, so a plain
+       view() timeline would pop them in at once. Stretching each item's range a
+       little further than the last turns that pop into a cascade — the stagger
+       is a property of the item, not a JS-scheduled delay. */
+    .reveal-stagger > * {
+      --reveal-i: 0;
+      animation-range: entry 5% cover calc(20% + var(--reveal-i) * 5%);
+    }
+    /* Alternating entry for the one-per-row service list. Because a view() timeline is
+       *scrubbed* by scroll position rather than fired once by a trigger, scrolling back up
+       replays it in reverse for free — no "has it already animated?" flag to get wrong.
+       The range is longer than `.reveal`'s so the horizontal travel stays legible. */
+    /* `ease-out`, not linear: on a scrubbed timeline an ease-out curve means the row has
+       essentially arrived by the time it is comfortably on screen, and spends the rest of
+       the range settling. Linear leaves it still visibly sliding while you are trying to
+       read it — which is what makes scroll animations feel like they are fighting you. */
+    .reveal-alternate > *:nth-child(odd) {
+      animation: reveal-from-left ease-out backwards;
+      animation-timeline: view();
+      animation-range: entry 10% cover 38%;
+    }
+    .reveal-alternate > *:nth-child(even) {
+      animation: reveal-from-right ease-out backwards;
+      animation-timeline: view();
+      animation-range: entry 10% cover 38%;
+    }
+
+    .reveal-stagger > *:nth-child(2) { --reveal-i: 1; }
+    .reveal-stagger > *:nth-child(3) { --reveal-i: 2; }
+    .reveal-stagger > *:nth-child(4) { --reveal-i: 3; }
+    .reveal-stagger > *:nth-child(5) { --reveal-i: 4; }
+    .reveal-stagger > *:nth-child(n + 6) { --reveal-i: 5; }
   }
 }

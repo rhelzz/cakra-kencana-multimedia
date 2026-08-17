@@ -27,7 +27,7 @@ export default async function SocialLinks({ locale }: { locale: Locale }) {
               rel="noopener noreferrer"
               aria-label={link.label}
               title={link.label}
-              className="grid size-9 place-items-center rounded-md border border-border text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+              className="grid size-9 place-items-center rounded-md border border-border text-muted-foreground transition duration-500 ease-settle hover:-translate-y-0.5 hover:border-primary hover:text-primary active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
             >
               {path ? (
                 // simple-icons ships one path on a 24×24 grid; currentColor keeps it themeable.

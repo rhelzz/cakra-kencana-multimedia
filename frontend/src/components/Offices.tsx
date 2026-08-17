@@ -11,23 +11,29 @@ export default async function Offices({ locale }: { locale: Locale }) {
   if (offices.length === 0) return null;
 
   return (
-    <section id="offices" className="scroll-mt-16 border-t border-border bg-background px-4 py-20 sm:px-6 lg:py-28">
+    <section id="offices" className="scroll-mt-20 border-t border-border bg-background px-4 py-20 sm:px-6 lg:py-28">
       <div className="mx-auto max-w-6xl">
-        <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+        <h2 className="reveal max-w-2xl text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
           {heading}
         </h2>
+        <span aria-hidden className="reveal mt-5 block h-1 w-14 rounded-full bg-primary" />
 
-        <ul className="mt-12 grid gap-x-12 gap-y-10 sm:grid-cols-2">
+        <ul className="reveal-stagger mt-12 grid gap-6 sm:grid-cols-2">
           {offices.map((office) => {
             const Icon = iconFrom(office.attributes.icon);
             const map = office.attributes.map?.trim();
             return (
-              <li key={office.id}>
+              // A left rule in brand red instead of a full border: it marks the block as one
+              // address without boxing every office in its own card.
+              <li
+                key={office.id}
+                className="group border-l-2 border-border pl-5 transition-colors duration-300 ease-exit hover:border-primary motion-reduce:transition-none"
+              >
                 <h3 className="flex items-center gap-2.5 text-lg font-medium tracking-tight">
-                  <Icon className="size-5 shrink-0 text-muted-foreground" />
+                  <Icon className="size-5 shrink-0 text-primary" />
                   {office.attributes.title}
                 </h3>
-                <address className="mt-3 max-w-md text-sm not-italic leading-relaxed text-muted-foreground">
+                <address className="mt-3 max-w-md text-sm not-italic leading-relaxed text-pretty text-muted-foreground">
                   {stripTags(bodyOf(office))}
                 </address>
                 {/* No map link on the Joomla record — e.g. a list of cities — so no dead button. */}
@@ -36,7 +42,7 @@ export default async function Offices({ locale }: { locale: Locale }) {
                     href={map}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+                    className="mt-4 inline-flex items-center gap-1.5 rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground transition duration-300 ease-settle hover:bg-primary hover:text-primary-foreground active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100"
                   >
                     <MapPin className="size-3.5" />
                     {t(locale).openMap}

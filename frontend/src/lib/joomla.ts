@@ -38,6 +38,8 @@ export type Article = {
     icon?: Record<string, string> | string;
     map?: string;
     link?: string;
+    // Name has a hyphen because Joomla slugified "parent_service" itself when the field was made.
+    'parent-service'?: Record<string, string> | string;
   };
 };
 
@@ -107,14 +109,15 @@ function pickTranslations(articles: Article[], locale: Locale) {
 }
 
 /**
- * One article by its base alias. Joomla's list endpoint has no alias filter, so we filter
- * here — and must raise the page limit, because the default 20 silently hides articles
- * once the site grows past a single page.
+ * One article by its base alias, scoped to the category it lives in.
+ * ponytail: this used to scan all 200 articles site-wide and filter by alias in JS — cheap
+ * at ~60 articles, but it silently lost home-hero once the sub-service seed pushed the site
+ * past 200 total articles (Joomla's list order isn't by id, so old articles fall off the page).
+ * Scoping to the caller's known category makes the result exact regardless of site size.
  */
-export async function getArticle(alias: string, locale: Locale) {
-  const all = await joomla<Article[]>('/content/articles?filter[state]=1&page[limit]=200');
-  const matches = all.filter((a) => baseAlias(a.attributes.alias) === alias);
-  return pickTranslations(matches, locale)[0] ?? null;
+export async function getArticle(alias: string, locale: Locale, catid: number) {
+  const items = await getCategory(catid, locale);
+  return items.find((a) => baseAlias(a.attributes.alias) === alias) ?? null;
 }
 
 /** Articles of one category, in the order an editor dragged them into. */
@@ -133,7 +136,7 @@ export async function getCategory(catid: number, locale: Locale) {
 
 /** A translated section heading, stored as a tiny article in the Headings category. */
 export async function getHeading(key: string, locale: Locale) {
-  const article = await getArticle(`heading-${key}`, locale);
+  const article = await getArticle(`heading-${key}`, locale, CATEGORY.headings);
   return article?.attributes.title ?? '';
 }
 
@@ -148,13 +151,22 @@ export async function getSiteName() {
 
 /** Category ids, so components don't carry magic numbers. */
 export const CATEGORY = {
+  uncategorised: 2,
   about: 9,
   gallery: 8,
   services: 10,
   customers: 11,
   offices: 12,
   social: 13,
+  headings: 14,
+  serviceSubItems: 15,
 } as const;
+
+/** Sub-services of one service, matched via the `parent-service` field to the service's base alias. */
+export async function getSubServices(parentAlias: string, locale: Locale) {
+  const all = await getCategory(CATEGORY.serviceSubItems, locale);
+  return all.filter((a) => fieldValue(a.attributes['parent-service']) === parentAlias);
+}
 
 /** The named entities TinyMCE actually emits. Anything else falls through untouched. */
 const ENTITIES: Record<string, string> = {

@@ -46,10 +46,12 @@ function NavLink({
 export function SiteHeader({
   items,
   logo,
+  siteName,
   locale,
 }: {
   items: Item[];
   logo: string;
+  siteName: string;
   locale: Locale;
 }) {
   const ui = t(locale);
@@ -58,12 +60,17 @@ export function SiteHeader({
   // "#about" only resolves on the home page; from a detail page it has to go home first.
   const atHome = pathname === (base || '/');
   const resolve = (href: string) => (href.startsWith('#') && !atHome ? `${base}/${href}` : href);
-  // The header floats over the hero image until you scroll, then it earns a solid background.
-  const [scrolled, setScrolled] = useState(false);
+  // The header starts tall and transparent over the hero, then shrinks and earns a solid
+  // background once you've scrolled past that first section. Only the home page has a dark
+  // hero to float over — everywhere else it's solid and compact from the start, or its white
+  // text vanishes. The trigger is the viewport height, not a fixed pixel count, because the
+  // hero is sized in svh.
+  const [scrolledPast, setScrolledPast] = useState(false);
+  const scrolled = scrolledPast || !atHome;
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => setScrolledPast(window.scrollY > window.innerHeight * 0.6);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -72,23 +79,49 @@ export function SiteHeader({
   return (
     <header
       className={cn(
-        'fixed inset-x-0 top-0 z-50 transition-colors duration-300',
+        'fixed inset-x-0 top-0 z-50 transition-colors duration-300 motion-reduce:transition-none',
         scrolled
           ? 'border-b border-border bg-background/80 text-foreground backdrop-blur-md'
           : 'border-b border-transparent text-white',
       )}
     >
-      <nav className="mx-auto flex h-16 max-w-6xl items-center gap-6 px-4 sm:px-6">
-        {/* The logo already carries the company name, so no wordmark beside it.
-            The white plate keeps a dark, full-colour logo legible over the hero photo
-            and in dark mode; drop it if a transparent white/mono logo is supplied. */}
-        <NavLink href={resolve('#top')} className="flex items-center">
+      <nav
+        className={cn(
+          'mx-auto flex max-w-6xl items-center gap-6 px-4 transition-[height] duration-300 motion-reduce:transition-none sm:px-6',
+          scrolled ? 'h-20' : 'h-24 md:h-32',
+        )}
+      >
+        {/* Over the hero the mark is the company name set as type — white, so it reads on the
+            photo, which the dark full-colour logo does not. Once the bar goes solid there is a
+            light background to sit on and it becomes the logo itself. */}
+        {/* Both marks are always rendered, stacked in one grid cell and cross-faded, so the
+            link keeps a stable width and nothing reflows mid-transition. The <img> is
+            decorative (alt="") — the always-present text is what names the link. */}
+        <NavLink
+          href={resolve('#top')}
+          className="grid h-full items-center *:col-start-1 *:row-start-1"
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={logo}
-            alt="Cakra Kencana Multimedia"
-            className="h-10 w-auto rounded-md bg-white p-1"
+            alt=""
+            className={cn(
+              // A concrete height, not h-full: inside the grid, a percentage height would
+              // resolve against an auto-sized row whose height is this image — circular, so
+              // the browser falls back to the PNG's natural 341px and it bursts out of the bar.
+              // The logo only ever shows while the bar is `h-20` (80px).
+              'h-13 w-auto justify-self-start transition-opacity duration-300 motion-reduce:transition-none',
+              scrolled ? 'opacity-100' : 'opacity-0',
+            )}
           />
+          <span
+            className={cn(
+              'whitespace-nowrap text-sm font-semibold uppercase leading-tight tracking-wide transition-opacity duration-300 motion-reduce:transition-none',
+              scrolled ? 'opacity-0' : 'opacity-100',
+            )}
+          >
+            {siteName}
+          </span>
         </NavLink>
 
         <ul className="ml-auto hidden items-center gap-1 md:flex">
@@ -97,7 +130,7 @@ export function SiteHeader({
               <NavLink
                 href={resolve(i.href)}
                 className={cn(
-                  'rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                  'whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium transition-colors',
                   scrolled ? 'hover:bg-accent hover:text-accent-foreground' : 'hover:bg-white/10',
                 )}
               >

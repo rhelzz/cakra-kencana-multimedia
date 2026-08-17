@@ -6,7 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import { HTML_LANG, isLocale, localePath, LOCALES } from "@/lib/i18n";
-import { bodyOf, getArticle, getSiteName, stripTags } from "@/lib/joomla";
+import { bodyOf, CATEGORY, getArticle, getSiteName, stripTags } from "@/lib/joomla";
 
 // Poppins is not a variable font on Google Fonts, so the weights the site uses are listed
 // explicitly — anything not listed here simply won't download.
@@ -26,7 +26,10 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
   const { locale } = await params;
   if (!isLocale(locale)) return {};
 
-  const [siteName, hero] = await Promise.all([getSiteName(), getArticle("home-hero", locale)]);
+  const [siteName, hero] = await Promise.all([
+    getSiteName(),
+    getArticle("home-hero", locale, CATEGORY.uncategorised),
+  ]);
   const description = stripTags(hero ? bodyOf(hero) : "");
 
   return {

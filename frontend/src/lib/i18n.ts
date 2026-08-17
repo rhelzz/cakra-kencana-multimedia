@@ -45,6 +45,12 @@ export const UI = {
     toggleTheme: 'Ganti mode gelap',
     language: 'Bahasa',
     otherServices: 'Layanan lainnya',
+    moreServices: 'Lebih banyak',
+    allServices: 'Semua layanan',
+    home: 'Beranda',
+    serviceUnit: 'Layanan',
+    scope: 'Cakupan layanan',
+    scopeUnit: 'Item',
   },
   en: {
     aboutEyebrow: 'About us',
@@ -56,6 +62,12 @@ export const UI = {
     toggleTheme: 'Toggle dark mode',
     language: 'Language',
     otherServices: 'Other services',
+    moreServices: 'More services',
+    allServices: 'All services',
+    home: 'Home',
+    serviceUnit: 'Services',
+    scope: 'What this covers',
+    scopeUnit: 'Items',
   },
   zh: {
     aboutEyebrow: '关于我们',
@@ -67,6 +79,12 @@ export const UI = {
     toggleTheme: '切换深色模式',
     language: '语言',
     otherServices: '其他服务',
+    moreServices: '更多服务',
+    allServices: '全部服务',
+    home: '首页',
+    serviceUnit: '项服务',
+    scope: '服务范围',
+    scopeUnit: '项',
   },
 } satisfies Record<Locale, Record<string, string>>;
 

@@ -53,8 +53,9 @@ Satu-satunya file yang menyentuh API. Semua fungsi menerima `locale`.
 | Fungsi | Kegunaan |
 |---|---|
 | `joomla<T>(path, revalidate?)` | pembungkus `fetch` + header + ISR |
-| `getArticle(alias, locale)` | satu artikel berdasarkan alias dasar |
+| `getArticle(alias, locale, catid)` | satu artikel berdasarkan alias dasar, **wajib** dipersempit ke kategorinya (dulu men-scan seluruh situs — pecah begitu artikel situs lewat 200, lihat CLAUDE.md §8) |
 | `getCategory(catid, locale)` | semua artikel satu kategori, terurut |
+| `getSubServices(parentAlias, locale)` | sub-service kategori 15 yang field `parent-service`-nya cocok dengan alias dasar layanan induk |
 | `getHeading(key, locale)` | judul section dari kategori Headings |
 | `getMenu(locale)` | item menu untuk satu bahasa |
 | `getSiteName()` | nama situs dari Global Configuration |
@@ -98,7 +99,7 @@ Langkah 3 mudah terlewat.
 ## Label antarmuka
 
 Kamus `UI` di `i18n.ts` memuat: `aboutEyebrow`, `learnMore`, `openMap`, `menu`, `navigation`,
-`backToTop`, `toggleTheme`, `language`, `otherServices`.
+`backToTop`, `toggleTheme`, `language`, `otherServices`, `moreServices`.
 
 **Kenapa ini di kode, bukan di Joomla:** ini teks antarmuka, bukan materi editorial. Kalau
 disimpan di Joomla, satu artikel yang lupa diterjemahkan akan menghasilkan tombol kosong.
