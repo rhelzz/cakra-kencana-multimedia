@@ -20,6 +20,7 @@ Thumbs.db
 *.log
 npm-debug.log*
 
-# Dump database — berisi token API & secret webhook, jangan pernah di-commit
-*.sql
+# Dump database terkompresi. joomla_db.sql sengaja di-commit untuk keperluan
+# deploy — isinya token API, secret webhook dan hash password, jadi ketiganya
+# WAJIB dirotasi setelah situs tayang.
 *.sql.gz
