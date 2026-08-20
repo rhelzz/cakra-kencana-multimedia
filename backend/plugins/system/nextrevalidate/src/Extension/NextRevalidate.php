@@ -53,10 +53,13 @@ final class NextRevalidate extends CMSPlugin
                 5
             );
         } catch (\Throwable $e) {
-            $this->getApplication()->enqueueMessage(
-                'Next.js revalidate failed: ' . $e->getMessage(),
-                'warning'
-            );
+            // Reporting must never be able to fatal: saving an article has to survive a
+            // dead frontend. There is no application in every context this plugin runs in.
+            $app = $this->getApplication();
+
+            if ($app !== null) {
+                $app->enqueueMessage('Next.js revalidate failed: ' . $e->getMessage(), 'warning');
+            }
         }
     }
 }
