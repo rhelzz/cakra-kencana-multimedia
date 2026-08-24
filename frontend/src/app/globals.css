@@ -7,24 +7,12 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  /* Literal names: @theme inline resolves at parse time, so var(--font-poppins) would be empty. */
-  --font-sans: "Poppins", "Poppins Fallback", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "Poppins", "Poppins Fallback", ui-sans-serif, system-ui, sans-serif;
+  /* Literal family names: @theme inline resolves these at parse time. */
+  --font-sans: "IBM Plex Sans", "IBM Plex Sans Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "IBM Plex Sans", "IBM Plex Sans Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "IBM Plex Serif", "IBM Plex Serif Fallback", ui-serif, Georgia, serif;
   /* Nothing on the site renders code; keep the system stack rather than ship a second family. */
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -41,6 +29,9 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-high: var(--surface-container-high);
   /* Tailwind's default curve is applied to everything at the same duration, which is what
      makes an interface read as mechanical: every element responds with identical inertia.
      These two are the whole motion vocabulary of the site — nothing else should invent one.
@@ -50,8 +41,7 @@
   --ease-exit: cubic-bezier(0.4, 0, 0.2, 1);
   /* Tinted, not black-at-low-opacity: the shadow carries the brand red, so a lifted
      card reads as lit by the same accent the rest of the page uses. */
-  --shadow-brand: 0 1px 2px oklch(0.552 0.216 26.5 / 0.06),
-    0 18px 40px -24px oklch(0.552 0.216 26.5 / 0.4);
+  --shadow-brand: 0 1px 2px var(--shadow-brand-a), 0 18px 40px -24px var(--shadow-brand-b);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -74,6 +64,9 @@
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
+  --surface-container-low: oklch(0.985 0.006 25);
+  --surface-container: oklch(0.97 0.008 25);
+  --surface-container-high: oklch(0.945 0.01 25);
   --muted-foreground: oklch(0.505 0 0);
   --accent: oklch(0.96 0.012 25);
   --accent-foreground: oklch(0.35 0.14 26.5);
@@ -81,20 +74,9 @@
   --border: oklch(0.918 0 0);
   --input: oklch(0.918 0 0);
   --ring: oklch(0.552 0.216 26.5);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+  --shadow-brand-a: oklch(0.552 0.216 26.5 / 0.06);
+  --shadow-brand-b: oklch(0.552 0.216 26.5 / 0.4);
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
 }
 
 .dark {
@@ -110,6 +92,9 @@
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.259 0 0);
+  --surface-container-low: oklch(0.185 0.004 265);
+  --surface-container: oklch(0.205 0.005 265);
+  --surface-container-high: oklch(0.23 0.006 265);
   --muted-foreground: oklch(0.715 0 0);
   --accent: oklch(0.29 0.03 25);
   --accent-foreground: oklch(0.93 0.03 25);
@@ -117,19 +102,8 @@
   --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.635 0.208 26.5);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --shadow-brand-a: oklch(0.552 0.216 26.5 / 0.06);
+  --shadow-brand-b: oklch(0.552 0.216 26.5 / 0.4);
 }
 
 @layer base {
@@ -142,12 +116,28 @@
   html {
     @apply font-sans;
   }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
   /* In-page nav links glide instead of jumping — unless the visitor asked for less motion. */
   @media (prefers-reduced-motion: no-preference) {
     html {
       scroll-behavior: smooth;
     }
   }
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 60;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
 }
 
 /* ---------------------------------------------------------------------------
@@ -174,16 +164,6 @@
   );
   -webkit-mask-image: linear-gradient(115deg, black, transparent 62%);
   mask-image: linear-gradient(115deg, black, transparent 62%);
-}
-
-/* The travelling tick inside the hero's scroll cue. */
-@keyframes scroll-cue {
-  0% {
-    transform: translateY(-100%);
-  }
-  100% {
-    transform: translateY(250%);
-  }
 }
 
 @keyframes reveal-rise {

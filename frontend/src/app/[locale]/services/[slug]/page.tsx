@@ -65,13 +65,13 @@ export default async function ServicePage({ params }: PageProps<'/[locale]/servi
   const heroImg = imageOf(service);
 
   return (
-    <main className="flex-1 pt-20">
+    <main id="main-content" className="flex-1 pt-20">
       <article>
         {/* The page used to run at one width from top to bottom, which is what made it read as
             flat. The measure now changes with the job: `max-w-6xl` for the header band and the
             supporting grids, `max-w-3xl` for prose — because a paragraph is only comfortable
             near 65 characters no matter how wide the page is. */}
-        <header className="relative isolate overflow-hidden border-b border-border bg-muted/30 px-4 pb-24 pt-14 sm:px-6 lg:pb-32 lg:pt-20">
+        <header className="relative isolate overflow-hidden border-b border-border bg-surface-container-low px-4 pb-24 pt-14 sm:px-6 lg:pb-32 lg:pt-20">
           <div
             aria-hidden
             className="pattern-diagonal pointer-events-none absolute inset-0 -z-10 opacity-[0.07]"
@@ -148,7 +148,7 @@ export default async function ServicePage({ params }: PageProps<'/[locale]/servi
         )}
 
         <div
-          className={`mx-auto max-w-3xl px-4 pb-16 text-base leading-relaxed text-pretty text-muted-foreground sm:px-6 [&_li]:mt-2 [&_p]:mt-5 [&_ul]:mt-5 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:marker:text-primary ${
+          className={`mx-auto max-w-3xl px-4 pb-16 font-serif text-base leading-relaxed text-pretty text-muted-foreground sm:px-6 [&_li]:mt-2 [&_p]:mt-5 [&_ul]:mt-5 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:marker:text-primary ${
             heroImg ? 'pt-14' : 'pt-16'
           }`}
           dangerouslySetInnerHTML={{ __html: bodyOf(service) }}
@@ -158,7 +158,7 @@ export default async function ServicePage({ params }: PageProps<'/[locale]/servi
             so they get their own band and the full width, instead of being a footnote squeezed
             into the reading column. */}
         {subServices.length > 0 && (
-          <section className="border-t border-border bg-muted/30 px-4 py-16 sm:px-6 lg:py-20">
+          <section className="border-t border-border bg-surface-container-low px-4 py-16 sm:px-6 lg:py-20">
             <div className="mx-auto max-w-6xl">
               <h2 className="reveal flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
                 <span aria-hidden className="h-px w-8 bg-primary" />

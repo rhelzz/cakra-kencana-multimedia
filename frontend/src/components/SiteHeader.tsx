@@ -87,7 +87,7 @@ export function SiteHeader({
     >
       <nav
         className={cn(
-          'mx-auto flex max-w-6xl items-center gap-6 px-4 transition-[height] duration-300 motion-reduce:transition-none sm:px-6',
+          'mx-auto flex max-w-6xl items-center gap-3 px-4 transition-[height] duration-300 motion-reduce:transition-none sm:gap-6 sm:px-6',
           scrolled ? 'h-20' : 'h-24 md:h-32',
         )}
       >
@@ -99,7 +99,7 @@ export function SiteHeader({
             decorative (alt="") — the always-present text is what names the link. */}
         <NavLink
           href={resolve('#top')}
-          className="grid h-full items-center *:col-start-1 *:row-start-1"
+          className="grid min-w-0 max-w-[10rem] flex-1 items-center *:col-start-1 *:row-start-1 sm:max-w-none sm:flex-none"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -116,7 +116,7 @@ export function SiteHeader({
           />
           <span
             className={cn(
-              'whitespace-nowrap text-sm font-semibold uppercase leading-tight tracking-wide transition-opacity duration-300 motion-reduce:transition-none',
+              'truncate whitespace-nowrap text-sm font-semibold uppercase leading-tight tracking-wide transition-opacity duration-300 motion-reduce:transition-none',
               scrolled ? 'opacity-0' : 'opacity-100',
             )}
           >
@@ -125,22 +125,28 @@ export function SiteHeader({
         </NavLink>
 
         <ul className="ml-auto hidden items-center gap-1 md:flex">
-          {items.map((i) => (
+          {items.map((i) => {
+            const active = !i.href.startsWith('#') && pathname === resolve(i.href);
+            return (
             <li key={i.id}>
               <NavLink
                 href={resolve(i.href)}
+                aria-current={active ? 'page' : undefined}
                 className={cn(
-                  'whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium transition-colors',
-                  scrolled ? 'hover:bg-accent hover:text-accent-foreground' : 'hover:bg-white/10',
+                  'whitespace-nowrap rounded-md px-3 py-2 text-sm font-semibold tracking-[0.015em] transition-colors',
+                  active
+                    ? scrolled ? 'bg-accent text-accent-foreground' : 'bg-white/10'
+                    : scrolled ? 'hover:bg-accent hover:text-accent-foreground' : 'hover:bg-white/10',
                 )}
               >
                 {i.title}
               </NavLink>
             </li>
-          ))}
+            );
+          })}
         </ul>
 
-        <div className={cn('flex items-center gap-1', 'md:ml-0 ml-auto')}>
+        <div className="ml-auto flex shrink-0 items-center gap-0.5 sm:gap-1">
           <LanguageSwitcher locale={locale} />
           <ThemeToggle locale={locale} />
 
@@ -148,28 +154,49 @@ export function SiteHeader({
             {/* Base UI (not Radix) is the primitive here, so composition uses `render`, not `asChild`. */}
             <SheetTrigger
               render={
-                <Button variant="ghost" size="icon" className="md:hidden" aria-label={ui.menu} />
+                <Button variant="ghost" size="icon" className="size-10 shrink-0 md:hidden" aria-label={ui.menu} />
               }
             >
               <Menu className="size-5" />
             </SheetTrigger>
-            <SheetContent side="right" className="w-72">
-              <SheetHeader>
-                <SheetTitle>{ui.menu}</SheetTitle>
+            <SheetContent side="right" className="w-[min(22rem,calc(100vw-1rem))] border-l-2 border-primary bg-background px-0 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-3">
+              <SheetHeader className="border-b border-border px-5 pb-5 pr-14 pt-4">
+                <div className="flex items-center gap-3">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={logo} alt="" className="h-10 w-auto shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-primary">
+                      {ui.navigation}
+                    </p>
+                    <SheetTitle className="mt-1 truncate text-lg font-semibold">{siteName}</SheetTitle>
+                  </div>
+                </div>
               </SheetHeader>
-              <Separator />
-              <ul className="flex flex-col gap-1 px-4">
-                {items.map((i) => (
-                  <li key={i.id}>
-                    <NavLink
-                      href={resolve(i.href)}
-                      onClick={() => setOpen(false)}
-                      className="block rounded-md px-3 py-2.5 text-base font-medium hover:bg-accent hover:text-accent-foreground"
-                    >
-                      {i.title}
-                    </NavLink>
-                  </li>
-                ))}
+              <Separator className="bg-primary/20" />
+              <ul className="flex flex-col gap-1 px-3 py-4">
+                {items.map((i, index) => {
+                  const resolvedHref = resolve(i.href);
+                  const active = !i.href.startsWith('#') && pathname === resolvedHref;
+                  return (
+                    <li key={i.id}>
+                      <NavLink
+                        href={resolvedHref}
+                        onClick={() => setOpen(false)}
+                        aria-current={active ? 'page' : undefined}
+                        className={cn(
+                          'flex min-h-12 items-center gap-3 rounded-lg px-4 text-base font-medium transition-colors duration-200 ease-exit',
+                          active
+                            ? 'bg-accent text-accent-foreground'
+                            : 'text-foreground hover:bg-muted hover:text-foreground',
+                        )}
+                      >
+                        <span aria-hidden className={cn('h-5 w-0.5 rounded-full transition-colors', active ? 'bg-primary' : 'bg-border')} />
+                        <span className="flex-1">{i.title}</span>
+                        <span aria-hidden className="text-xs tabular-nums text-muted-foreground">{String(index + 1).padStart(2, '0')}</span>
+                      </NavLink>
+                    </li>
+                  );
+                })}
               </ul>
             </SheetContent>
           </Sheet>

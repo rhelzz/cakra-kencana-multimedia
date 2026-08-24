@@ -32,7 +32,7 @@ export default async function About({ locale }: { locale: Locale }) {
         </div>
 
         <div className="reveal">
-          <Gallery slides={slides} />
+          <Gallery slides={slides} locale={locale} />
         </div>
       </div>
     </section>
@@ -64,7 +64,7 @@ function Block({ article }: { article: Article }) {
         </ul>
       ) : (
         <div
-          className="mt-3 max-w-prose text-[0.95rem] leading-relaxed text-pretty text-muted-foreground [&_p]:mt-3"
+          className="mt-3 max-w-prose font-serif text-[0.95rem] leading-relaxed text-pretty text-muted-foreground [&_p]:mt-3"
           dangerouslySetInnerHTML={{ __html: html }}
         />
       )}

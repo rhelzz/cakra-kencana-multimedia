@@ -1,19 +1,27 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { IBM_Plex_Sans, IBM_Plex_Serif } from "next/font/google";
 import { notFound } from "next/navigation";
 import "../globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
-import { HTML_LANG, isLocale, localePath, LOCALES } from "@/lib/i18n";
-import { bodyOf, CATEGORY, getArticle, getSiteName, stripTags } from "@/lib/joomla";
+import { HTML_LANG, isLocale, localePath, LOCALES, t } from "@/lib/i18n";
+import { bodyOf, CATEGORY, getArticle, getSiteName, getTheme, stripTags } from "@/lib/joomla";
+import { themeCss } from "@/lib/theme";
 
-// Poppins is not a variable font on Google Fonts, so the weights the site uses are listed
+// Keep the editorial pairing explicit so fallback metrics remain predictable during loading.
 // explicitly — anything not listed here simply won't download.
-const poppins = Poppins({
-  variable: "--font-poppins",
+const plexSans = IBM_Plex_Sans({
+  variable: "--font-plex-sans",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+const plexSerif = IBM_Plex_Serif({
+  variable: "--font-plex-serif",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
@@ -49,15 +57,25 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
   // Only the three known locales exist; "/xx" is a 404, not a silent fallback.
   if (!isLocale(locale)) notFound();
 
+  // Warna di-render di server dan disisipkan sebelum <body>, jadi tidak ada satu frame pun
+  // dengan palet lama. globals.css tetap jadi fallback kalau Joomla tidak menjawab.
+  const css = themeCss(await getTheme());
+
   return (
     // suppressHydrationWarning: next-themes sets the class on <html> before React hydrates.
     <html
       lang={HTML_LANG[locale]}
       suppressHydrationWarning
-      className={`${poppins.variable} h-full antialiased`}
+      className={`${plexSans.variable} ${plexSerif.variable} h-full antialiased`}
     >
+      <head>
+        <style dangerouslySetInnerHTML={{ __html: css }} />
+      </head>
       <body className="min-h-full flex flex-col">
         <ThemeProvider>
+          <a href="#main-content" className="skip-link rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-brand">
+            {t(locale).skipToContent}
+          </a>
           <Navbar locale={locale} />
           {children}
           <Footer locale={locale} />

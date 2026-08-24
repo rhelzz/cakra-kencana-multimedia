@@ -1,5 +1,6 @@
 'use client';
 
+import { Pause, Play } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import {
@@ -10,12 +11,13 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from '@/components/ui/carousel';
+import { t, type Locale } from '@/lib/i18n';
 
 export type Slide = { id: number; src: string; alt: string };
 
 const AUTOPLAY_MS = 5000;
 
-export function Gallery({ slides }: { slides: Slide[] }) {
+export function Gallery({ slides, locale }: { slides: Slide[]; locale: Locale }) {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -41,12 +43,14 @@ export function Gallery({ slides }: { slides: Slide[] }) {
   }, [api, paused, current, slides.length]);
 
   if (slides.length === 0) return null;
+  const ui = t(locale);
 
   return (
     <Carousel
       setApi={setApi}
       opts={{ loop: slides.length > 1 }}
       className="w-full"
+      aria-label={ui.navigation}
       // Stop advancing while someone is reading or tabbing through the controls.
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
@@ -67,16 +71,24 @@ export function Gallery({ slides }: { slides: Slide[] }) {
 
       {slides.length > 1 && (
         <>
-          <CarouselPrevious className="left-3 bg-background/70 backdrop-blur" />
-          <CarouselNext className="right-3 bg-background/70 backdrop-blur" />
+          <CarouselPrevious className="left-3 size-10 bg-background/70 backdrop-blur" />
+          <CarouselNext className="right-3 size-10 bg-background/70 backdrop-blur" />
 
-          <div className="absolute inset-x-0 bottom-4 flex justify-center gap-2">
+          <div className="absolute inset-x-0 bottom-4 flex items-center justify-center gap-3">
+            <button
+              type="button"
+              onClick={() => setPaused((value) => !value)}
+              aria-label={paused ? ui.resumeCarousel : ui.pauseCarousel}
+              className="grid size-10 place-items-center rounded-full bg-black/35 text-white backdrop-blur-sm transition-colors hover:bg-black/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            >
+              {paused ? <Play className="size-3.5" /> : <Pause className="size-3.5" />}
+            </button>
             {slides.map((s, i) => (
               <button
                 key={s.id}
                 type="button"
                 onClick={() => api?.scrollTo(i)}
-                aria-label={`Go to slide ${i + 1}`}
+                aria-label={`${ui.goToSlide} ${i + 1}`}
                 aria-current={i === current}
                 className={cn(
                   'size-2 rounded-full transition-all',

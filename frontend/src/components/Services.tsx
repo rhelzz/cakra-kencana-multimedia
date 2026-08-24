@@ -16,7 +16,7 @@ export default async function Services({ locale }: { locale: Locale }) {
   return (
     // scroll-mt matches the solid navbar height (h-20), so an anchor click parks the heading
     // just below the bar instead of under it.
-    <section id="services" className="scroll-mt-20 border-t border-border bg-muted/30 px-4 py-20 sm:px-6 lg:py-28">
+    <section id="services" className="scroll-mt-20 border-t border-border bg-surface-container-low px-4 py-20 sm:px-6 lg:py-28">
       <div className="mx-auto max-w-6xl">
         <h2 className="reveal max-w-2xl text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
           {heading}

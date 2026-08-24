@@ -12,6 +12,7 @@ export function ThemeToggle({ locale }: { locale: Locale }) {
     <Button
       variant="ghost"
       size="icon"
+      className="size-10"
       aria-label={t(locale).toggleTheme}
       onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
     >

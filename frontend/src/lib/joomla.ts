@@ -1,4 +1,5 @@
 import { DEFAULT_LOCALE, JOOMLA_LANG, type Locale } from '@/lib/i18n';
+import type { ThemeInput } from '@/lib/theme';
 
 // Server-only: token must never reach the browser.
 export async function joomla<T = unknown>(path: string, revalidate = 60): Promise<T> {
@@ -298,3 +299,25 @@ export const listItems = (html = '') =>
 /** The body an editor typed, whichever field Joomla put it in. */
 export const bodyOf = (a: Article) =>
   a.attributes.introtext || a.attributes.text || a.attributes.articletext || '';
+
+/**
+ * Tiga warna yang diatur editor, dari artikel `theme` di kategori Uncategorised.
+ *
+ * Disimpan sebagai custom field bertipe Color, jadi admin dapat color picker asli dan
+ * plugin revalidate yang sudah ada membuat perubahannya tampil dalam hitungan detik.
+ * Joomla mati atau field kosong → `{}`, dan `deriveTheme` memakai default yang sekarang.
+ */
+export async function getTheme(): Promise<ThemeInput> {
+  try {
+    const article = await getArticle('theme', DEFAULT_LOCALE, CATEGORY.uncategorised);
+    const a = article?.attributes as Record<string, unknown> | undefined;
+    return {
+      brand: fieldValue(a?.['brand-color']),
+      brandDark: fieldValue(a?.['brand-color-dark']),
+      backgroundLight: fieldValue(a?.['background-light']),
+      backgroundDark: fieldValue(a?.['background-dark']),
+    };
+  } catch {
+    return {};
+  }
+}

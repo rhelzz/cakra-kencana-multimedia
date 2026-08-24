@@ -36,8 +36,8 @@ export default async function ServicesPage({ params }: PageProps<'/[locale]/serv
   return (
     // pt-20, not pt-16: the header is fixed and solid at `h-20` on every page but the home
     // page, so anything less tucks the first heading under the bar.
-    <main className="flex-1 pt-20">
-      <header className="relative isolate overflow-hidden border-b border-border bg-muted/30 px-4 py-14 sm:px-6 lg:py-20">
+    <main id="main-content" className="flex-1 pt-20">
+      <header className="relative isolate overflow-hidden border-b border-border bg-surface-container-low px-4 py-14 sm:px-6 lg:py-20">
         {/* Two layers, both fading out, so the band is furnished without becoming busy:
             the diagonal print rules give it texture and the bloom gives it a light source.
             Everything sits behind the content and neither tints a single glyph. */}

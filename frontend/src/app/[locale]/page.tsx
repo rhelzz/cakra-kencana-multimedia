@@ -11,7 +11,7 @@ export default async function Home({ params }: PageProps<'/[locale]'>) {
   if (!isLocale(locale)) notFound();
 
   return (
-    <main className="flex-1">
+    <main id="main-content" className="flex-1">
       <Hero locale={locale} />
       <About locale={locale} />
       <Services locale={locale} />

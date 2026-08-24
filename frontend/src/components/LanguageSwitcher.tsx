@@ -17,13 +17,13 @@ export function LanguageSwitcher({ locale }: { locale: Locale }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        render={<Button variant="ghost" size="icon" aria-label={t(locale).language} />}
+        render={<Button variant="ghost" size="icon" className="size-10" aria-label={t(locale).language} />}
       >
         <Languages className="size-[1.15rem]" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         {LOCALES.map((l) => (
-          <DropdownMenuItem key={l} render={<a href={hrefFor(pathname, l)} />}>
+          <DropdownMenuItem key={l} className="min-h-11 px-3" render={<a href={hrefFor(pathname, l)} />}>
             <Check className={l === locale ? 'size-4 opacity-100' : 'size-4 opacity-0'} />
             {LOCALE_NAMES[l]}
           </DropdownMenuItem>
