@@ -4,7 +4,7 @@ Daftar lengkap **semua yang menyimpang dari Joomla 5 standar**. Kalau situs dipa
 server lain, ini yang harus direproduksi.
 
 Ringkasnya: kita **tidak mengubah satu pun file core Joomla**. Yang ada hanya satu plugin
-buatan sendiri, tiga custom field, tujuh kategori, sedikit konfigurasi, dan satu perbaikan
+buatan sendiri, delapan custom field, delapan kategori tambahan, sedikit konfigurasi, dan satu perbaikan
 nginx di luar Joomla.
 
 ---
@@ -57,6 +57,8 @@ Joomla melaporkan `Class not found` walau file plugin sudah ada.
 | `icon` | List (23 opsi) | Services, Offices, Social | Memilih ikon tanpa menyentuh kode |
 | `map` | URL | Offices | Link Google Maps per lokasi |
 | `link` | URL | Social | URL profil sosmed |
+| `parent-service` | List | Service sub-items | Relasi sub-service ke service induk |
+| `brand-color`, `brand-color-dark`, `background-light`, `background-dark` | Color | Uncategorised | Warna tema website |
 
 ### Kenapa `map` tidak memakai "Link A" bawaan Joomla
 
@@ -87,6 +89,7 @@ Tujuh kategori dibuat sebagai wadah section. Semuanya berbahasa `All`.
 | 12 | Our offices | `offices` |
 | 13 | Social | `social` |
 | 14 | Headings | `headings` |
+| 15 | Service sub-items | `service-sub-items` |
 
 Kategori 2 (`Uncategorised`) bawaan Joomla dipakai untuk `home-hero` dan `footer-copyright`.
 

@@ -1,5 +1,6 @@
 import { MapPin } from 'lucide-react';
 import {
+  baseAlias,
   bodyOf,
   CATEGORY,
   getArticle,
@@ -25,8 +26,8 @@ export default async function Footer({ locale }: { locale: Locale }) {
   // The footer also renders on detail pages, where a bare "#about" points at nothing.
   const base = localePath(locale) === '/' ? '' : localePath(locale);
   const resolve = (href: string) => (href.startsWith('#') ? `${base}/${href}` : href);
-  // The head office is simply the first one an editor ordered in Joomla.
-  const head = offices[0];
+  // The footer address is always the head office, regardless of section ordering.
+  const head = offices.find((office) => baseAlias(office.attributes.alias) === 'office-head-office');
   const tagline = stripTags(hero ? bodyOf(hero) : '');
   // The article may contain {year} so an editor never has to touch it again in January.
   const copy = stripTags(copyright ? bodyOf(copyright) : '').replace(

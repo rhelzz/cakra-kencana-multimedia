@@ -146,6 +146,50 @@ Trash artikelnya. Kartunya hilang; halaman detailnya jadi 404 (bukan error, mema
 
 ---
 
+## Sub-service (produk di dalam service)
+
+Kategori **Service sub-items**. Satu artikel sub-service menjadi satu kartu pada halaman
+detail service induknya.
+
+### Create — menambah sub-service
+
+1. **Content → Articles → New**
+2. Isi **Title**, misalnya `Roll Up Banner`
+3. Pilih **Category**: `Service sub-items`
+4. Pilih **Language** sesuai bahasa artikel
+5. Isi deskripsi singkat di editor
+6. Tab **Fields** → **Parent service** → pilih service induknya, misalnya `Digital Printing`
+7. Pastikan status **Published**, lalu **Save**
+
+Field **Parent service** adalah relasi utamanya. Alias hanya digunakan untuk identitas artikel
+dan terjemahan; alias tidak menentukan sub-service masuk ke service mana.
+
+Contoh:
+
+```text
+Roll Up Banner
+Parent service: Digital Printing
+        ↓
+muncul di halaman Digital Printing
+```
+
+Untuk mempercepat pengisian banyak item, gunakan **Save as Copy** dari sub-service yang sudah
+benar. Ubah Title, Alias, dan deskripsi, lalu periksa kembali Parent service sebelum Save.
+
+### Terjemahan sub-service
+
+Buat artikel baru untuk bahasa lain. Gunakan alias yang sama dengan suffix berbeda:
+
+```text
+subservice-digital-printing-roll-up-banner-id
+subservice-digital-printing-roll-up-banner-en
+subservice-digital-printing-roll-up-banner-zh
+```
+
+Parent service tetap menunjuk ke service induk yang sama.
+
+---
+
 ## Our customers (deretan logo)
 
 Kategori **Our customers**. Berbahasa `All`.
@@ -199,12 +243,13 @@ Kategori **Our offices**.
 **Field Map link dikosongkan = tombol Buka Peta tidak muncul.** Ini disengaja — dipakai
 Workshop III yang isinya daftar kota, bukan satu alamat.
 
-### Penting: kantor pertama muncul di footer
-Footer menampilkan **kantor pertama sesuai urutan**. Kalau kamu drag kantor lain ke posisi
-teratas, alamat di footer ikut berubah.
+### Penting: Kantor Pusat muncul di footer
+Footer selalu menampilkan artikel **Kantor Pusat** berdasarkan alias
+`office-head-office`. Mengubah urutan kantor hanya mengubah urutan pada section Offices,
+bukan alamat footer.
 
 ### Delete
-Trash artikelnya. Kalau yang dihapus kantor pertama, footer otomatis memakai kantor berikutnya.
+Trash artikelnya. Jangan menghapus artikel Kantor Pusat jika alamat footer masih diperlukan.
 
 ---
 
@@ -266,7 +311,7 @@ Label kecil "Tentang kami" di atasnya ada di kode (lihat [07 — Frontend](07-fr
 | Ikon sosmed | kategori **Social** |
 | Judul kolom navigasi | label antarmuka (di kode) |
 | Daftar link | **Menus → Main Menu** |
-| Alamat | kantor **pertama** di kategori Our offices |
+| Alamat | artikel **Kantor Pusat** di kategori Our offices |
 | Baris hak cipta | artikel `footer-copyright` |
 
 ### Mengganti logo

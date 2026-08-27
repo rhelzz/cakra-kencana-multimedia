@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Panduan Pengguna CMS — Cakra Kencana Multimedia</title>
+<style>
+@page { size: A4; margin: 18mm 17mm 17mm; }
+* { box-sizing: border-box; }
+body { font-family: Arial, sans-serif; color: #243247; font-size: 10.5pt; line-height: 1.5; }
+h1 { color: #a71930; font-size: 28pt; line-height: 1.15; margin: 0 0 12pt; }
+h2 { color: #a71930; font-size: 18pt; border-bottom: 2px solid #e7c8cd; padding-bottom: 5pt; margin: 0 0 12pt; }
+h3 { color: #243247; font-size: 12.5pt; margin: 14pt 0 5pt; }
+p { margin: 0 0 7pt; }
+ul, ol { margin-top: 4pt; padding-left: 20pt; }
+li { margin-bottom: 3pt; }
+.cover { min-height: 235mm; padding: 35mm 12mm 0; border-left: 8px solid #a71930; }
+.eyebrow { color: #a71930; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; font-size: 9pt; }
+.subtitle { font-size: 15pt; color: #56657a; max-width: 125mm; }
+.note { background: #f7f1ed; border-left: 4px solid #a71930; padding: 9pt 11pt; margin: 10pt 0; }
+.tip { background: #eef4f8; border-left: 4px solid #557895; padding: 8pt 10pt; margin: 9pt 0; }
+.step { background: #fafafa; border: 1px solid #e1e5e9; padding: 8pt 10pt; margin: 7pt 0; }
+.step b { color: #a71930; }
+table { width: 100%; border-collapse: collapse; margin: 8pt 0 12pt; }
+th { background: #243247; color: white; text-align: left; }
+th, td { border: 1px solid #d8dee5; padding: 6pt 7pt; vertical-align: top; }
+tr:nth-child(even) td { background: #f7f9fa; }
+code { font-family: Consolas, monospace; background: #f1f3f5; padding: 1pt 3pt; }
+.page { page-break-before: always; }
+.small { color: #657488; font-size: 9pt; }
+.flow { text-align: center; font-weight: bold; color: #a71930; padding: 10pt; background: #faf3f4; }
+.check { color: #23804e; font-weight: bold; }
+</style>
+</head>
+<body>
+<section class="cover">
+  <div class="eyebrow">Panduan untuk Admin Konten</div>
+  <h1>Cara Menggunakan CMS</h1>
+  <p class="subtitle">Panduan sederhana untuk menambah, mengubah, mengatur, dan menerjemahkan isi website Cakra Kencana Multimedia.</p>
+  <div class="note"><b>Alamat CMS:</b><br>https://cms.cakrakencanamultimedia.com/administrator</div>
+  <p class="small">Dokumen ini hanya membahas pekerjaan sehari-hari di CMS. Tidak perlu mengubah kode atau database untuk mengikuti panduan ini.</p>
+</section>
+
+<section class="page">
+<h2>1. Sebelum Mulai</h2>
+<p>CMS adalah tempat untuk mengelola isi website. Setiap perubahan dilakukan dari menu administrator Joomla.</p>
+<div class="flow">Login → Content → Articles → Edit → Save → Cek website</div>
+<h3>Aturan paling penting</h3>
+<ul>
+<li>Pastikan artikel berstatus <b>Published</b> agar tampil di website.</li>
+<li>Pilih kategori yang benar. Kategori menentukan artikel muncul di bagian website mana.</li>
+<li>Jangan menghapus kategori yang sudah tersedia.</li>
+<li>Untuk menerjemahkan artikel, buat artikel bahasa baru. Jangan mengganti bahasa artikel lama.</li>
+<li>Setelah menyimpan, tunggu beberapa detik lalu refresh website.</li>
+</ul>
+<div class="tip"><b>Jika ragu:</b> buka artikel yang sudah benar, gunakan sebagai contoh, lalu duplikasi artikel tersebut.</div>
+<h3>Filter artikel</h3>
+<p>Di halaman daftar artikel, gunakan filter <b>Category</b>, <b>Language</b>, dan <b>Status</b>. Ini sangat membantu karena jumlah artikel cukup banyak.</p>
+</section>
+
+<section class="page">
+<h2>2. Menambah atau Mengubah Artikel</h2>
+<h3>Mengubah artikel yang sudah ada</h3>
+<ol>
+<li>Buka <b>Content → Articles</b>.</li>
+<li>Cari artikel, atau gunakan filter kategori/bahasa.</li>
+<li>Klik judul artikel.</li>
+<li>Ubah judul, isi, gambar, atau field yang diperlukan.</li>
+<li>Klik <b>Save & Close</b>.</li>
+</ol>
+<h3>Menambah artikel baru</h3>
+<ol>
+<li>Buka <b>Content → Articles → New</b>.</li>
+<li>Isi <b>Title</b>.</li>
+<li>Pilih <b>Category</b> yang sesuai.</li>
+<li>Pilih <b>Language</b>.</li>
+<li>Isi artikel pada editor utama.</li>
+<li>Isi tab <b>Images and Links</b> atau <b>Fields</b> bila diperlukan.</li>
+<li>Pastikan statusnya <b>Published</b>, lalu simpan.</li>
+</ol>
+<h3>Urutan artikel</h3>
+<p>Urutan artikel menentukan urutan tampilnya blok, slide, service, kantor, atau item lain. Di daftar artikel, pilih pengurutan berdasarkan <b>Ordering</b>, lalu gunakan drag-and-drop.</p>
+<div class="note"><b>Catatan:</b> urutan kantor hanya mengubah tampilan section Offices. Footer selalu mengambil data dari artikel Kantor Pusat.</div>
+</section>
+
+<section class="page">
+<h2>3. Mengelola Bagian Website</h2>
+<h3>Hero / bagian paling atas</h3>
+<p>Cari artikel dengan alias <code>home-hero-id</code>, <code>home-hero-en</code>, atau <code>home-hero-zh</code>.</p>
+<table><tr><th>Yang ingin diubah</th><th>Tempat mengubahnya</th></tr>
+<tr><td>Judul besar</td><td>Title</td></tr><tr><td>Kalimat di bawah judul</td><td>Editor artikel</td></tr><tr><td>Foto latar</td><td>Images and Links → Full Article Image</td></tr></table>
+<p>Hero harus tetap memiliki satu artikel untuk setiap bahasa.</p>
+<h3>About / Tentang Kami</h3>
+<p>Kategori <b>About</b>. Satu artikel menjadi satu blok informasi. Judul artikel menjadi judul blok.</p>
+<ul><li>Paragraf biasa akan tampil sebagai teks.</li><li>Bullet list akan tampil sebagai checklist.</li></ul>
+<h3>Gallery</h3>
+<p>Kategori <b>Gallery</b>. Satu artikel menjadi satu slide. Gunakan Language <b>All</b>, lalu isi gambar pada <b>Images and Links → Intro Image</b>. Isi Image Description sebagai keterangan gambar.</p>
+<h3>Judul section</h3>
+<p>Kategori <b>Headings</b>. Ubah Title artikel heading untuk mengganti judul “Layanan”, “Klien”, atau “Kantor”.</p>
+</section>
+
+<section class="page">
+<h2>4. Service dan Sub-service</h2>
+<h3>Menambah atau mengubah service</h3>
+<p>Kategori: <b>Services</b>. Satu artikel service tampil sebagai kartu di homepage sekaligus halaman detail.</p>
+<table><tr><th>Field</th><th>Isi</th></tr>
+<tr><td>Title</td><td>Nama service</td></tr><tr><td>Editor sebelum Read more</td><td>Deskripsi singkat untuk kartu</td></tr><tr><td>Editor setelah Read more</td><td>Penjelasan lengkap halaman detail</td></tr><tr><td>Icon</td><td>Pilih ikon yang sesuai di tab Fields</td></tr><tr><td>Images and Links</td><td>Gambar halaman detail, bila ada</td></tr></table>
+<h3>Menambah sub-service</h3>
+<p>Kategori: <b>Service sub-items</b>. Satu artikel menjadi satu kartu di dalam halaman service induknya.</p>
+<ol>
+<li>Buka <b>Content → Articles → New</b>.</li><li>Pilih kategori <b>Service sub-items</b>.</li><li>Isi Title, misalnya <b>Roll Up Banner</b>.</li><li>Pilih Language <b>All</b>.</li><li>Isi deskripsi singkat.</li><li>Pada tab <b>Fields</b>, pilih service induk pada field <b>Parent service</b>.</li><li>Pastikan Published, lalu simpan.</li>
+</ol>
+<div class="note"><b>Inilah relasinya:</b> jika Parent service dipilih <b>Digital Printing</b>, sub-service otomatis muncul di halaman Digital Printing. Nama alias saja tidak menentukan relasi.</div>
+<h3>Cara mempercepat pengisian</h3>
+<p>Untuk banyak item yang mirip, gunakan <b>Save as Copy</b> atau duplikasi artikel yang sudah benar. Kemudian ubah Title, deskripsi, dan pastikan Parent service-nya benar.</p>
+</section>
+
+<section class="page">
+<h2>5. Klien, Kantor, dan Media Sosial</h2>
+<h3>Logo klien</h3><p>Kategori <b>Our customers</b>, Language <b>All</b>. Isi Title dengan nama perusahaan dan unggah logo pada <b>Images and Links → Intro Image</b>.</p>
+<h3>Lokasi kantor</h3><p>Kategori <b>Our offices</b>.</p>
+<table><tr><th>Field</th><th>Isi</th></tr><tr><td>Title</td><td>Nama lokasi</td></tr><tr><td>Editor</td><td>Alamat lengkap</td></tr><tr><td>Icon</td><td>Office / building atau Workshop / warehouse</td></tr><tr><td>Map link</td><td>Link Google Maps</td></tr></table>
+<p>Jika Map link dikosongkan, tombol “Buka Peta” tidak muncul.</p>
+<h3>Media sosial</h3><p>Kategori <b>Social</b>, Language <b>All</b>. Isi Title, pilih Icon, dan masukkan URL profil lengkap pada field <b>Link</b>. Link kosong berarti ikon tidak tampil.</p>
+<h3>Logo website dan copyright</h3><p>Logo diganti melalui <b>Content → Media</b> dengan menimpa file <code>logo-footer.png</code>. Copyright diedit pada artikel <code>footer-copyright</code>. Gunakan <code>{year}</code> agar tahun berubah otomatis.</p>
+</section>
+
+<section class="page">
+<h2>6. Bahasa Website</h2>
+<table><tr><th>Bahasa</th><th>Alamat</th><th>Pilihan Language di artikel</th></tr><tr><td>Indonesia</td><td>/</td><td>Bahasa Indonesia</td></tr><tr><td>English</td><td>/en</td><td>English</td></tr><tr><td>中文</td><td>/zh</td><td>中文</td></tr></table>
+<h3>Membuat terjemahan</h3>
+<ol><li>Buka artikel bahasa Indonesia.</li><li>Gunakan <b>Save as Copy</b> atau buat artikel baru.</li><li>Terjemahkan Title dan isi.</li><li>Pilih Language yang sesuai.</li><li>Pertahankan pola alias yang sama, hanya suffix bahasanya yang berbeda.</li></ol>
+<p>Contoh:</p><table><tr><th>Indonesia</th><th>English</th><th>Mandarin</th></tr><tr><td><code>service-digital-printing-id</code></td><td><code>service-digital-printing-en</code></td><td><code>service-digital-printing-zh</code></td></tr></table>
+<div class="tip">Artikel Gallery, Customer, Social, dan Sub-service saat ini memakai Language <b>All</b> karena digunakan bersama oleh semua bahasa.</div>
+<p>Jika terjemahan suatu artikel belum tersedia, website dapat menampilkan versi Indonesia sebagai cadangan. Jangan mengisi bahasa yang salah karena artikel bisa muncul di halaman bahasa yang tidak sesuai.</p>
+</section>
+
+<section class="page">
+<h2>7. Menu dan Pemeriksaan Akhir</h2>
+<h3>Menambah menu navigasi</h3>
+<ol><li>Buka <b>Menus → Main Menu → New</b>.</li><li>Pilih <b>System Links → URL</b>.</li><li>Isi link seperti <code>#about</code>, <code>#services</code>, <code>#customers</code>, atau <code>#offices</code>.</li><li>Isi Title dan pilih bahasa.</li><li>Save.</li></ol>
+<p>Menu berlaku untuk navbar dan footer. Gunakan satu menu untuk satu bahasa; jangan memilih All karena menu bisa muncul ganda.</p>
+<h3>Checklist sebelum selesai</h3>
+<ul><li class="check">✓ Judul dan isi sudah benar.</li><li class="check">✓ Kategori sudah benar.</li><li class="check">✓ Language sudah benar.</li><li class="check">✓ Status Published.</li><li class="check">✓ Gambar berada di slot yang benar.</li><li class="check">✓ Untuk sub-service, Parent service sudah dipilih.</li><li class="check">✓ Untuk service, Icon sudah dipilih.</li><li class="check">✓ Website sudah dicek pada bahasa yang sesuai.</li></ul>
+<div class="note"><b>Jika perubahan belum terlihat:</b> tunggu beberapa detik, refresh dengan Ctrl + F5, dan pastikan artikel tidak berstatus Unpublished.</div>
+<h3>Panduan singkat satu kalimat</h3><p><b>Pilih kategori yang tepat, isi konten, pilih bahasa dan field yang diperlukan, pastikan Published, lalu Save.</b></p>
+</section>
+</body>
+</html>

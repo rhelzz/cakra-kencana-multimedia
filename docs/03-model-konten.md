@@ -13,11 +13,12 @@ Jangan menghapus lalu membuat ulang kategori — ID-nya akan berubah dan section
 | 2 | Uncategorised | `home-hero`, `footer-copyright` | Hero, Footer |
 | 8 | Gallery | 4 slide carousel (gambar saja) | Gallery |
 | 9 | About | 3 blok teks | About |
-| 10 | Services | 9 layanan | Services + halaman detail |
+| 10 | Services | 10 layanan | Services + halaman detail |
 | 11 | Our customers | 6 logo klien | Customers |
 | 12 | Our offices | 4 lokasi | Offices + Footer |
 | 13 | Social | 5 akun sosmed | SocialLinks |
 | 14 | Headings | judul section per bahasa | `getHeading()` |
+| 15 | Service sub-items | sub-service per layanan induk | grid halaman detail service |
 
 Kategori itu sendiri berbahasa `*` (All) — hanya wadah. Yang ditandai bahasa adalah artikelnya.
 
@@ -30,6 +31,8 @@ Kategori itu sendiri berbahasa `*` (All) — hanya wadah. Yang ditandai bahasa a
 | 1 | `icon` | List | Services (10), Offices (12), Social (13) | 23 pilihan ikon |
 | 2 | `map` | URL | Offices (12) | Link Google Maps; **kosong = tombol hilang** |
 | 3 | `link` | URL | Social (13) | URL profil; **kosong = ikon hilang** |
+| 4 | `parent-service` | List | Service sub-items (15) | Menentukan service induk sub-service |
+| 5–8 | warna tema | Color | Uncategorised (2) | Mengatur warna website |
 
 ### Pilihan field `icon`
 
@@ -95,6 +98,19 @@ ikon centang merah. Kalau bukan, dirender sebagai paragraf biasa. Ini otomatis �
 
 Artikel `footer-copyright` boleh memuat `{year}`; frontend menggantinya dengan tahun berjalan.
 Supaya baris hak cipta tidak perlu disunting tiap Januari.
+
+### Service dan sub-service
+
+Kategori **Services** berisi 10 service utama. Kategori **Service sub-items** (ID 15) berisi
+86 sub-service yang masing-masing tersedia dalam tiga bahasa, sehingga saat ini terdapat 258
+artikel sub-service aktif.
+
+Relasi ditentukan oleh custom field `parent-service`, bukan oleh nama alias sub-service.
+Contohnya, sub-service untuk Digital Printing menyimpan nilai:
+
+```text
+parent-service: service-digital-printing
+```
 
 ## Multibahasa
 
@@ -176,8 +192,10 @@ Untuk orientasi saja. **Jangan mengandalkan ID artikel di kode** — pakai alias
 | `about-who-we-are` | 9 | paragraf |
 | `about-service-area` | 9 | paragraf |
 | `about-why-choose-us` | 9 | bullet list → checklist |
-| `service-*` (9 buah) | 10 | punya field `icon` |
+| `service-*` (10 buah per bahasa) | 10 | punya field `icon` |
 | `customer-*` (6 buah) | 11 | bahasa `*` |
 | `office-head-office`, `office-workshop-i…iii` | 12 | punya `icon` + `map` |
 | `social-*` (5 buah) | 13 | bahasa `*`, punya `icon` + `link` |
 | `heading-services`, `heading-customers`, `heading-offices` | 14 | 3 bahasa masing-masing |
+| `subservice-*` (86 set) | 15 | 3 bahasa masing-masing, punya `parent-service` |
+| `theme` | 2 | pengaturan warna website |
