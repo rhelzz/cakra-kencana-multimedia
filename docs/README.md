@@ -20,6 +20,7 @@ Dokumen ini ditulis dalam bahasa Indonesia karena pembacanya adalah kamu dan tim
 | **Tahu kelemahan CMS-nya & rencana perbaikan** | [09 — Audit CMS & Rencana](09-audit-cms-ux.md) |
 | **Rencana restrukturisasi Service → Detail → Sub-service** | [10 — Rencana Restrukturisasi Layanan](10-rencana-restrukturisasi-layanan.md) |
 | **Deploy ke hosting / serah terima ke orang lain** | [11 — Deploy & Serah Terima](11-deploy.md) |
+| **Menaikkan fitur warna tema ke produksi** | [12 — Rilis Warna Tema](12-rilis-warna-tema.md) |
 
 ## Aturan utama proyek ini
 
