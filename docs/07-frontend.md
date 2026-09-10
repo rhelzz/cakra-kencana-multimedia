@@ -7,6 +7,9 @@ Next.js 16.3, App Router, Turbopack, TypeScript, Tailwind v4, shadcn/ui.
 
 ## Struktur
 
+Route `/customers` menampilkan seluruh logo klien; beranda hanya menampilkan 18 logo unggulan
+dalam marquee. Prefix `/en` dan `/zh` mengikuti mekanisme locale yang sama dengan route lain.
+
 ```
 frontend/src/
 ├── proxy.ts                         routing bahasa (Next 16: middleware → proxy)
@@ -19,7 +22,7 @@ frontend/src/
 │   └── api/revalidate/route.ts      webhook dari plugin Joomla
 ├── components/
 │   ├── Navbar.tsx → SiteHeader.tsx  server (ambil data) → client (scroll, sheet)
-│   ├── Hero / About / Services / Customers / Offices / Footer
+│   ├── Hero / About / Services / Customers / Offices / Contact / Footer
 │   ├── Gallery.tsx                  carousel (client)
 │   ├── SocialLinks.tsx, LanguageSwitcher.tsx, ThemeToggle.tsx, theme-provider.tsx
 │   └── ui/                          hasil generate shadcn — jangan disunting tangan
@@ -124,7 +127,7 @@ Pakai token, jangan warna mentah: `bg-background`, `text-muted-foreground`, `bor
 Merah adalah **satu-satunya** aksen. Kalau butuh warna status, ambil dari `--chart-*`.
 
 Dua tempat sengaja **selalu gelap** di kedua tema: hero (foto + gradien) dan pita Customers
-(logo diratakan jadi putih, butuh dasar gelap).
+(logo warna asli ditempatkan pada bidang putih netral).
 
 ### Dark mode
 

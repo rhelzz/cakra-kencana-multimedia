@@ -205,18 +205,17 @@ Kategori **Our customers**. Berbahasa `All`.
 3. **Intro Image** → unggah logo → **Save**
 
 ### ⚠ Syarat bentuk logo
-Logo diratakan jadi **putih solid** di atas latar gelap, supaya deretannya seragam. Ini hanya
-bekerja untuk logo **wordmark / outline**.
-
-**Logo blok terisi dengan huruf berlubang (knockout) akan jadi gumpalan putih tanpa bentuk.**
-Ini benar-benar terjadi pada logo Indosat Ooredoo versi kotak kuning-merah, dan diperbaiki
-dengan mengganti ke versi wordmark.
-
-Kalau logo klien memang berbentuk blok, pilihannya: cari varian wordmark-nya, atau minta
-developer mematikan filter putih untuk semua logo.
+Logo ditampilkan dengan **warna aslinya** di atas bidang putih netral. Gunakan PNG transparan
+dengan ruang kosong secukupnya agar ukuran visual antarmerek tetap seimbang.
 
 ### Delete
 Trash artikelnya.
+
+### Urutan dan tampilan 84 logo
+
+Delapan belas artikel pertama menjadi logo unggulan dalam marquee di beranda. Tombol di bawahnya
+membuka halaman **Klien Kami** yang menampilkan seluruh logo. Ubah **Ordering** artikel untuk
+memilih logo unggulan; tidak perlu mengubah kode.
 
 ---
 
@@ -250,6 +249,27 @@ bukan alamat footer.
 
 ### Delete
 Trash artikelnya. Jangan menghapus artikel Kantor Pusat jika alamat footer masih diperlukan.
+
+---
+
+## Contact Us
+
+Kategori **Contact**. Setiap kontak dibuat tiga kali dengan alias dasar yang sama dan akhiran
+`-id`, `-en`, serta `-zh`.
+
+| Yang tampil | Diambil dari |
+|---|---|
+| Nama kontak | **Title** |
+| Nomor telepon / email | isi editor |
+| Tujuan klik | field **Link** |
+
+Untuk menambah WhatsApp, buat tiga artikel terjemahan, isi nomor pada editor, lalu isi field
+**Link** dengan format `https://wa.me/62...` tanpa tanda `+`, spasi, atau strip. Artikel
+`request-compro-*` dirender sebagai CTA terpisah; Title menjadi label tombol, isi editor menjadi
+deskripsinya, dan field **Link** menjadi tujuan tombol. Link kosong membuat item tidak tampil.
+
+Judul section diatur melalui `heading-contact-id`, `heading-contact-en`, dan
+`heading-contact-zh` pada kategori **Headings**.
 
 ---
 
@@ -293,6 +313,7 @@ Kategori **Headings**. Satu artikel per judul per bahasa; hanya **Title**-nya ya
 | `heading-services-id` / `-en` / `-zh` | section Services |
 | `heading-customers-id` / `-en` / `-zh` | section Our customers |
 | `heading-offices-id` / `-en` / `-zh` | section Our offices |
+| `heading-contact-id` / `-en` / `-zh` | section Contact Us |
 
 ### Update
 Ubah **Title**-nya, Save. Itu saja.

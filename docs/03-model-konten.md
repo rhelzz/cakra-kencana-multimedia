@@ -13,12 +13,13 @@ Jangan menghapus lalu membuat ulang kategori — ID-nya akan berubah dan section
 | 2 | Uncategorised | `home-hero`, `footer-copyright` | Hero, Footer |
 | 8 | Gallery | 4 slide carousel (gambar saja) | Gallery |
 | 9 | About | 3 blok teks | About |
-| 10 | Services | 10 layanan | Services + halaman detail |
-| 11 | Our customers | 6 logo klien | Customers |
-| 12 | Our offices | 4 lokasi | Offices + Footer |
+| 10 | Services | 11 layanan | Services + halaman detail |
+| 11 | Our customers | 84 logo klien | Customers |
+| 12 | Our offices | 5 lokasi | Offices + Footer |
 | 13 | Social | 5 akun sosmed | SocialLinks |
 | 14 | Headings | judul section per bahasa | `getHeading()` |
 | 15 | Service sub-items | sub-service per layanan induk | grid halaman detail service |
+| 16 | Contact | WhatsApp, email, dan CTA company profile | Contact |
 
 Kategori itu sendiri berbahasa `*` (All) — hanya wadah. Yang ditandai bahasa adalah artikelnya.
 
@@ -30,7 +31,7 @@ Kategori itu sendiri berbahasa `*` (All) — hanya wadah. Yang ditandai bahasa a
 |---|---|---|---|---|
 | 1 | `icon` | List | Services (10), Offices (12), Social (13) | 23 pilihan ikon |
 | 2 | `map` | URL | Offices (12) | Link Google Maps; **kosong = tombol hilang** |
-| 3 | `link` | URL | Social (13) | URL profil; **kosong = ikon hilang** |
+| 3 | `link` | URL | Social (13), Contact (16) | URL tujuan; **kosong = item hilang** |
 | 4 | `parent-service` | List | Service sub-items (15) | Menentukan service induk sub-service |
 | 5–8 | warna tema | Color | Uncategorised (2) | Mengatur warna website |
 
@@ -101,8 +102,8 @@ Supaya baris hak cipta tidak perlu disunting tiap Januari.
 
 ### Service dan sub-service
 
-Kategori **Services** berisi 10 service utama. Kategori **Service sub-items** (ID 15) berisi
-86 sub-service yang masing-masing tersedia dalam tiga bahasa, sehingga saat ini terdapat 258
+Kategori **Services** berisi 11 service utama. Kategori **Service sub-items** (ID 15) berisi
+89 sub-service yang masing-masing tersedia dalam tiga bahasa, sehingga saat ini terdapat 267
 artikel sub-service aktif.
 
 Relasi ditentukan oleh custom field `parent-service`, bukan oleh nama alias sub-service.
@@ -193,9 +194,10 @@ Untuk orientasi saja. **Jangan mengandalkan ID artikel di kode** — pakai alias
 | `about-service-area` | 9 | paragraf |
 | `about-why-choose-us` | 9 | bullet list → checklist |
 | `service-*` (10 buah per bahasa) | 10 | punya field `icon` |
-| `customer-*` (6 buah) | 11 | bahasa `*` |
+| `customer-*` (84 buah) | 11 | bahasa `*`; 18 pertama tampil sebagai unggulan |
 | `office-head-office`, `office-workshop-i…iii` | 12 | punya `icon` + `map` |
 | `social-*` (5 buah) | 13 | bahasa `*`, punya `icon` + `link` |
 | `heading-services`, `heading-customers`, `heading-offices` | 14 | 3 bahasa masing-masing |
-| `subservice-*` (86 set) | 15 | 3 bahasa masing-masing, punya `parent-service` |
+| `subservice-*` (89 set) | 15 | 3 bahasa masing-masing, punya `parent-service` |
+| `contact-*`, `request-compro-*` | 16 | 3 bahasa masing-masing, punya field `link` |
 | `theme` | 2 | pengaturan warna website |

@@ -21,6 +21,21 @@ Dokumen ini ditulis dalam bahasa Indonesia karena pembacanya adalah kamu dan tim
 | **Rencana restrukturisasi Service → Detail → Sub-service** | [10 — Rencana Restrukturisasi Layanan](10-rencana-restrukturisasi-layanan.md) |
 | **Deploy ke hosting / serah terima ke orang lain** | [11 — Deploy & Serah Terima](11-deploy.md) |
 | **Menaikkan fitur warna tema ke produksi** | [12 — Rilis Warna Tema](12-rilis-warna-tema.md) |
+| **Memberi panduan ke klien / tim konten** | [Panduan Pengguna CMS (PDF)](panduan-pengguna-cms.pdf) |
+
+### Panduan Pengguna CMS
+
+`panduan-pengguna-cms.pdf` adalah satu-satunya dokumen di folder ini yang ditujukan untuk
+**klien**, bukan untuk developer: 10 bab plus ringkasan kerja cepat, ditulis untuk pengguna
+umum dan non-teknis.
+Sumbernya `panduan-pengguna-cms.html` — edit HTML-nya, lalu render ulang PDF-nya:
+
+```bash
+chrome --headless --no-pdf-header-footer   --print-to-pdf="docs/panduan-pengguna-cms.pdf"   "file:///C:/laragon/www/company-profile/docs/panduan-pengguna-cms.html"
+```
+
+Tidak ada dependensi lain — HTML-nya *self-contained* (CSS inline, tanpa gambar eksternal),
+jadi Chrome atau Edge mana pun bisa merendernya.
 
 ## Aturan utama proyek ini
 

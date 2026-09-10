@@ -220,6 +220,7 @@ export const CATEGORY = {
   social: 13,
   headings: 14,
   serviceSubItems: 15,
+  contact: 16,
 } as const;
 
 /** Sub-services of one service, matched via the `parent-service` field to the service's base alias. */

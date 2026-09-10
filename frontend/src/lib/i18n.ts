@@ -56,6 +56,11 @@ export const UI = {
     pauseCarousel: 'Jeda galeri',
     resumeCarousel: 'Lanjutkan galeri',
     goToSlide: 'Ke slide',
+    contactWhatsapp: 'Chat via WhatsApp',
+    contactEmail: 'Kirim Email',
+    viewAllClients: 'Lihat semua {count} klien',
+    allClients: 'Semua klien',
+    clientUnit: 'Klien',
   },
   en: {
     aboutEyebrow: 'About us',
@@ -78,6 +83,11 @@ export const UI = {
     pauseCarousel: 'Pause gallery',
     resumeCarousel: 'Resume gallery',
     goToSlide: 'Go to slide',
+    contactWhatsapp: 'Chat on WhatsApp',
+    contactEmail: 'Send Email',
+    viewAllClients: 'View all {count} clients',
+    allClients: 'All clients',
+    clientUnit: 'Clients',
   },
   zh: {
     aboutEyebrow: '关于我们',
@@ -100,6 +110,11 @@ export const UI = {
     pauseCarousel: '暂停画廊',
     resumeCarousel: '继续画廊',
     goToSlide: '切换到幻灯片',
+    contactWhatsapp: '通过 WhatsApp 联系',
+    contactEmail: '发送邮件',
+    viewAllClients: '查看全部 {count} 家客户',
+    allClients: '全部客户',
+    clientUnit: '家客户',
   },
 } satisfies Record<Locale, Record<string, string>>;
 

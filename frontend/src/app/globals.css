@@ -188,6 +188,28 @@
   }
 }
 
+@keyframes customer-marquee {
+  to {
+    transform: translateX(calc(-50% - 0.75rem));
+  }
+}
+
+.customer-marquee {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .customer-marquee-track {
+    animation: customer-marquee 42s linear infinite;
+  }
+
+  .customer-marquee:hover .customer-marquee-track,
+  .customer-marquee:focus-within .customer-marquee-track {
+    animation-play-state: paused;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
     /* `backwards`, NOT `both`. A running animation outranks normal declarations in the

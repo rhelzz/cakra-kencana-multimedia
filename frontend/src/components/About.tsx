@@ -18,7 +18,7 @@ export default async function About({ locale }: { locale: Locale }) {
 
   return (
     <section id="about" className="scroll-mt-20 bg-background px-4 py-20 sm:px-6 lg:py-28">
-      <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
+      <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
         <div>
           <p className="reveal flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
             <span aria-hidden className="h-px w-8 bg-primary" />
@@ -51,16 +51,23 @@ function Block({ article }: { article: Article }) {
       </h2>
       {items.length > 0 ? (
         <ul className="mt-4 space-y-3">
-          {items.map((item) => (
-            // The checklist is the one place the red reads as a stamp of approval rather than
-            // decoration, so the marker gets a tinted disc instead of sitting on bare page.
-            <li key={item} className="group flex items-start gap-3 text-[0.95rem]">
-              <span className="mt-0.5 grid size-[1.35rem] shrink-0 place-items-center rounded-full bg-accent transition-transform duration-500 ease-settle group-hover:scale-110 motion-reduce:transition-none">
-                <CircleCheck className="size-[0.95rem] text-primary" />
-              </span>
-              <span className="text-pretty">{item}</span>
-            </li>
-          ))}
+          {items.map((item) => {
+            const [title, description] = item.split(' — ', 2);
+
+            return (
+              // The checklist is the one place the red reads as a stamp of approval rather than
+              // decoration, so the marker gets a tinted disc instead of sitting on bare page.
+              <li key={item} className="group flex items-start gap-3 text-[0.95rem]">
+                <span className="mt-0.5 grid size-[1.35rem] shrink-0 place-items-center rounded-full bg-accent transition-transform duration-500 ease-settle group-hover:scale-110 motion-reduce:transition-none">
+                  <CircleCheck className="size-[0.95rem] text-primary" />
+                </span>
+                <span className="text-pretty">
+                  <strong className="block font-medium text-foreground">{title}</strong>
+                  {description && <span className="mt-1 block text-muted-foreground">{description}</span>}
+                </span>
+              </li>
+            );
+          })}
         </ul>
       ) : (
         <div

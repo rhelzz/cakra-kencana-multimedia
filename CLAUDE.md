@@ -91,12 +91,13 @@ Categories (ids are hardcoded in `CATEGORY` in `lib/joomla.ts` — do not renumb
 | 2 | Uncategorised | `home-hero`, `footer-copyright` | Hero, Footer |
 | 8 | Gallery | carousel slides (image only) | Gallery |
 | 9 | About | the 3 text blocks | About |
-| 10 | Services | 10 services (rewritten from the client's poster, no longer the original 9) | Services, `/services`, service detail |
-| 11 | Our customers | 6 client logos | Customers |
-| 12 | Our offices | 4 locations | Offices, Footer |
+| 10 | Services | 11 services | Services, `/services`, service detail |
+| 11 | Our customers | 84 client logos | Customers |
+| 12 | Our offices | 5 locations | Offices, Footer |
 | 13 | Social | 5 social accounts | SocialLinks |
 | 14 | Headings | translated section headings | `getHeading()` |
-| 15 | Service sub-items | 86 sub-services (e.g. "Neon Box" under "Indoor / Outdoor Reklame") | sub-service grid on the service detail page |
+| 15 | Service sub-items | sub-services per service | sub-service grid on the service detail page |
+| 16 | Contact | WhatsApp, email, and company-profile CTA | Contact |
 
 ### Custom fields (Content → Fields)
 
@@ -104,7 +105,7 @@ Categories (ids are hardcoded in `CATEGORY` in `lib/joomla.ts` — do not renumb
 |---|---|---|---|
 | `icon` | list | Services, Offices, Social | 23 curated options; value must match a key in `lib/icons.ts` or `BRAND_PATHS` in `lib/social.ts` |
 | `map` | url | Offices | Google Maps link. **Empty = the Open Map button disappears** |
-| `link` | url | Social | Profile URL. **Empty = that icon disappears** |
+| `link` | url | Social, Contact | Destination URL. **Empty = that item disappears** |
 | `parent-service` | list | Service sub-items (15) | Which of the 10 services this sub-item belongs to; value is the service's base alias (e.g. `service-digital-printing`). **Named `parent-service` with a hyphen, not `parent_service`** — Joomla slugified it on creation regardless of what was requested. Read via `attributes['parent-service']`, see `getSubServices()` in `joomla.ts`. |
 
 Adding an icon option takes two edits: import it in `lib/icons.ts` **and** add the same
@@ -229,9 +230,8 @@ Measured end to end: ~3.3s from save to updated page.
 - **Brand icons from `simple-icons`.** Lucide 1.30 removed all brand icons for trademark
   reasons. **LinkedIn is absent from simple-icons** (removed at LinkedIn's request) and falls
   back to a globe.
-- **Customer logos are flattened white** with `brightness-0 invert` on a dark band, so mixed
-  brand colours read as one set. This only works on wordmark/outline logos — a filled block
-  with knockout text becomes a white blob (this happened with Indosat Ooredoo).
+- **Customer logos keep their original colours** on neutral white tiles inside the dark band,
+  so both dark and light brand marks remain legible without altering their identity.
 - **Images use plain `<img>`, not `next/image`.** Sources are runtime Joomla URLs; `next/image`
   would need `remotePatterns` for the Joomla host. Add it if optimisation becomes worth it.
 - **Hero background is a CSS `background-image`**, so no image config is needed at all.
@@ -342,11 +342,12 @@ Home page sections, all dynamic, all three languages:
 3. **Services** — up to 6 cards with icons on the home page; a **"Lebih banyak" button** appears
    and links to `/services` (full listing, no limit) once there are more than 6. Each card links
    to a detail page.
-4. **Our customers** — 6 logos on a permanently dark band
-5. **Our offices** — 4 locations, icon per type, Open Map only when a link exists
-6. **Footer** — logo, tagline, social icons, menu, head office, `{year}` copyright
+4. **Our customers** — 18 featured logos in a CSS-only marquee plus a link to `/customers`, which lists all 84 logos
+5. **Our offices** — 5 locations, icon per type, Open Map only when a link exists
+6. **Contact** — CRUD-managed WhatsApp/email links plus the company-profile CTA
+7. **Footer** — logo, tagline, social icons, menu, head office, `{year}` copyright
 
-Plus: **`/services`** (listing page, all 10 services), **service detail page** (`/services/[id]`,
+Plus: **`/services`** (listing page, all 10 services), **`/customers`** (all client logos), **service detail page** (`/services/[id]`,
 icon + title + hero image + body + a masonry grid of that service's sub-services, text-only
 cards, no per-sub-service image + 9 sibling services + per-service metadata + 404 on a bad id),
 sticky navbar that floats transparent over the home page hero and turns solid on scroll —
@@ -364,7 +365,7 @@ per-locale `hreflang`.
   speaker. Printing terms especially (胶印, 丝网印刷, 车间).
 - **Service detail pages are thin** — Joomla only has `introtext` filled. They become useful
   when editors write the part after "Read more".
-- **Chinese service copy is machine-written and unreviewed.** All 10 services and 86
+- **Chinese service copy is machine-written and unreviewed.** All 11 services and 89
   sub-services now exist in all three languages, imported from `content-drafts/` by
   `scripts/import-translations.py`. The English reads naturally; the Mandarin printing terms
   (胶版印刷, 丝网印刷, 数码印刷) have never been checked by a native speaker.

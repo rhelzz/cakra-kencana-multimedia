@@ -2,147 +2,942 @@
 <html lang="id">
 <head>
 <meta charset="utf-8">
-<title>Panduan Pengguna CMS — Cakra Kencana Multimedia</title>
+<title>Panduan Pengelolaan Konten Website | Cakra Kencana Multimedia</title>
 <style>
-@page { size: A4; margin: 18mm 17mm 17mm; }
+@page { size: A4; margin: 16mm 16mm 15mm; }
+
+:root {
+  --red: #d71920;
+  --red-soft: #fff3f3;
+  --red-line: #f0b8ba;
+  --navy: #17191c;
+  --slate: #59616b;
+  --rule: #d9dde2;
+  --tint: #f4f5f6;
+  --green: #176b45;
+  --amber: #7a5100;
+  --amber-soft: #fff8e8;
+  --blue: #245b78;
+  --blue-soft: #eef6fa;
+}
+
 * { box-sizing: border-box; }
-body { font-family: Arial, sans-serif; color: #243247; font-size: 10.5pt; line-height: 1.5; }
-h1 { color: #a71930; font-size: 28pt; line-height: 1.15; margin: 0 0 12pt; }
-h2 { color: #a71930; font-size: 18pt; border-bottom: 2px solid #e7c8cd; padding-bottom: 5pt; margin: 0 0 12pt; }
-h3 { color: #243247; font-size: 12.5pt; margin: 14pt 0 5pt; }
+
+body {
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  color: var(--navy);
+  font-size: 10pt;
+  line-height: 1.48;
+  margin: 0;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
 p { margin: 0 0 7pt; }
-ul, ol { margin-top: 4pt; padding-left: 20pt; }
-li { margin-bottom: 3pt; }
-.cover { min-height: 235mm; padding: 35mm 12mm 0; border-left: 8px solid #a71930; }
-.eyebrow { color: #a71930; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; font-size: 9pt; }
-.subtitle { font-size: 15pt; color: #56657a; max-width: 125mm; }
-.note { background: #f7f1ed; border-left: 4px solid #a71930; padding: 9pt 11pt; margin: 10pt 0; }
-.tip { background: #eef4f8; border-left: 4px solid #557895; padding: 8pt 10pt; margin: 9pt 0; }
-.step { background: #fafafa; border: 1px solid #e1e5e9; padding: 8pt 10pt; margin: 7pt 0; }
-.step b { color: #a71930; }
-table { width: 100%; border-collapse: collapse; margin: 8pt 0 12pt; }
-th { background: #243247; color: white; text-align: left; }
-th, td { border: 1px solid #d8dee5; padding: 6pt 7pt; vertical-align: top; }
-tr:nth-child(even) td { background: #f7f9fa; }
-code { font-family: Consolas, monospace; background: #f1f3f5; padding: 1pt 3pt; }
-.page { page-break-before: always; }
-.small { color: #657488; font-size: 9pt; }
-.flow { text-align: center; font-weight: bold; color: #a71930; padding: 10pt; background: #faf3f4; }
-.check { color: #23804e; font-weight: bold; }
+strong, b { color: var(--navy); }
+em { color: var(--slate); font-style: normal; }
+
+ul, ol { margin: 5pt 0 9pt; padding-left: 17pt; }
+li { margin-bottom: 3.5pt; }
+li::marker { color: var(--red); }
+
+code {
+  font-family: Consolas, "Courier New", monospace;
+  background: var(--tint);
+  border: 1px solid var(--rule);
+  border-radius: 2pt;
+  padding: 0.5pt 3pt;
+  font-size: 0.88em;
+  color: #33455c;
+}
+
+/* ---------- halaman ---------- */
+.sheet { page-break-before: auto; padding-top: 9mm; }
+.cover { page-break-after: always; }
+.cover + .sheet { page-break-after: always; padding-top: 0; }
+
+/* ---------- sampul ---------- */
+.cover {
+  min-height: 262mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0;
+}
+.cover-top { border-top: 7pt solid var(--red); padding: 24mm 0 0; }
+.cover .eyebrow {
+  color: var(--red);
+  font-weight: 700;
+  letter-spacing: 2.6pt;
+  text-transform: uppercase;
+  font-size: 8pt;
+  margin: 0 0 10pt;
+}
+.cover h1 {
+  font-size: 38pt;
+  line-height: 1.02;
+  color: var(--navy);
+  margin: 0 0 6pt;
+  letter-spacing: -0.6pt;
+}
+.cover .lede {
+  font-size: 13pt;
+  color: var(--slate);
+  line-height: 1.45;
+  max-width: 122mm;
+  margin: 0 0 16pt;
+}
+.cover .org {
+  font-size: 11pt;
+  font-weight: 600;
+  color: var(--red);
+  letter-spacing: 0.4pt;
+}
+.cover-meta {
+  border-top: 2pt solid var(--navy);
+  padding-top: 8pt;
+  display: flex;
+  gap: 12mm;
+}
+.cover-meta div { font-size: 9pt; color: var(--slate); }
+.cover-meta span { display: block; font-size: 7.5pt; text-transform: uppercase; letter-spacing: 1.2pt; color: var(--red); font-weight: 700; margin-bottom: 2pt; }
+.cover-meta b { color: var(--navy); font-weight: 600; }
+
+/* ---------- kepala bab ---------- */
+.chapter { display: flex; align-items: flex-start; gap: 7mm; margin: 0 0 14pt; border-bottom: 2pt solid var(--navy); padding-bottom: 9pt; page-break-inside: avoid; page-break-after: avoid; }
+.chapter.plain .num { display: none; }
+.chapter .num {
+  font-size: 26pt;
+  font-weight: 700;
+  color: var(--red);
+  line-height: 0.9;
+  min-width: 17mm;
+  border-right: 1pt solid var(--rule);
+  padding-right: 5mm;
+}
+.chapter h2 { font-size: 19pt; color: var(--navy); margin: 0 0 3pt; line-height: 1.12; letter-spacing: -0.3pt; }
+.chapter .sub { color: var(--slate); font-size: 10pt; margin: 0; }
+
+h3 {
+  font-size: 11.5pt;
+  color: var(--navy);
+  margin: 15pt 0 5pt;
+  padding-bottom: 3pt;
+  border-left: 3pt solid var(--red);
+  padding-left: 7pt;
+  page-break-after: avoid;
+}
+h4 { font-size: 10pt; color: var(--red); margin: 11pt 0 3pt; page-break-after: avoid; }
+
+/* ---------- kotak pesan ---------- */
+.callout {
+  padding: 8pt 10pt;
+  margin: 9pt 0;
+  border-left: 3pt solid var(--red);
+  background: var(--red-soft);
+  page-break-inside: avoid;
+  border-radius: 0;
+}
+.callout .label {
+  display: block;
+  font-size: 7.5pt;
+  font-weight: 700;
+  letter-spacing: 1.3pt;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 3pt;
+}
+.callout p:last-child, .callout ul:last-child { margin-bottom: 0; }
+.callout.tip { border-color: var(--blue); background: var(--blue-soft); }
+.callout.tip .label { color: var(--blue); }
+.callout.warn { border-color: var(--amber); background: var(--amber-soft); }
+.callout.warn .label { color: var(--amber); }
+
+/* ---------- langkah bernomor ---------- */
+ol.steps { list-style: none; padding: 0; margin: 8pt 0 10pt; counter-reset: s; }
+ol.steps > li {
+  counter-increment: s;
+  position: relative;
+  padding: 0 0 0 11mm;
+  margin-bottom: 7pt;
+  min-height: 7mm;
+  page-break-inside: avoid;
+}
+ol.steps > li::before {
+  content: counter(s);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 7mm;
+  height: 7mm;
+  border-radius: 2pt;
+  background: var(--red);
+  color: #fff;
+  font-size: 9pt;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- tabel ---------- */
+table { width: 100%; border-collapse: collapse; margin: 8pt 0 11pt; font-size: 9.4pt; page-break-inside: avoid; }
+th {
+  background: var(--navy);
+  color: #fff;
+  text-align: left;
+  font-weight: 600;
+  font-size: 8.6pt;
+  letter-spacing: 0.4pt;
+  text-transform: uppercase;
+}
+th, td { border: 1pt solid var(--rule); padding: 5pt 7pt; vertical-align: top; }
+tbody tr:nth-child(even) td { background: var(--tint); }
+td code { background: #fff; }
+tbody tr:nth-child(even) td code { background: #fff; }
+
+/* ---------- alur ---------- */
+.flow {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin: 10pt 0 12pt;
+  page-break-inside: avoid;
+}
+.flow > div {
+  flex: 1;
+  background: var(--tint);
+  border: 1pt solid var(--rule);
+  padding: 6pt 5pt;
+  text-align: center;
+  font-size: 8.8pt;
+  font-weight: 600;
+  color: var(--navy);
+}
+.flow > div + div { border-left: none; }
+.flow > div small { display: block; font-weight: 400; color: var(--slate); font-size: 7.6pt; margin-top: 1pt; }
+.flow > div.hi { background: var(--red); border-color: var(--red); color: #fff; }
+.flow > div.hi small { color: #f3d4d9; }
+
+/* ---------- diagram tulang punggung ---------- */
+.spine { display: flex; gap: 4mm; margin: 10pt 0 12pt; page-break-inside: avoid; }
+.spine .col { flex: 1; border: 1pt solid var(--rule); border-radius: 0; overflow: hidden; }
+.spine .col.master { border-color: var(--red); border-width: 1.5pt; }
+.spine .hd {
+  background: var(--tint);
+  padding: 4pt 6pt;
+  font-size: 8.4pt;
+  font-weight: 700;
+  color: var(--slate);
+  border-bottom: 1pt solid var(--rule);
+  text-align: center;
+}
+.spine .col.master .hd { background: var(--red); color: #fff; }
+.spine .row { padding: 4pt 6pt; font-size: 8.6pt; border-bottom: 1pt solid #eef1f4; }
+.spine .row:last-child { border-bottom: none; }
+.spine .col.master .row { font-weight: 600; }
+.spine-note { text-align: center; font-size: 8pt; color: var(--slate); margin-top: 3pt; }
+
+/* ---------- daftar isi ---------- */
+.toc { margin-top: 6pt; }
+.toc-item { display: flex; gap: 6mm; padding: 7pt 0; border-bottom: 1pt solid var(--rule); page-break-inside: avoid; }
+.toc-item .n { color: var(--red); font-weight: 700; font-size: 12pt; min-width: 8mm; line-height: 1.2; }
+.toc-item .t { font-weight: 600; font-size: 10.4pt; }
+.toc-item .d { color: var(--slate); font-size: 9pt; display: block; font-weight: 400; margin-top: 1pt; }
+
+/* ---------- checklist ---------- */
+ul.check { list-style: none; padding: 0; }
+ul.check li { padding-left: 8mm; position: relative; }
+ul.check li::before {
+  content: "\2713";
+  position: absolute;
+  left: 0;
+  color: var(--green);
+  font-weight: 700;
+}
+
+/* ---------- kartu ---------- */
+.grid2 { display: flex; gap: 5mm; margin: 9pt 0; page-break-inside: avoid; }
+.card {
+  flex: 1;
+  border: 1pt solid var(--rule);
+  border-top: 2.5pt solid var(--red);
+  border-radius: 0;
+  padding: 7pt 9pt;
+  background: #fff;
+}
+.card h4 { margin-top: 0; }
+.card p:last-child, .card ul:last-child { margin-bottom: 0; }
+
+.pill {
+  display: inline-block;
+  background: var(--red);
+  color: #fff;
+  font-size: 7.4pt;
+  font-weight: 700;
+  letter-spacing: 0.8pt;
+  text-transform: uppercase;
+  padding: 1.5pt 5pt;
+  border-radius: 2pt;
+  vertical-align: 1.5pt;
+}
+.pill.grey { background: var(--slate); }
+
+.foot {
+  margin-top: 14pt;
+  padding-top: 6pt;
+  border-top: 1pt solid var(--rule);
+  font-size: 8.4pt;
+  color: var(--slate);
+}
 </style>
 </head>
 <body>
+
+<!-- ============ SAMPUL ============ -->
 <section class="cover">
-  <div class="eyebrow">Panduan untuk Admin Konten</div>
-  <h1>Cara Menggunakan CMS</h1>
-  <p class="subtitle">Panduan sederhana untuk menambah, mengubah, mengatur, dan menerjemahkan isi website Cakra Kencana Multimedia.</p>
-  <div class="note"><b>Alamat CMS:</b><br>https://cms.cakrakencanamultimedia.com/administrator</div>
-  <p class="small">Dokumen ini hanya membahas pekerjaan sehari-hari di CMS. Tidak perlu mengubah kode atau database untuk mengikuti panduan ini.</p>
+  <div class="cover-top">
+    <p class="eyebrow">Panduan Pengelolaan Konten</p>
+    <h1>Website<br>Company Profile</h1>
+    <p class="lede">Petunjuk lengkap untuk mengelola tulisan, gambar, layanan, klien, kantor, kontak, dan tiga bahasa melalui CMS. Disusun untuk pengguna umum tanpa pengetahuan teknis.</p>
+    <p class="org">PT Cakra Kencana Multimedia</p>
+  </div>
+  <div class="cover-meta">
+    <div><span>Alamat CMS</span><b>cms.cakrakencanamultimedia.com/administrator</b></div>
+    <div><span>Website</span><b>cakrakencanamultimedia.com</b></div>
+    <div><span>Edisi</span><b>September 2026</b></div>
+  </div>
 </section>
 
-<section class="page">
-<h2>1. Sebelum Mulai</h2>
-<p>CMS adalah tempat untuk mengelola isi website. Setiap perubahan dilakukan dari menu administrator Joomla.</p>
-<div class="flow">Login → Content → Articles → Edit → Save → Cek website</div>
-<h3>Aturan paling penting</h3>
-<ul>
-<li>Pastikan artikel berstatus <b>Published</b> agar tampil di website.</li>
-<li>Pilih kategori yang benar. Kategori menentukan artikel muncul di bagian website mana.</li>
-<li>Jangan menghapus kategori yang sudah tersedia.</li>
-<li>Untuk menerjemahkan artikel, buat artikel bahasa baru. Jangan mengganti bahasa artikel lama.</li>
-<li>Setelah menyimpan, tunggu beberapa detik lalu refresh website.</li>
-</ul>
-<div class="tip"><b>Jika ragu:</b> buka artikel yang sudah benar, gunakan sebagai contoh, lalu duplikasi artikel tersebut.</div>
-<h3>Filter artikel</h3>
-<p>Di halaman daftar artikel, gunakan filter <b>Category</b>, <b>Language</b>, dan <b>Status</b>. Ini sangat membantu karena jumlah artikel cukup banyak.</p>
+<!-- ============ DAFTAR ISI ============ -->
+<section class="sheet">
+  <div class="chapter plain">
+    <div class="num">&nbsp;</div>
+    <div><h2>Daftar Isi</h2><p class="sub">Sepuluh bab dan satu ringkasan kerja cepat.</p></div>
+  </div>
+
+  <div class="toc">
+    <div class="toc-item"><div class="n">1</div><div class="t">Cara Kerja Website Ini<span class="d">Hubungan antara CMS dan halaman yang dilihat pengunjung</span></div></div>
+    <div class="toc-item"><div class="n">2</div><div class="t">Pekerjaan Sehari-hari<span class="d">Masuk, mengubah artikel, menambah artikel baru</span></div></div>
+    <div class="toc-item"><div class="n">3</div><div class="t">Mengatur Urutan Tampilan<span class="d">Bab terpenting. Menentukan item mana tampil lebih dulu</span></div></div>
+    <div class="toc-item"><div class="n">4</div><div class="t">Bagian Depan Halaman<span class="d">Hero, Tentang Kami, galeri foto, judul section, warna situs</span></div></div>
+    <div class="toc-item"><div class="n">5</div><div class="t">Layanan dan Sub-layanan<span class="d">Sebelas layanan dan rincian di dalamnya</span></div></div>
+    <div class="toc-item"><div class="n">6</div><div class="t">Klien, Kantor, dan Footer<span class="d">Logo klien, lokasi kantor, media sosial, hak cipta</span></div></div>
+    <div class="toc-item"><div class="n">7</div><div class="t">Kontak dan Company Profile<span class="d">WhatsApp, email, dan tombol Request Compro</span></div></div>
+    <div class="toc-item"><div class="n">8</div><div class="t">Tiga Bahasa<span class="d">Indonesia, Inggris, Mandarin, dan cara menerjemahkan</span></div></div>
+    <div class="toc-item"><div class="n">9</div><div class="t">Menu Navigasi<span class="d">Tautan di bagian atas dan bawah halaman</span></div></div>
+    <div class="toc-item"><div class="n">10</div><div class="t">Pemecahan Masalah<span class="d">Gejala umum, penyebab, dan langkah penanganan</span></div></div>
+    <div class="toc-item"><div class="n">R</div><div class="t">Ringkasan Kerja Cepat<span class="d">Checklist sebelum menyimpan dan memeriksa hasil</span></div></div>
+  </div>
+
+  <div class="callout tip">
+    <span class="label">Cara membaca panduan ini</span>
+    <p>Kalau hanya perlu mengubah tulisan atau gambar, <b>Bab 2</b> sudah cukup. Kalau ada yang urutannya salah di website, langsung ke <b>Bab 3</b>. Kalau ada yang terasa aneh, <b>Bab 9</b>.</p>
+  </div>
 </section>
 
-<section class="page">
-<h2>2. Menambah atau Mengubah Artikel</h2>
-<h3>Mengubah artikel yang sudah ada</h3>
-<ol>
-<li>Buka <b>Content → Articles</b>.</li>
-<li>Cari artikel, atau gunakan filter kategori/bahasa.</li>
-<li>Klik judul artikel.</li>
-<li>Ubah judul, isi, gambar, atau field yang diperlukan.</li>
-<li>Klik <b>Save & Close</b>.</li>
-</ol>
-<h3>Menambah artikel baru</h3>
-<ol>
-<li>Buka <b>Content → Articles → New</b>.</li>
-<li>Isi <b>Title</b>.</li>
-<li>Pilih <b>Category</b> yang sesuai.</li>
-<li>Pilih <b>Language</b>.</li>
-<li>Isi artikel pada editor utama.</li>
-<li>Isi tab <b>Images and Links</b> atau <b>Fields</b> bila diperlukan.</li>
-<li>Pastikan statusnya <b>Published</b>, lalu simpan.</li>
-</ol>
-<h3>Urutan artikel</h3>
-<p>Urutan artikel menentukan urutan tampilnya blok, slide, service, kantor, atau item lain. Di daftar artikel, pilih pengurutan berdasarkan <b>Ordering</b>, lalu gunakan drag-and-drop.</p>
-<div class="note"><b>Catatan:</b> urutan kantor hanya mengubah tampilan section Offices. Footer selalu mengambil data dari artikel Kantor Pusat.</div>
+<!-- ============ BAB 1 ============ -->
+<section class="sheet">
+  <div class="chapter">
+    <div class="num">1</div>
+    <div><h2>Cara Kerja Website Ini</h2><p class="sub">Satu konsep yang membuat semua bab berikutnya masuk akal.</p></div>
+  </div>
+
+  <p>Website dan CMS adalah dua hal yang terpisah. <b>CMS</b> adalah tempat Anda bekerja. <b>Website</b> adalah yang dilihat pengunjung. Setiap kali Anda menyimpan sesuatu di CMS, website mengambil versi terbaru dan menampilkannya.</p>
+
+  <div class="flow">
+    <div>Anda mengubah<small>di CMS</small></div>
+    <div>Klik Save<small>tersimpan</small></div>
+    <div class="hi">Website ikut berubah<small>beberapa detik kemudian</small></div>
+  </div>
+
+  <p>Artinya: <b>tidak ada yang perlu dipasang ulang, dan tidak perlu menghubungi pembuat website</b> untuk mengubah isi. Semua tulisan, foto, alamat kantor, nama layanan, bahkan warna utama situs, diatur dari sini.</p>
+
+  <h3>Semuanya berbentuk “artikel”</h3>
+  <p>Di CMS, semua isi disimpan sebagai <b>artikel</b> - meskipun yang tampil di website bukan berupa tulisan panjang. Satu logo klien adalah satu artikel. Satu lokasi kantor adalah satu artikel. Satu slide foto juga satu artikel.</p>
+  <p>Yang menentukan artikel itu muncul <b>di bagian mana</b> pada website adalah <b>Kategori</b>-nya. Ini tabel yang paling sering Anda butuhkan:</p>
+
+  <table>
+    <thead><tr><th style="width:38%">Kategori di CMS</th><th>Muncul sebagai apa di website</th></tr></thead>
+    <tbody>
+      <tr><td><b>Uncategorised</b></td><td>Bagian paling atas halaman (judul besar &amp; foto latar), teks hak cipta, dan pengaturan warna situs</td></tr>
+      <tr><td><b>About</b></td><td>Blok-blok “Tentang Kami”</td></tr>
+      <tr><td><b>Gallery</b></td><td>Foto-foto yang bergantian di samping Tentang Kami</td></tr>
+      <tr><td><b>Services</b></td><td>Layanan utama, termasuk Shearing dan Bending, kartu beranda, dan halaman detail</td></tr>
+      <tr><td><b>Service sub-items</b></td><td>Rincian di dalam satu halaman layanan</td></tr>
+      <tr><td><b>Our customers</b></td><td>Deretan logo klien</td></tr>
+      <tr><td><b>Our offices</b></td><td>Daftar kantor dan workshop</td></tr>
+      <tr><td><b>Contact</b></td><td>Nomor WhatsApp marketing, email, dan tombol Request Compro</td></tr>
+      <tr><td><b>Social</b></td><td>Ikon media sosial di bagian bawah</td></tr>
+      <tr><td><b>Headings</b></td><td>Judul tiap section, misalnya “Layanan Kami”</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <span class="label">Aturan yang tidak boleh dilanggar</span>
+    <ul>
+      <li><b>Jangan menghapus atau mengganti nama kategori.</b> Website mencari isinya berdasarkan kategori ini.</li>
+      <li>Artikel harus berstatus <b>Published</b> agar tampil. Status <b>Unpublished</b> membuatnya hilang dari website - ini cara yang benar untuk menyembunyikan sesuatu sementara.</li>
+      <li>Kalau ragu, buka artikel sejenis yang sudah benar dan tiru isiannya.</li>
+    </ul>
+  </div>
 </section>
 
-<section class="page">
-<h2>3. Mengelola Bagian Website</h2>
-<h3>Hero / bagian paling atas</h3>
-<p>Cari artikel dengan alias <code>home-hero-id</code>, <code>home-hero-en</code>, atau <code>home-hero-zh</code>.</p>
-<table><tr><th>Yang ingin diubah</th><th>Tempat mengubahnya</th></tr>
-<tr><td>Judul besar</td><td>Title</td></tr><tr><td>Kalimat di bawah judul</td><td>Editor artikel</td></tr><tr><td>Foto latar</td><td>Images and Links → Full Article Image</td></tr></table>
-<p>Hero harus tetap memiliki satu artikel untuk setiap bahasa.</p>
-<h3>About / Tentang Kami</h3>
-<p>Kategori <b>About</b>. Satu artikel menjadi satu blok informasi. Judul artikel menjadi judul blok.</p>
-<ul><li>Paragraf biasa akan tampil sebagai teks.</li><li>Bullet list akan tampil sebagai checklist.</li></ul>
-<h3>Gallery</h3>
-<p>Kategori <b>Gallery</b>. Satu artikel menjadi satu slide. Gunakan Language <b>All</b>, lalu isi gambar pada <b>Images and Links → Intro Image</b>. Isi Image Description sebagai keterangan gambar.</p>
-<h3>Judul section</h3>
-<p>Kategori <b>Headings</b>. Ubah Title artikel heading untuk mengganti judul “Layanan”, “Klien”, atau “Kantor”.</p>
+<!-- ============ BAB 2 ============ -->
+<section class="sheet">
+  <div class="chapter">
+    <div class="num">2</div>
+    <div><h2>Pekerjaan Sehari-hari</h2><p class="sub">Mengubah tulisan, mengganti gambar, menambah item baru.</p></div>
+  </div>
+
+  <h3>Masuk ke CMS</h3>
+  <p>Buka <code>cms.cakrakencanamultimedia.com/administrator</code>, lalu masukkan nama pengguna dan kata sandi Anda. Setelah masuk, hampir semua pekerjaan ada di satu menu: <b>Content → Articles</b>.</p>
+
+  <h3>Menemukan artikel yang dicari</h3>
+  <p>Jumlah artikel cukup banyak, jadi jangan mencari dengan menggulir. Klik <b>Filter Options</b> di kanan atas, lalu gunakan:</p>
+  <table>
+    <thead><tr><th style="width:30%">Filter</th><th>Gunanya</th></tr></thead>
+    <tbody>
+      <tr><td><b>Select Category</b></td><td>Membatasi ke satu bagian website saja - hampir selalu Anda butuhkan</td></tr>
+      <tr><td><b>Language</b></td><td>Membatasi ke satu bahasa. Penting saat mengatur urutan (Bab 3)</td></tr>
+      <tr><td><b>Select Status</b></td><td>Mencari artikel yang tidak sengaja ter-<em>unpublish</em></td></tr>
+      <tr><td>Kotak <b>Search</b></td><td>Mencari berdasarkan judul</td></tr>
+    </tbody>
+  </table>
+  <p>Tombol <b>Clear</b> di sebelahnya mengosongkan semua filter sekaligus. Biasakan menekannya sebelum mulai pekerjaan baru - filter yang tertinggal dari kemarin adalah penyebab kebingungan yang paling sering.</p>
+
+  <h3>Mengubah artikel yang sudah ada</h3>
+  <ol class="steps">
+    <li>Buka <b>Content → Articles</b> dan saring hingga artikelnya terlihat.</li>
+    <li>Klik <b>judulnya</b>.</li>
+    <li>Ubah yang perlu diubah - judul, isi, gambar, atau isian di tab <b>Fields</b>.</li>
+    <li>Klik <b>Save &amp; Close</b>.</li>
+    <li>Buka website, tekan <b>Ctrl + F5</b>. Perubahan muncul dalam beberapa detik.</li>
+  </ol>
+
+  <h3>Menambah artikel baru</h3>
+  <ol class="steps">
+    <li><b>Content → Articles → New</b>.</li>
+    <li>Isi <b>Title</b> - inilah yang tampil sebagai judul di website.</li>
+    <li>Di panel kanan, pilih <b>Category</b> yang benar (lihat tabel Bab 1).</li>
+    <li>Di panel kanan, pilih <b>Language</b> yang benar (lihat Bab 7).</li>
+    <li>Tulis isinya di editor utama.</li>
+    <li>Bila bagian itu memerlukannya, isi tab <b>Images and Links</b> dan tab <b>Fields</b>.</li>
+    <li>Pastikan <b>Status: Published</b>, lalu <b>Save &amp; Close</b>.</li>
+  </ol>
+
+  <div class="callout tip">
+    <span class="label">Cara tercepat menambah banyak item mirip</span>
+    <p>Buka artikel yang sudah benar, klik panah di sebelah tombol Save, pilih <b>Save as Copy</b>. Semua isian ikut tersalin - Anda tinggal mengganti judul dan isinya. Jangan lupa mengubah <b>alias</b>-nya juga agar tidak bentrok.</p>
+  </div>
+
+  <h3>Mengganti gambar</h3>
+  <p>Gambar tidak diletakkan di dalam tulisan, melainkan di tab <b>Images and Links</b>. Ada dua slot dan keduanya punya arti berbeda:</p>
+  <table>
+    <thead><tr><th style="width:34%">Slot</th><th>Dipakai untuk</th></tr></thead>
+    <tbody>
+      <tr><td><b>Intro Image</b></td><td>Logo klien, foto slide galeri</td></tr>
+      <tr><td><b>Full Article Image</b></td><td>Foto latar bagian paling atas halaman, gambar besar di halaman layanan</td></tr>
+    </tbody>
+  </table>
+  <p>Isi juga kolom <b>Image Description</b> di bawah slot gambar. Teks itu tidak terlihat, tetapi dibacakan untuk pengunjung tunanetra dan membantu Google memahami gambar.</p>
 </section>
 
-<section class="page">
-<h2>4. Service dan Sub-service</h2>
-<h3>Menambah atau mengubah service</h3>
-<p>Kategori: <b>Services</b>. Satu artikel service tampil sebagai kartu di homepage sekaligus halaman detail.</p>
-<table><tr><th>Field</th><th>Isi</th></tr>
-<tr><td>Title</td><td>Nama service</td></tr><tr><td>Editor sebelum Read more</td><td>Deskripsi singkat untuk kartu</td></tr><tr><td>Editor setelah Read more</td><td>Penjelasan lengkap halaman detail</td></tr><tr><td>Icon</td><td>Pilih ikon yang sesuai di tab Fields</td></tr><tr><td>Images and Links</td><td>Gambar halaman detail, bila ada</td></tr></table>
-<h3>Menambah sub-service</h3>
-<p>Kategori: <b>Service sub-items</b>. Satu artikel menjadi satu kartu di dalam halaman service induknya.</p>
-<ol>
-<li>Buka <b>Content → Articles → New</b>.</li><li>Pilih kategori <b>Service sub-items</b>.</li><li>Isi Title, misalnya <b>Roll Up Banner</b>.</li><li>Pilih Language <b>All</b>.</li><li>Isi deskripsi singkat.</li><li>Pada tab <b>Fields</b>, pilih service induk pada field <b>Parent service</b>.</li><li>Pastikan Published, lalu simpan.</li>
-</ol>
-<div class="note"><b>Inilah relasinya:</b> jika Parent service dipilih <b>Digital Printing</b>, sub-service otomatis muncul di halaman Digital Printing. Nama alias saja tidak menentukan relasi.</div>
-<h3>Cara mempercepat pengisian</h3>
-<p>Untuk banyak item yang mirip, gunakan <b>Save as Copy</b> atau duplikasi artikel yang sudah benar. Kemudian ubah Title, deskripsi, dan pastikan Parent service-nya benar.</p>
+<!-- ============ BAB 3 ============ -->
+<section class="sheet">
+  <div class="chapter">
+    <div class="num">3</div>
+    <div><h2>Mengatur Urutan Tampilan</h2><p class="sub">Bab terpenting dalam panduan ini. Baca sampai selesai sekali saja, lalu simpan.</p></div>
+  </div>
+
+  <p>Urutan kantor, urutan layanan, urutan blok Tentang Kami - semuanya Anda yang menentukan, dari CMS. Caranya dengan menggeser baris (<em>drag-and-drop</em>) di daftar artikel.</p>
+  <p>Tetapi ada satu hal yang harus dipahami lebih dulu, dan inilah yang paling sering membuat orang bingung.</p>
+
+  <h3>Urutan mengikuti baris berbahasa Indonesia</h3>
+  <p>Setiap item ada tiga kali di CMS - satu untuk tiap bahasa. Website hanya membaca urutan dari <b>baris Bahasa Indonesia</b>, lalu memakai urutan yang sama untuk Inggris dan Mandarin.</p>
+
+  <div class="spine">
+    <div class="col master">
+      <div class="hd">Bahasa Indonesia<br>- yang mengatur -</div>
+      <div class="row">1. Kantor Pusat</div>
+      <div class="row">2. Workshop I</div>
+      <div class="row">3. Workshop II</div>
+    </div>
+    <div class="col">
+      <div class="hd">English<br>ikut otomatis</div>
+      <div class="row">Head Office</div>
+      <div class="row">Workshop I</div>
+      <div class="row">Workshop II</div>
+    </div>
+    <div class="col">
+      <div class="hd">Mandarin<br>ikut otomatis</div>
+      <div class="row">Kantor Pusat</div>
+      <div class="row">Workshop I</div>
+      <div class="row">Workshop II</div>
+    </div>
+  </div>
+  <p class="spine-note">Cukup atur sekali di kolom kiri. Dua kolom lainnya menyesuaikan sendiri.</p>
+
+  <div class="callout">
+    <span class="label">Akibatnya</span>
+    <p>Merapikan urutan pada baris <b>Inggris</b> atau <b>Mandarin</b> <b>tidak akan mengubah apa pun</b> di website. Terlihat rapi di CMS, tetapi website mengabaikannya. Selalu atur dari baris <b>Bahasa Indonesia</b>.</p>
+  </div>
+
+  <h3>Langkah mengatur urutan</h3>
+  <ol class="steps">
+    <li>Buka <b>Content → Articles</b>, klik <b>Clear</b> untuk membuang sisa filter.</li>
+    <li>Pilih <b>Select Category</b> → kategori yang ingin diurutkan.</li>
+    <li>Pilih <b>Language</b> → <b>Bahasa Indonesia</b>. Sekarang hanya baris yang berpengaruh yang tampil.</li>
+    <li>Klik judul kolom paling kiri - kolom dengan ikon <b>⇅</b> - sampai daftarnya urut secara <b>Ordering ascending</b>. <b>Tanpa langkah ini, menggeser baris tidak akan tersimpan.</b></li>
+    <li>Geser baris ke posisi yang diinginkan. Tersimpan otomatis begitu Anda melepasnya.</li>
+    <li>Buka website, tekan <b>Ctrl + F5</b>, dan pastikan urutannya sudah sesuai.</li>
+  </ol>
+
+  <div class="callout warn">
+    <span class="label">Tidak ada tombol Save di sini - itu normal</span>
+    <p>Urutan tersimpan seketika saat Anda melepas baris yang digeser. Halaman tidak berkedip dan tidak ada pesan “berhasil disimpan”. Satu-satunya tanda adalah barisnya benar-benar berpindah tempat.</p>
+  </div>
+
+  <h3>Kalau baris tidak mau bergeser</h3>
+  <p>Hampir selalu salah satu dari tiga hal ini:</p>
+  <table>
+    <thead><tr><th style="width:42%">Gejala</th><th>Penyebab dan solusinya</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Baris ditarik, kelihatan bergerak, lalu kembali ke tempat semula</td>
+        <td>Daftar belum diurutkan berdasarkan <b>Ordering</b>. Kembali ke langkah 4. Petunjuk: arahkan kursor ke titik-titik di kolom kiri - kalau muncul tulisan <em>“Ordering is disabled”</em>, berarti belum aktif.</td>
+      </tr>
+      <tr>
+        <td>Sudah digeser, tetapi website tidak berubah</td>
+        <td>Kemungkinan Anda menggeser baris <b>Inggris</b> atau <b>Mandarin</b>. Pasang filter <b>Language: Bahasa Indonesia</b> lalu ulangi.</td>
+      </tr>
+      <tr>
+        <td>Baris paling bawah tidak mau dipindahkan</td>
+        <td>Geser <b>baris yang ingin dipindah</b>, bukan menggeser baris lain untuk memberi tempat.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout tip">
+    <span class="label">Peringatan browser yang bisa diabaikan</span>
+    <p>Kalau setelah mengatur urutan Anda menekan F5 dan browser bertanya <em>“Kirim ulang formulir?”</em> - abaikan saja, tekan Cancel. Peringatan itu muncul karena Anda sempat mengubah filter, <b>bukan</b> karena urutannya gagal tersimpan.</p>
+  </div>
+
+  <h3>Tiga kategori yang lebih sederhana</h3>
+  <p><b>Gallery</b>, <b>Our customers</b>, dan <b>Social</b> tidak punya versi per bahasa - isinya cuma gambar dan tautan, tidak ada yang perlu diterjemahkan. Untuk ketiganya, <b>tidak perlu memasang filter Language</b>. Cukup pilih kategorinya, urutkan berdasarkan Ordering, lalu geser.</p>
 </section>
 
-<section class="page">
-<h2>5. Klien, Kantor, dan Media Sosial</h2>
-<h3>Logo klien</h3><p>Kategori <b>Our customers</b>, Language <b>All</b>. Isi Title dengan nama perusahaan dan unggah logo pada <b>Images and Links → Intro Image</b>.</p>
-<h3>Lokasi kantor</h3><p>Kategori <b>Our offices</b>.</p>
-<table><tr><th>Field</th><th>Isi</th></tr><tr><td>Title</td><td>Nama lokasi</td></tr><tr><td>Editor</td><td>Alamat lengkap</td></tr><tr><td>Icon</td><td>Office / building atau Workshop / warehouse</td></tr><tr><td>Map link</td><td>Link Google Maps</td></tr></table>
-<p>Jika Map link dikosongkan, tombol “Buka Peta” tidak muncul.</p>
-<h3>Media sosial</h3><p>Kategori <b>Social</b>, Language <b>All</b>. Isi Title, pilih Icon, dan masukkan URL profil lengkap pada field <b>Link</b>. Link kosong berarti ikon tidak tampil.</p>
-<h3>Logo website dan copyright</h3><p>Logo diganti melalui <b>Content → Media</b> dengan menimpa file <code>logo-footer.png</code>. Copyright diedit pada artikel <code>footer-copyright</code>. Gunakan <code>{year}</code> agar tahun berubah otomatis.</p>
+<!-- ============ BAB 4 ============ -->
+<section class="sheet">
+  <div class="chapter">
+    <div class="num">4</div>
+    <div><h2>Bagian Depan Halaman</h2><p class="sub">Yang pertama dilihat pengunjung.</p></div>
+  </div>
+
+  <h3>Bagian paling atas <span class="pill">Hero</span></h3>
+  <p>Judul besar dan foto latar di layar pertama. Cari artikel dengan alias <code>home-hero-id</code> (serta <code>-en</code> dan <code>-zh</code> untuk dua bahasa lainnya).</p>
+  <table>
+    <thead><tr><th style="width:38%">Yang ingin diubah</th><th>Tempatnya</th></tr></thead>
+    <tbody>
+      <tr><td>Judul besar</td><td>Kolom <b>Title</b></td></tr>
+      <tr><td>Kalimat di bawah judul</td><td>Editor utama</td></tr>
+      <tr><td>Foto latar</td><td><b>Images and Links → Full Article Image</b></td></tr>
+    </tbody>
+  </table>
+  <p>Setiap bahasa harus punya satu artikel hero. Jangan menghapus salah satunya.</p>
+
+  <h3>Tentang Kami <span class="pill">About</span></h3>
+  <p>Kategori <b>About</b>. Saat ini berisi <b>Siapa kami?</b>, <b>Wilayah layanan</b>, dan <b>Kenapa Memilih Cakra Kencana Multimedia?</b>. Satu artikel menjadi satu blok, dan judul artikel menjadi judul blok. Cara Anda menulis menentukan tampilannya:</p>
+  <div class="grid2">
+    <div class="card">
+      <h4>Paragraf biasa</h4>
+      <p>Tampil sebagai teks penjelasan biasa. Cocok untuk cerita atau deskripsi.</p>
+    </div>
+    <div class="card">
+      <h4>Daftar bullet</h4>
+      <p>Tampil sebagai daftar bercentang merah. Cocok untuk keunggulan atau cakupan layanan.</p>
+    </div>
+  </div>
+
+  <h3>Galeri foto <span class="pill grey">Gallery</span></h3>
+  <p>Kategori <b>Gallery</b>. Satu artikel menjadi satu foto yang bergantian otomatis. Pilih <b>Language: All</b>, lalu unggah gambar di <b>Images and Links → Intro Image</b>. Isi <b>Image Description</b> sebagai keterangan.</p>
+
+  <h3>Judul tiap section <span class="pill">Headings</span></h3>
+  <p>Tulisan seperti “Layanan Kami”, “Klien Kami”, “Workshop &amp; Office”, atau “Hubungi Kami” bukan bagian dari kode - semuanya artikel di kategori <b>Headings</b>. Ubah kolom <b>Title</b>-nya untuk mengganti judul section, dan ingat setiap bahasa punya artikelnya sendiri.</p>
+
+  <h3>Warna situs</h3>
+  <p>Warna utama website bisa Anda ubah sendiri. Buka artikel dengan alias <code>theme</code> di kategori <b>Uncategorised</b>, lalu masuk ke tab <b>Fields</b>:</p>
+  <table>
+    <thead><tr><th style="width:40%">Isian</th><th>Mengatur apa</th></tr></thead>
+    <tbody>
+      <tr><td><b>Brand color</b></td><td>Warna utama - tombol, garis aksen, ikon</td></tr>
+      <tr><td><b>Brand color (mode gelap)</b></td><td>Warna utama saat pengunjung memakai tampilan gelap. Kosongkan bila ingin sama</td></tr>
+      <tr><td><b>Background light</b></td><td>Warna latar tampilan terang</td></tr>
+      <tr><td><b>Background dark</b></td><td>Warna latar tampilan gelap</td></tr>
+    </tbody>
+  </table>
+  <div class="callout warn">
+    <span class="label">Ubah sedikit demi sedikit</span>
+    <p>Satu warna di sini menurunkan puluhan warna lain di seluruh website. Ganti satu nilai, simpan, lalu lihat hasilnya sebelum mengganti yang berikutnya.</p>
+  </div>
 </section>
 
-<section class="page">
-<h2>6. Bahasa Website</h2>
-<table><tr><th>Bahasa</th><th>Alamat</th><th>Pilihan Language di artikel</th></tr><tr><td>Indonesia</td><td>/</td><td>Bahasa Indonesia</td></tr><tr><td>English</td><td>/en</td><td>English</td></tr><tr><td>中文</td><td>/zh</td><td>中文</td></tr></table>
-<h3>Membuat terjemahan</h3>
-<ol><li>Buka artikel bahasa Indonesia.</li><li>Gunakan <b>Save as Copy</b> atau buat artikel baru.</li><li>Terjemahkan Title dan isi.</li><li>Pilih Language yang sesuai.</li><li>Pertahankan pola alias yang sama, hanya suffix bahasanya yang berbeda.</li></ol>
-<p>Contoh:</p><table><tr><th>Indonesia</th><th>English</th><th>Mandarin</th></tr><tr><td><code>service-digital-printing-id</code></td><td><code>service-digital-printing-en</code></td><td><code>service-digital-printing-zh</code></td></tr></table>
-<div class="tip">Artikel Gallery, Customer, Social, dan Sub-service saat ini memakai Language <b>All</b> karena digunakan bersama oleh semua bahasa.</div>
-<p>Jika terjemahan suatu artikel belum tersedia, website dapat menampilkan versi Indonesia sebagai cadangan. Jangan mengisi bahasa yang salah karena artikel bisa muncul di halaman bahasa yang tidak sesuai.</p>
+<!-- ============ BAB 5 ============ -->
+<section class="sheet">
+  <div class="chapter">
+    <div class="num">5</div>
+    <div><h2>Layanan dan Sub-layanan</h2><p class="sub">Bagian terbesar di website, tersusun dua tingkat.</p></div>
+  </div>
+
+  <p>Ada dua tingkat, dan keduanya kategori yang berbeda:</p>
+  <div class="flow">
+    <div class="hi">Layanan<small>kategori Services - punya halaman sendiri</small></div>
+    <div>Sub-layanan<small>kategori Service sub-items - kartu di dalam halaman layanan</small></div>
+  </div>
+  <p>Contoh: <b>Digital Printing</b> adalah layanan dan punya halamannya sendiri. <b>Roll Up Banner</b> adalah sub-layanan - dia hanya muncul sebagai kartu di dalam halaman Digital Printing, dan tidak punya halaman sendiri.</p>
+
+  <div class="callout tip">
+    <span class="label">Sebelas layanan aktif</span>
+    <p>Indoor / Outdoor Reklame, Tax, Permit, IMB &amp; PBG Service, Digital Printing, Screen Printing, Offset Printing, POP Merchandise, POP Display, Design Graphics, Rambu-Rambu, General Contractor, serta Shearing dan Bending.</p>
+  </div>
+
+  <h3>Mengubah atau menambah layanan</h3>
+  <p>Kategori <b>Services</b>. Satu artikel tampil sebagai kartu di beranda, di halaman semua layanan, dan memiliki halaman detail sendiri. Layanan <b>Shearing dan Bending</b> dikelola dengan cara yang sama seperti layanan lain.</p>
+  <table>
+    <thead><tr><th style="width:38%">Isian</th><th>Tampil di mana</th></tr></thead>
+    <tbody>
+      <tr><td><b>Title</b></td><td>Nama layanan, di kartu dan di halaman detail</td></tr>
+      <tr><td>Editor, <b>sebelum</b> tombol Read more</td><td>Keterangan singkat di kartu beranda</td></tr>
+      <tr><td>Editor, <b>sesudah</b> tombol Read more</td><td>Penjelasan lengkap, hanya di halaman detail</td></tr>
+      <tr><td>Tab <b>Fields → Icon</b></td><td>Ikon kecil di kartu. Pilih dari daftar yang tersedia</td></tr>
+      <tr><td><b>Images and Links → Full Article Image</b></td><td>Gambar besar di halaman detail</td></tr>
+    </tbody>
+  </table>
+  <div class="callout tip">
+    <span class="label">Soal tombol “Read more”</span>
+    <p>Tombol itu ada di bawah editor Joomla. Tulisan di atasnya menjadi ringkasan, tulisan di bawahnya menjadi isi halaman detail. Kalau halaman detail terasa kosong, artinya semua tulisan berada di atas tombol tersebut.</p>
+  </div>
+
+  <h3>Menambah sub-layanan</h3>
+  <ol class="steps">
+    <li><b>Content → Articles → New</b>.</li>
+    <li>Pilih <b>Category: Service sub-items</b>.</li>
+    <li>Isi <b>Title</b> - misalnya <em>Roll Up Banner</em>.</li>
+    <li>Pilih <b>Language</b> sesuai bahasa yang sedang Anda tulis.</li>
+    <li>Tulis keterangan singkat di editor. Sub-layanan tidak memakai gambar.</li>
+    <li>Buka tab <b>Fields</b>, lalu pilih layanan induknya di isian <b>Parent service</b>.</li>
+    <li>Pastikan <b>Published</b>, lalu <b>Save &amp; Close</b>.</li>
+  </ol>
+
+  <div class="callout">
+    <span class="label">Langkah 6 tidak boleh dilewat</span>
+    <p><b>Parent service</b> adalah satu-satunya penentu sub-layanan muncul di halaman mana. Judul yang mirip tidak berpengaruh. Kalau isian ini kosong, sub-layanan tersebut tidak akan muncul di mana pun.</p>
+  </div>
+
+  <div class="callout tip">
+    <span class="label">Konten saat ini</span>
+    <p>Website memiliki layanan utama dan sub-layanan dalam tiga bahasa. Beranda menampilkan maksimal enam layanan pertama. Semua layanan tetap tersedia melalui halaman daftar layanan. Atur prioritas melalui <b>Ordering</b> artikel Bahasa Indonesia.</p>
+  </div>
 </section>
 
-<section class="page">
-<h2>7. Menu dan Pemeriksaan Akhir</h2>
-<h3>Menambah menu navigasi</h3>
-<ol><li>Buka <b>Menus → Main Menu → New</b>.</li><li>Pilih <b>System Links → URL</b>.</li><li>Isi link seperti <code>#about</code>, <code>#services</code>, <code>#customers</code>, atau <code>#offices</code>.</li><li>Isi Title dan pilih bahasa.</li><li>Save.</li></ol>
-<p>Menu berlaku untuk navbar dan footer. Gunakan satu menu untuk satu bahasa; jangan memilih All karena menu bisa muncul ganda.</p>
-<h3>Checklist sebelum selesai</h3>
-<ul><li class="check">✓ Judul dan isi sudah benar.</li><li class="check">✓ Kategori sudah benar.</li><li class="check">✓ Language sudah benar.</li><li class="check">✓ Status Published.</li><li class="check">✓ Gambar berada di slot yang benar.</li><li class="check">✓ Untuk sub-service, Parent service sudah dipilih.</li><li class="check">✓ Untuk service, Icon sudah dipilih.</li><li class="check">✓ Website sudah dicek pada bahasa yang sesuai.</li></ul>
-<div class="note"><b>Jika perubahan belum terlihat:</b> tunggu beberapa detik, refresh dengan Ctrl + F5, dan pastikan artikel tidak berstatus Unpublished.</div>
-<h3>Panduan singkat satu kalimat</h3><p><b>Pilih kategori yang tepat, isi konten, pilih bahasa dan field yang diperlukan, pastikan Published, lalu Save.</b></p>
+<!-- ============ BAB 6 ============ -->
+<section class="sheet">
+  <div class="chapter">
+    <div class="num">6</div>
+    <div><h2>Klien, Kantor, dan Footer</h2><p class="sub">Bagian bawah halaman.</p></div>
+  </div>
+
+  <h3>Logo klien <span class="pill grey">Our customers</span></h3>
+  <p>Satu artikel mewakili satu perusahaan. Pilih <b>Language: All</b>, isi <b>Title</b> dengan nama perusahaan, lalu unggah logo di <b>Images and Links → Intro Image</b>. Logo tampil dengan warna aslinya di atas bidang putih.</p>
+  <ol class="steps">
+    <li>Buka <b>Content → Articles → New</b>, lalu isi nama perusahaan pada <b>Title</b>.</li>
+    <li>Pilih <b>Category: Our customers</b> dan <b>Language: All</b>.</li>
+    <li>Unggah PNG transparan pada <b>Intro Image</b> dan isi Image Description dengan nama perusahaan.</li>
+    <li>Pastikan <b>Published</b>, simpan, lalu atur Ordering bila perlu.</li>
+  </ol>
+  <div class="callout tip">
+    <span class="label">18 logo unggulan dan halaman lengkap</span>
+    <p>Website memiliki 84 logo. Delapan belas artikel paling atas bergerak sebagai marquee di beranda. Semua logo tampil pada halaman <b>Klien Kami</b>. Untuk mengganti logo unggulan, cukup pindahkan Ordering; tidak perlu menghapus logo lain.</p>
+  </div>
+
+  <h3>Kantor dan workshop <span class="pill">Our offices</span></h3>
+  <p>Satu artikel untuk satu lokasi. Saat ini tersedia <b>Head Office</b> serta <b>Workshop I, II, III, dan IV</b>. Workshop IV dapat berisi daftar beberapa wilayah bila belum memiliki satu titik peta khusus.</p>
+  <table>
+    <thead><tr><th style="width:38%">Isian</th><th>Keterangan</th></tr></thead>
+    <tbody>
+      <tr><td><b>Title</b></td><td>Nama lokasi - misalnya <em>Kantor Pusat</em> atau <em>Workshop I</em></td></tr>
+      <tr><td>Editor</td><td>Alamat lengkap dan nomor telepon</td></tr>
+      <tr><td>Tab <b>Fields → Icon</b></td><td>Pilih ikon gedung untuk kantor, ikon gudang untuk workshop</td></tr>
+      <tr><td>Tab <b>Fields → Map link</b></td><td>Tautan Google Maps lokasi tersebut</td></tr>
+    </tbody>
+  </table>
+  <p>Kalau <b>Map link</b> dikosongkan, tombol <em>“Buka Peta”</em> otomatis tidak ditampilkan. Ini disengaja - lebih baik tidak ada tombol daripada ada tombol yang tidak mengarah ke mana-mana.</p>
+  <div class="callout">
+    <span class="label">Footer selalu menampilkan Kantor Pusat</span>
+    <p>Alamat di bagian paling bawah website diambil khusus dari artikel <b>Kantor Pusat</b>, apa pun urutan yang Anda atur di Bab 3. Mengubah urutan hanya memengaruhi daftar kantor di tengah halaman.</p>
+  </div>
+
+  <h3>Media sosial <span class="pill grey">Social</span></h3>
+  <p>Satu artikel untuk satu akun. Pilih <b>Language: All</b>, isi <b>Title</b>, pilih <b>Icon</b> di tab Fields, lalu tempelkan alamat lengkap profilnya di isian <b>Link</b>.</p>
+  <p>Sama seperti Map link: <b>Link yang kosong membuat ikonnya tidak ditampilkan.</b> Jadi untuk menyembunyikan sebuah akun sementara, cukup kosongkan Link-nya.</p>
+
+  <h3>Logo dan teks hak cipta</h3>
+  <p>Logo navbar dan footer diganti lewat <b>Content → Media</b>, dengan mengunggah berkas baru bernama sama persis: <code>logo.png</code>. Simpan salinan file lama sebelum menimpa.</p>
+  <p>Teks hak cipta ada di artikel <code>footer-copyright</code>. Tulis <code>{year}</code> di tempat tahun seharusnya berada - website akan menggantinya dengan tahun berjalan secara otomatis, jadi Anda tidak perlu memperbaruinya setiap Januari.</p>
 </section>
+
+<!-- ============ BAB 7 ============ -->
+<section class="sheet">
+  <div class="chapter">
+    <div class="num">7</div>
+    <div><h2>Kontak dan Company Profile</h2><p class="sub">Mengelola WhatsApp, email, dan tombol unduh company profile.</p></div>
+  </div>
+
+  <p>Semua isi bagian <b>Hubungi Kami</b> berada dalam kategori <b>Contact</b>. Saat ini tersedia <b>Marketing I</b>, <b>Marketing II</b>, <b>Marketing III</b>, <b>Email</b>, dan satu artikel khusus <b>Request Compro</b>. Setiap artikel kontak biasa yang memiliki Link otomatis menjadi card baru. Jumlahnya tidak dibatasi oleh kode.</p>
+
+  <h3>Menambah nomor WhatsApp</h3>
+  <ol class="steps">
+    <li>Buka artikel Marketing yang sudah benar, lalu pilih <b>Save as Copy</b>.</li>
+    <li>Ubah <b>Title</b>, misalnya menjadi <em>Marketing IV</em>, serta ganti nomor di editor.</li>
+    <li>Pada tab <b>Fields</b>, isi <b>Link</b> dengan format <code>https://wa.me/6281234567890</code>.</li>
+    <li>Gunakan angka saja setelah <code>wa.me/</code>: awali dengan <b>62</b>, tanpa tanda +, spasi, atau strip.</li>
+    <li>Ubah alias dan Language, simpan, lalu buat versi Inggris serta Mandarin dengan alias dasar yang sama.</li>
+  </ol>
+
+  <h3>Menambah alamat email</h3>
+  <p>Caranya sama seperti WhatsApp. Isi alamat yang dibaca pengunjung pada editor, lalu isi field <b>Link</b> dengan <code>mailto:nama@perusahaan.com</code>. Tombol pada card akan membuka aplikasi email pengunjung.</p>
+
+  <table>
+    <thead><tr><th style="width:34%">Bagian artikel</th><th>Fungsinya di website</th></tr></thead>
+    <tbody>
+      <tr><td><b>Title</b></td><td>Nama card, misalnya Marketing IV atau Customer Service</td></tr>
+      <tr><td><b>Editor</b></td><td>Nomor telepon atau alamat email yang terlihat</td></tr>
+      <tr><td><b>Fields → Link</b></td><td>Tujuan saat card atau tombol diklik</td></tr>
+      <tr><td><b>Ordering</b></td><td>Urutan card pada bagian Hubungi Kami</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Isi yang tersedia saat panduan ini diterbitkan</h3>
+  <table>
+    <thead><tr><th>Bagian</th><th>Isi aktif</th><th>Cara bahasa</th></tr></thead>
+    <tbody>
+      <tr><td>Hero</td><td>1 set</td><td>3 artikel</td></tr>
+      <tr><td>Tentang Kami</td><td>3 blok</td><td>3 bahasa</td></tr>
+      <tr><td>Galeri</td><td>4 foto</td><td>Dipakai bersama</td></tr>
+      <tr><td>Layanan</td><td>11 layanan dan 89 sub-layanan</td><td>3 bahasa</td></tr>
+      <tr><td>Klien</td><td>84 logo aktif</td><td>Dipakai bersama</td></tr>
+      <tr><td>Kantor dan workshop</td><td>5 lokasi</td><td>3 bahasa</td></tr>
+      <tr><td>Hubungi Kami</td><td>3 WhatsApp, 1 email, 1 Request Compro</td><td>3 bahasa</td></tr>
+      <tr><td>Media sosial</td><td>5 akun; hanya link terisi yang tampil</td><td>Dipakai bersama</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Mengelola tombol Request Compro</h3>
+  <p>Artikel dengan alias dasar <code>request-compro</code> tampil sebagai panel khusus di samping daftar kontak. <b>Title</b> menjadi tulisan tombol, isi editor menjadi kalimat ajakan, dan field <b>Link</b> menjadi tujuan tombol. Gunakan URL folder atau file company profile yang memang dapat dibuka oleh penerima.</p>
+
+  <div class="callout warn">
+    <span class="label">Link kosong berarti tidak tampil</span>
+    <p>Kontak dan Request Compro hanya muncul bila field <b>Link</b> terisi. Ini berguna untuk menyembunyikan sementara tanpa menghapus artikel. Untuk mengaktifkannya kembali, isi Link dan simpan.</p>
+  </div>
+
+  <h3>Mengubah judul Hubungi Kami</h3>
+  <p>Buka kategori <b>Headings</b>, lalu ubah Title pada <code>heading-contact-id</code>, <code>heading-contact-en</code>, dan <code>heading-contact-zh</code>. Jangan menulis nomor telepon di artikel heading.</p>
+</section>
+
+<!-- ============ BAB 8 ============ -->
+<section class="sheet">
+  <div class="chapter">
+    <div class="num">8</div>
+    <div><h2>Tiga Bahasa</h2><p class="sub">Indonesia, Inggris, dan Mandarin.</p></div>
+  </div>
+
+  <table>
+    <thead><tr><th>Bahasa</th><th>Alamat halaman</th><th>Pilihan Language di artikel</th></tr></thead>
+    <tbody>
+      <tr><td>Indonesia</td><td><code>/</code></td><td>Bahasa Indonesia</td></tr>
+      <tr><td>English</td><td><code>/en</code></td><td>English (en-GB)</td></tr>
+      <tr><td>Mandarin</td><td><code>/zh</code></td><td>Chinese (Simplified)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Menerjemahkan sebuah artikel</h3>
+  <p>Terjemahan dibuat sebagai <b>artikel baru</b>, bukan dengan mengubah bahasa artikel yang sudah ada.</p>
+  <ol class="steps">
+    <li>Buka artikel versi Indonesianya.</li>
+    <li>Klik panah di sebelah tombol Save, pilih <b>Save as Copy</b>.</li>
+    <li>Terjemahkan <b>Title</b> dan isi editornya.</li>
+    <li>Ubah <b>Language</b> ke bahasa tujuan.</li>
+    <li>Ubah <b>alias</b>-nya: pertahankan bagian depannya, ganti akhirannya saja.</li>
+    <li>Pastikan <b>Published</b>, lalu simpan.</li>
+  </ol>
+
+  <p>Akhiran alias inilah yang menghubungkan ketiga versi menjadi satu kesatuan:</p>
+  <table>
+    <thead><tr><th>Indonesia</th><th>Inggris</th><th>Mandarin</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>service-digital-printing-<b>id</b></code></td>
+        <td><code>service-digital-printing-<b>en</b></code></td>
+        <td><code>service-digital-printing-<b>zh</b></code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <span class="label">Bagian depan alias harus persis sama</span>
+    <p>Kalau satu huruf saja berbeda, website menganggapnya dua item yang tidak berhubungan - dan tombol ganti bahasa di halaman itu akan berhenti bekerja. Salin bagian depannya, jangan diketik ulang.</p>
+  </div>
+
+  <h3>Kalau terjemahan belum ada</h3>
+  <p>Website menampilkan versi Indonesianya sebagai cadangan, hanya untuk bagian yang belum diterjemahkan. Sisa halaman tetap tampil dalam bahasa yang dipilih pengunjung. Jadi terjemahan boleh dikerjakan bertahap - tidak harus selesai semua sekaligus.</p>
+
+  <h3>Kapan memilih “All”</h3>
+  <p>Pilihan <b>Language: All</b> berarti satu artikel dipakai bersama oleh ketiga bahasa. Ini hanya tepat untuk isi yang tidak mengandung tulisan: <b>Gallery</b>, <b>Our customers</b>, <b>Social</b>, dan artikel <code>theme</code>. Untuk yang lain, selalu pilih bahasa yang sebenarnya.</p>
+</section>
+
+<!-- ============ BAB 9 ============ -->
+<section class="sheet">
+  <div class="chapter">
+    <div class="num">9</div>
+    <div><h2>Menu Navigasi</h2><p class="sub">Tautan di bagian atas dan bawah halaman.</p></div>
+  </div>
+
+  <ol class="steps">
+    <li>Buka <b>Menus → Main Menu → New</b>.</li>
+    <li>Pada <b>Menu Item Type</b>, pilih <b>System Links → URL</b>.</li>
+    <li>Isi <b>Link</b> dengan tujuannya, misalnya <code>#about</code>, <code>#services</code>, <code>#customers</code>, <code>#offices</code>, atau <code>#contact</code>.</li>
+    <li>Isi <b>Title</b> - tulisan yang akan terlihat pengunjung.</li>
+    <li>Pilih <b>Language</b> sesuai bahasa menu tersebut.</li>
+    <li><b>Save &amp; Close</b>.</li>
+  </ol>
+
+  <p>Satu menu yang sama dipakai untuk navigasi atas dan tautan di footer.</p>
+
+  <div class="callout warn">
+    <span class="label">Menu dibuat terpisah untuk tiap bahasa</span>
+    <p>Jangan memilih <b>Language: All</b> pada item menu - tulisannya akan muncul dalam bahasa yang salah di halaman bahasa lain. Buat satu item untuk Indonesia, satu untuk Inggris, dan satu untuk Mandarin.</p>
+  </div>
+</section>
+
+<!-- ============ BAB 10 ============ -->
+<section class="sheet">
+  <div class="chapter">
+    <div class="num">10</div>
+    <div><h2>Pemecahan Masalah</h2><p class="sub">Gejala yang paling sering, beserta penyebabnya.</p></div>
+  </div>
+
+  <table>
+    <thead><tr><th style="width:40%">Yang Anda lihat</th><th>Penyebab dan solusinya</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Sudah disimpan, tetapi website belum berubah</td>
+        <td>Tunggu sekitar satu menit, lalu tekan <b>Ctrl + F5</b>. Kalau masih sama, pastikan artikelnya <b>Published</b> dan bahasanya benar.</td>
+      </tr>
+      <tr>
+        <td>Urutan tidak berubah meski sudah digeser</td>
+        <td>Daftar belum diurutkan berdasarkan <b>Ordering ascending</b>, atau yang digeser adalah baris Inggris/Mandarin. Ulangi langkah di Bab 3.</td>
+      </tr>
+      <tr>
+        <td>Sebuah item hilang dari website</td>
+        <td>Statusnya menjadi <b>Unpublished</b>, atau <b>Language</b>-nya salah sehingga masuk ke halaman bahasa lain.</td>
+      </tr>
+      <tr>
+        <td>Sub-layanan baru tidak muncul di mana pun</td>
+        <td>Isian <b>Parent service</b> di tab Fields masih kosong.</td>
+      </tr>
+      <tr>
+        <td>Gambar tidak muncul</td>
+        <td>Terpasang di slot yang salah. Periksa Bab 2 - <b>Intro Image</b> dan <b>Full Article Image</b> dipakai untuk hal yang berbeda.</td>
+      </tr>
+      <tr>
+        <td>Tombol “Buka Peta” hilang</td>
+        <td>Isian <b>Map link</b> kosong. Ini memang perilaku yang disengaja.</td>
+      </tr>
+      <tr>
+        <td>Sebuah ikon media sosial hilang</td>
+        <td>Isian <b>Link</b> kosong. Sama, memang disengaja.</td>
+      </tr>
+      <tr>
+        <td>Kontak baru tidak muncul</td>
+        <td>Pastikan kategorinya <b>Contact</b>, statusnya Published, bahasanya benar, dan field <b>Link</b> terisi. Untuk WhatsApp, gunakan format <code>https://wa.me/62...</code>.</td>
+      </tr>
+      <tr>
+        <td>Tombol Request Compro membuka halaman yang salah</td>
+        <td>Periksa field <b>Link</b> pada artikel <code>request-compro</code>. Pastikan penerima link memiliki izin untuk membuka folder atau file tersebut.</td>
+      </tr>
+      <tr>
+        <td>Halaman layanan terasa kosong</td>
+        <td>Seluruh tulisan berada di atas tombol <b>Read more</b>. Pindahkan sebagian ke bawahnya.</td>
+      </tr>
+      <tr>
+        <td>Tombol ganti bahasa membawa ke halaman kosong</td>
+        <td>Bagian depan alias antar terjemahan tidak sama persis. Periksa Bab 7.</td>
+      </tr>
+      <tr>
+        <td>Artikel tidak bisa dibuka, ada ikon gembok</td>
+        <td>Artikel sedang terkunci karena sesi sebelumnya tertutup mendadak. Buka <b>System → Global Check-in</b>, pilih <em>Articles</em>, klik <b>Check-in</b>.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout tip">
+    <span class="label">Sebelum menghubungi tim teknis</span>
+    <p>Catat tiga hal ini - dengan ketiganya, masalah biasanya selesai jauh lebih cepat: <b>(1)</b> judul artikel yang sedang dikerjakan, <b>(2)</b> alamat halaman website tempat masalahnya terlihat, <b>(3)</b> tangkapan layar dari daftar artikel di CMS beserta filter yang sedang aktif.</p>
+  </div>
+</section>
+
+<!-- ============ KARTU CONTEKAN ============ -->
+<section class="sheet">
+  <div class="chapter">
+    <div class="num">R</div>
+    <div><h2>Ringkasan Kerja Cepat</h2><p class="sub">Halaman ini bisa dicetak sendiri dan ditempel di dekat meja kerja.</p></div>
+  </div>
+
+  <h3>Alur kerja standar</h3>
+  <div class="flow">
+    <div>Clear filter</div>
+    <div>Pilih Category</div>
+    <div>Pilih Language</div>
+    <div>Ubah / geser</div>
+    <div class="hi">Ctrl + F5<small>periksa website</small></div>
+  </div>
+
+  <h3>Bahasa mana yang dipilih</h3>
+  <table>
+    <thead><tr><th style="width:52%">Kategori</th><th>Language</th></tr></thead>
+    <tbody>
+      <tr><td>Uncategorised, About, Services, Service sub-items,<br>Our offices, Contact, Headings</td><td>Pilih bahasa sebenarnya<br><em>(satu artikel per bahasa)</em></td></tr>
+      <tr><td>Gallery, Our customers, Social, artikel <code>theme</code></td><td><b>All</b></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Empat hal yang paling sering terlupa</h3>
+  <ul class="check">
+    <li>Status <b>Published</b> - kalau tidak, item tersebut tidak akan tampil.</li>
+    <li><b>Language</b> yang benar - kalau salah, item muncul di halaman bahasa lain.</li>
+    <li><b>Parent service</b> pada setiap sub-layanan - kalau kosong, tidak muncul di mana pun.</li>
+    <li>Urutan diatur dari baris <b>Bahasa Indonesia</b> - bahasa lain mengikuti sendiri.</li>
+  </ul>
+
+  <h3>Sebelum menutup pekerjaan</h3>
+  <ul class="check">
+    <li>Judul dan isi sudah benar, tanpa salah ketik.</li>
+    <li>Kategori sudah tepat.</li>
+    <li>Gambar berada di slot yang benar dan Image Description terisi.</li>
+    <li>Untuk layanan: Icon sudah dipilih.</li>
+    <li>Website sudah dibuka dan diperiksa pada bahasa yang bersangkutan.</li>
+  </ul>
+
+  <div class="callout">
+    <span class="label">Kalau harus mengingat satu kalimat saja</span>
+    <p>Pilih kategori yang tepat, isi kontennya, tentukan bahasanya, lengkapi isian di tab <b>Fields</b>, pastikan <b>Published</b>, lalu <b>Save</b>.</p>
+  </div>
+
+  <div class="foot">
+    Panduan Pengelolaan Konten Website | PT Cakra Kencana Multimedia | Edisi September 2026<br>
+    CMS: cms.cakrakencanamultimedia.com/administrator | Website: cakrakencanamultimedia.com
+  </div>
+</section>
+
 </body>
 </html>
