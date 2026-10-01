@@ -103,7 +103,7 @@ Vehicle stickers and wrapping, putting a brand on the road with the fleet.
 ### Wall Painting & Alternative Branding
 Wall painting and other custom branding solutions outside the standard signage categories, built to the client brief.
 
-## Tax, Permit, IMB & PBG Service
+## Tax & Permit Services
 Handling of advertising permits and taxes for indoor and outdoor media, with display periods set to your needs, including IMB and PBG applications.
 
 ### Advertising Tax Handling
@@ -235,7 +235,7 @@ Printed material for day-to-day office administration.
 ### Delivery Notes & Receipts
 Printed documents for goods delivery and handover.
 
-## POP Merchandise
+## Merchandise
 Custom merchandise and keepsakes for promotion, corporate gifting, and special occasions.
 
 ### Wobblers & Price Boards
@@ -277,7 +277,7 @@ Free-standing displays and shelf dressing accessories that lift how a product lo
 ### Tester Displays
 Displays built specifically for tester or sample products in retail areas.
 
-## Graphic Design
+## Design Graphics
 2D and 3D design for branding, printed material, and display construction planning.
 
 ### 2D Design — Logo & Company Profile
@@ -351,3 +351,12 @@ Fabrication of canopies and railings for the outside of a building.
 
 ### Facades
 Construction and installation of custom building facades.
+
+## Shearing
+Precision sheet-metal shearing, cut to size and thickness for fabrication, construction, and display needs.
+
+## Bending
+Precision sheet-metal bending for frames, panels, and custom fabricated components.
+
+## CNC
+Precision CNC work — cutting, routing, and engraving — across materials with consistent, accurate results.

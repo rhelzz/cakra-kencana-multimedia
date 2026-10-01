@@ -1,61 +1,74 @@
-import { ArrowDown, ArrowRight } from 'lucide-react';
-import { bodyOf, CATEGORY, getArticle, imageOf, stripTags } from '@/lib/joomla';
-import { t, type Locale } from '@/lib/i18n';
+import { bodyOf, CATEGORY, getArticle, getSiteName, imageOf, stripTags } from '@/lib/joomla';
+import type { Locale } from '@/lib/i18n';
 
 export default async function Hero({ locale }: { locale: Locale }) {
-  const hero = await getArticle('home-hero', locale, CATEGORY.uncategorised);
+  const [hero, siteName] = await Promise.all([
+    getArticle('home-hero', locale, CATEGORY.uncategorised),
+    getSiteName(),
+  ]);
   if (!hero) return null;
 
   const bg = imageOf(hero);
   // bodyOf() memakai || — Joomla mengirim "" untuk field kosong, dan ?? akan menyimpannya.
   const subtitle = stripTags(bodyOf(hero));
-  const ui = t(locale);
+
+  // The headline is one Joomla title; the editor also fills `hero-accent` with the phrase
+  // that gets the brand colour, so the split stays content-driven instead of guessed here.
+  const full = hero.attributes.title;
+  const accent = (hero.attributes['hero-accent'] as string | undefined) ?? '';
+  const at = accent && full.includes(accent) ? full.indexOf(accent) : -1;
+  const lead = at >= 0 ? full.slice(0, at) : full;
+  const tail = at >= 0 ? full.slice(at) : '';
 
   return (
-    // min-h-svh, not vh: on mobile Safari the address bar makes 100vh taller than the visible
-    // viewport, which pushes the subtitle under the fold on first paint.
-    <section id="top" className="relative isolate flex min-h-svh scroll-mt-20 items-center justify-center overflow-hidden bg-neutral-950 px-4 py-32 sm:px-6">
+    // Full-bleed hero: photo covers the whole section, copy sits on a gradient
+    // scrim (solid background at the left → transparent at ~65%) so there is no
+    // interior box edge and the fade always ends at 0% opacity. min-h-svh keeps
+    // the fold full-height.
+    <section id="top" className="relative isolate flex min-h-svh scroll-mt-20 items-center overflow-hidden bg-background px-4 pb-16 pt-32 sm:px-6 md:pb-20">
       {bg && (
         <div
-          className="absolute inset-0 -z-10 bg-cover bg-center"
+          className="absolute inset-0 -z-20 w-full bg-cover bg-center lg:bg-[position:70%_center]"
           style={{ backgroundImage: `url("${bg}")` }}
           role="presentation"
         />
       )}
-      {/* Darker at the top so the floating header stays readable, softer over the copy. */}
-      <div className="absolute inset-0 -z-10 bg-linear-to-b from-black/75 via-black/55 to-black/70" />
-      {/* A brand-red wash rising from the bottom edge: it warms the photo, keeps the accent
-          present above the fold, and stops the hero reading as a plain grey stock image. */}
+      {/* Scrim, not a mask: solid background behind the copy fading to transparent
+          over the photo. No mask-image means no cut-off line; no backdrop-blur
+          means no expensive fullscreen filter. Tokens follow light/dark mode.
+          Mobile stacks copy over photo, so the scrim runs top-to-bottom there. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-2/3 bg-linear-to-t from-primary/20 via-primary/5 to-transparent"
+        className="absolute inset-0 -z-10 bg-gradient-to-b from-background via-background/70 to-background/40 lg:bg-gradient-to-r lg:from-background lg:via-background/85 lg:via-[28%] lg:to-transparent lg:to-[65%]"
+      />
+      {/* Bottom blend into the next section: eased 8-stop feather (.hero-blend-bottom)
+          over ~2x bottom padding, so the building base stays visible and the
+          falloff slows into transparency with no band. */}
+      <div
+        aria-hidden
+        className="hero-blend-bottom absolute inset-x-0 bottom-0 -z-10 h-32 md:h-40"
       />
 
-      <div className="mx-auto w-full max-w-6xl text-center text-white lg:text-left">
-        <div className="max-w-4xl lg:max-w-3xl">
-        {/* The two lines rise in sequence on load — animation, not scroll timeline, because
-            they are already on screen when the page paints. */}
-        <h1 className="animate-in fade-in slide-in-from-bottom-4 text-balance text-4xl font-semibold leading-[1.08] tracking-tight duration-700 sm:text-6xl lg:text-7xl motion-reduce:animate-none">
-          {hero.attributes.title}
-        </h1>
-        {subtitle && (
-          <p className="animate-in fade-in slide-in-from-bottom-4 mx-auto mt-6 max-w-2xl text-pretty text-lg text-white/80 delay-150 duration-700 fill-mode-backwards lg:mx-0 sm:text-xl motion-reduce:animate-none">
-            {subtitle}
-          </p>
-        )}
-          <div className="animate-in fade-in slide-in-from-bottom-4 mt-8 flex flex-wrap justify-center gap-3 delay-300 duration-700 fill-mode-backwards lg:justify-start motion-reduce:animate-none">
-            <a href="#services" className="group inline-flex min-h-11 items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition duration-300 ease-settle hover:bg-primary/90 hover:shadow-brand active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100">
-              {ui.viewServices}
-              <ArrowRight className="size-4 transition-transform duration-500 ease-settle group-hover:translate-x-1 motion-reduce:transition-none" />
-            </a>
-            <a href="#about" className="group inline-flex min-h-11 items-center gap-2 rounded-md border border-white/45 px-5 py-2.5 text-sm font-semibold text-white transition duration-300 ease-settle hover:border-white hover:bg-white/10 active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100">
-              {ui.exploreCompany}
-              <ArrowDown className="size-4 transition-transform duration-500 ease-settle group-hover:translate-y-0.5 motion-reduce:transition-none" />
-            </a>
-          </div>
+      <div className="mx-auto w-full max-w-6xl">
+        <div className="max-w-2xl">
+          {/* The three lines rise in sequence on load — animation, not scroll timeline,
+              because they are already on screen when the page paints. */}
+          {siteName && (
+            <p className="animate-in fade-in slide-in-from-bottom-4 text-sm font-bold uppercase tracking-[0.16em] text-foreground duration-700 motion-reduce:animate-none">
+              {siteName}
+            </p>
+          )}
+          <h1 className="animate-in fade-in slide-in-from-bottom-4 mt-6 text-balance text-5xl font-bold leading-[1.05] tracking-tight text-foreground duration-700 delay-150 fill-mode-backwards sm:text-6xl lg:text-7xl motion-reduce:animate-none">
+            {lead}
+            {tail && <span className="text-primary">{tail}</span>}
+          </h1>
+          {subtitle && (
+            <p className="animate-in fade-in slide-in-from-bottom-4 mt-7 max-w-xl text-pretty text-lg text-muted-foreground delay-300 duration-700 fill-mode-backwards sm:text-xl motion-reduce:animate-none">
+              {subtitle}
+            </p>
+          )}
         </div>
       </div>
-
     </section>
   );
 }

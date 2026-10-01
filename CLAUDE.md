@@ -58,7 +58,7 @@ frontend/src/
 │   ├── globals.css               Tailwind v4 theme tokens + light/dark palette
 │   ├── [locale]/
 │   │   ├── layout.tsx            Root layout: <html lang>, fonts, ThemeProvider, Navbar, Footer
-│   │   ├── page.tsx              Home = Hero + About + Services + Customers + Offices
+│   │   ├── page.tsx              Home = Hero + Services + About + Customers + Offices
 │   │   ├── services/page.tsx     Service listing (all services, no limit)
 │   │   └── services/[slug]/page.tsx Service detail: hero image + body + sub-service grid
 │   └── api/revalidate/route.ts   Webhook target for the Joomla plugin
@@ -95,7 +95,7 @@ Categories (ids are hardcoded in `CATEGORY` in `lib/joomla.ts` — do not renumb
 | 11 | Our customers | 84 client logos | Customers |
 | 12 | Our offices | 5 locations | Offices, Footer |
 | 13 | Social | 5 social accounts | SocialLinks |
-| 14 | Headings | translated section headings | `getHeading()` |
+| 14 | Headings | translated section headings, incl. `services-eyebrow` / `services-subtitle` | `getHeading()` |
 | 15 | Service sub-items | sub-services per service | sub-service grid on the service detail page |
 | 16 | Contact | WhatsApp, email, and company-profile CTA | Contact |
 
@@ -103,7 +103,7 @@ Categories (ids are hardcoded in `CATEGORY` in `lib/joomla.ts` — do not renumb
 
 | Field | Type | Assigned to | Purpose |
 |---|---|---|---|
-| `icon` | list | Services, Offices, Social | 23 curated options; value must match a key in `lib/icons.ts` or `BRAND_PATHS` in `lib/social.ts` |
+| `icon` | list | Services, Offices, Social | 29 values (22 mapped in `lib/icons.ts`); value must match a key in `lib/icons.ts` or `BRAND_PATHS` in `lib/social.ts` |
 | `map` | url | Offices | Google Maps link. **Empty = the Open Map button disappears** |
 | `link` | url | Social, Contact | Destination URL. **Empty = that item disappears** |
 | `parent-service` | list | Service sub-items (15) | Which of the 10 services this sub-item belongs to; value is the service's base alias (e.g. `service-digital-printing`). **Named `parent-service` with a hyphen, not `parent_service`** — Joomla slugified it on creation regardless of what was requested. Read via `attributes['parent-service']`, see `getSubServices()` in `joomla.ts`. |
@@ -225,7 +225,7 @@ Measured end to end: ~3.3s from save to updated page.
 ## 6. Decisions with a rationale (do not silently undo)
 
 - **Icons: curated map, not `lucide-react/dynamic`.** Lucide's own docs advise against the
-  dynamic component because it bundles every icon at build time. 23 hand-picked options also
+  dynamic component because it bundles every icon at build time. 22 hand-picked keys also
   beat 1500 for an editor. Cost: adding one takes two edits.
 - **Brand icons from `simple-icons`.** Lucide 1.30 removed all brand icons for trademark
   reasons. **LinkedIn is absent from simple-icons** (removed at LinkedIn's request) and falls
@@ -338,19 +338,19 @@ Measured end to end: ~3.3s from save to updated page.
 Home page sections, all dynamic, all three languages:
 
 1. **Hero** — title, subtitle, background image from article `home-hero`
-2. **About** — 3 blocks from category 9 + a 4-slide autoplay carousel from category 8
-3. **Services** — up to 6 cards with icons on the home page; a **"Lebih banyak" button** appears
-   and links to `/services` (full listing, no limit) once there are more than 6. Each card links
-   to a detail page.
+2. **Services** — all 11 services as icon + label + short-description tiles in a
+   4-column grid on the home page (`ServiceTile.tsx`); `/services` lists the same
+   11 as a zig-zag (`ServiceRow`). Tiles and rows are static — there is no service
+   detail route. Retired services (POP Display, Rambu-Rambu, Shearing-dan-Bending)
+   stay unpublished, never deleted.
+3. **About** — 3 blocks from category 9 + a 4-slide autoplay carousel from category 8
 4. **Our customers** — 18 featured logos in a CSS-only marquee plus a link to `/customers`, which lists all 84 logos
 5. **Our offices** — 5 locations, icon per type, Open Map only when a link exists
 6. **Contact** — CRUD-managed WhatsApp/email links plus the company-profile CTA
 7. **Footer** — logo, tagline, social icons, menu, head office, `{year}` copyright
 
-Plus: **`/services`** (listing page, all 10 services), **`/customers`** (all client logos), **service detail page** (`/services/[id]`,
-icon + title + hero image + body + a masonry grid of that service's sub-services, text-only
-cards, no per-sub-service image + 9 sibling services + per-service metadata + 404 on a bad id),
-sticky navbar that floats transparent over the home page hero and turns solid on scroll —
+Plus: **`/services`** (listing page, all 11 services as a zig-zag of `ServiceRow`),
+**`/customers`** (all client logos), sticky navbar that floats transparent over the home page hero and turns solid on scroll —
 **solid immediately on every other page**, since only the home page has a dark hero to float
 over (`SiteHeader.tsx`: `scrolled = scrolledPast || !atHome`) — mobile sheet menu, light/dark
 toggle, language switcher, smooth in-page scrolling that respects `prefers-reduced-motion`, and
@@ -363,8 +363,10 @@ per-locale `hreflang`.
   production domain exists.
 - **Chinese and Indonesian copy was machine-written** and has never been reviewed by a native
   speaker. Printing terms especially (胶印, 丝网印刷, 车间).
-- **Service detail pages are thin** — Joomla only has `introtext` filled. They become useful
-  when editors write the part after "Read more".
+- **Service detail pages are thin** — Joomla only has `introtext` filled. They become
+  useful when editors write the part after "Read more". The navbar **Services**
+  item links to `/services` (per-locale path stored in Joomla menu items, edited
+  via admin UI or direct SQL — never `PATCH`, which 500s).
 - **Chinese service copy is machine-written and unreviewed.** All 11 services and 89
   sub-services now exist in all three languages, imported from `content-drafts/` by
   `scripts/import-translations.py`. The English reads naturally; the Mandarin printing terms

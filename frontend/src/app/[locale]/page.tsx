@@ -14,8 +14,8 @@ export default async function Home({ params }: PageProps<'/[locale]'>) {
   return (
     <main id="main-content" className="flex-1">
       <Hero locale={locale} />
-      <About locale={locale} />
       <Services locale={locale} />
+      <About locale={locale} />
       <Customers locale={locale} />
       <Offices locale={locale} />
       <Contact locale={locale} />

@@ -69,7 +69,7 @@ Jl. Raya Pramuka, Ruko Pesona Faria Blok A No. 11, Mampang, Pancoran Mas, Depok,
 
 # SERVICES
 
-## Indoor / Outdoor Reklame
+## Reklame
 Produksi dan pemasangan media reklame indoor maupun outdoor, dari signage permanen sampai kebutuhan branding sementara, disesuaikan dengan material dan lokasi pemasangan.
 
 ### Billboard & Baliho
@@ -108,7 +108,7 @@ Stiker dan wrapping kendaraan untuk branding usaha yang bergerak mengikuti armad
 ### Painting & Alternative Branding
 Pengecatan dinding dan solusi branding kustom lain di luar kategori signage standar, disesuaikan permintaan klien.
 
-## Tax, Permit, IMB & PBG Service
+## Tax Permit Service
 Layanan pengurusan perizinan dan pajak reklame indoor maupun outdoor, masa tayang disesuaikan kebutuhan, termasuk pengurusan IMB dan PBG.
 
 ### Pengurusan Pajak Reklame
@@ -240,7 +240,7 @@ Materi cetak administrasi harian kantor.
 ### Surat Jalan & Surat Tanda Terima
 Dokumen cetak untuk kebutuhan pengiriman dan serah terima barang.
 
-## POP Merchandise
+## Merchandise
 Merchandise dan suvenir custom untuk kebutuhan promosi, hadiah korporat, dan momen khusus.
 
 ### Wobler & Priceboard
@@ -357,3 +357,12 @@ Fabrikasi kanopi dan pagar pembatas untuk area luar bangunan.
 ### Fasade
 Konstruksi dan pemasangan fasad bangunan custom.
 
+
+## Shearing
+Layanan pemotongan plat logam (shearing) secara presisi sesuai ukuran dan ketebalan untuk kebutuhan fabrikasi, konstruksi, dan display.
+
+## Bending
+Layanan penekukan plat logam (bending) dengan sudut presisi untuk rangka, panel, dan komponen fabrikasi custom.
+
+## CNC
+Pengerjaan CNC presisi — cutting, routing, dan engraving — untuk berbagai material dengan hasil yang konsisten dan akurat.

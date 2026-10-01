@@ -1,13 +1,12 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowRight, ChevronLeft, Slash } from 'lucide-react';
+import { ChevronLeft, Slash } from 'lucide-react';
 import {
   bodyOf,
   CATEGORY,
   getCategory,
   getHeading,
-  serviceSlug,
   stripTags,
   type Article,
 } from '@/lib/joomla';
@@ -103,13 +102,7 @@ export default async function ServicesPage({ params }: PageProps<'/[locale]/serv
       <div className="overflow-x-clip px-4 py-16 sm:px-6 lg:py-24">
         <ul className="reveal-alternate mx-auto max-w-6xl">
           {services.map((service, i) => (
-            <ServiceRow
-              key={service.id}
-              service={service}
-              index={i}
-              base={base}
-              locale={locale as Locale}
-            />
+            <ServiceRow key={service.id} service={service} index={i} />
           ))}
         </ul>
       </div>
@@ -125,43 +118,20 @@ function Icon({ field, className }: { field: unknown; className?: string }) {
   return <Glyph className={className} />;
 }
 
-/**
- * One service per row, alternating which side of the page the block sits on. The zig-zag is
- * the point: a uniform grid invites skimming, while a line that keeps changing sides forces
- * the eye to reset on every item — which is what you want when all ten entries matter equally.
+/** One service per row, alternating which side of the page the block sits on. The zig-zag is
+ *  the point: a uniform grid invites skimming, while a line that keeps changing sides forces
+ *  the eye to reset on every item — which is what you want when all eleven entries matter equally.
  */
-function ServiceRow({
-  service,
-  index,
-  base,
-  locale,
-}: {
-  service: Article;
-  index: number;
-  base: string;
-  locale: Locale;
-}) {
+function ServiceRow({ service, index }: { service: Article; index: number }) {
   const even = index % 2 === 1;
 
   return (
-    <li className="group relative border-t border-border first:border-t-0">
-      {/* The entire hover response is these three, and no more: a hairline of red drawing
-          itself along the row's own edge, a near-invisible ground, and the text block
-          indenting a few pixels. A full-width colour wash was the first attempt and it read
-          as loud and forced — at this scale the restrained version is the premium one. */}
-      <span
-        aria-hidden
-        className={`pointer-events-none absolute inset-x-0 top-0 h-0.5 scale-x-0 bg-primary transition-transform duration-500 ease-settle group-hover:scale-x-100 motion-reduce:transition-none ${
-          even ? 'origin-right' : 'origin-left'
-        }`}
-      />
-
-      <Link
-        href={`${base}/services/${serviceSlug(service)}`}
+    <li className="relative border-t border-border first:border-t-0">
+      <div
         // Real padding, on one scale: 4 → 6 → 8 across the breakpoints horizontally and
         // 12 → 16 vertically. The ordinal is the leftmost thing on the row, so without this
         // it sits flush against the container edge with nothing to breathe into.
-        className="flex flex-col gap-6 rounded-xl px-4 py-12 outline-none transition-colors duration-200 ease-exit hover:bg-muted/60 focus-visible:ring-2 focus-visible:ring-ring/60 motion-reduce:transition-none sm:flex-row sm:items-start sm:gap-10 sm:px-6 lg:gap-14 lg:px-8 lg:py-16"
+        className="flex flex-col gap-6 rounded-xl px-4 py-12 sm:flex-row sm:items-start sm:gap-10 sm:px-6 lg:gap-14 lg:px-8 lg:py-16"
       >
         {/* `sm:contents` dissolves this wrapper at the breakpoint: on a phone the ordinal and
             the icon share one tidy line above the text, and from `sm` up they become direct
@@ -176,7 +146,7 @@ function ServiceRow({
             // `sm:pt-1` is an optical nudge, not a mathematical one: at `text-5xl` with
             // `leading-none` the digits' cap height starts higher than the title's, so
             // top-aligning them by the box leaves the number looking like it floated up.
-            className={`w-14 shrink-0 text-4xl font-semibold leading-none tabular-nums text-border transition-colors duration-300 ease-exit group-hover:text-primary motion-reduce:transition-none sm:w-20 sm:pt-1 sm:text-5xl ${
+            className={`w-14 shrink-0 text-4xl font-semibold leading-none tabular-nums text-border sm:w-20 sm:pt-1 sm:text-5xl ${
               even ? 'sm:order-3 sm:text-right' : ''
             }`}
           >
@@ -184,7 +154,7 @@ function ServiceRow({
           </span>
 
           <span
-            className={`grid size-12 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground shadow-brand transition-transform duration-500 ease-settle group-hover:scale-110 motion-reduce:transition-none sm:size-14 ${
+            className={`grid size-12 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground shadow-brand sm:size-14 ${
               even ? 'sm:order-2' : ''
             }`}
           >
@@ -192,34 +162,17 @@ function ServiceRow({
           </span>
         </span>
 
-        <span
-          className={`min-w-0 flex-1 transition-transform duration-500 ease-settle motion-reduce:transition-none ${
-            even ? 'sm:order-1 sm:group-hover:-translate-x-2' : 'sm:group-hover:translate-x-2'
-          }`}
-        >
-          <span className="flex items-center gap-2 text-xl font-medium tracking-tight text-pretty sm:text-2xl">
+        <span className={`min-w-0 flex-1 ${even ? 'sm:order-1' : ''}`}>
+          <span className="text-xl font-medium tracking-tight text-pretty sm:text-2xl">
             {service.attributes.title}
-            <ArrowRight className="size-4 shrink-0 -translate-x-2 text-primary opacity-0 transition duration-500 ease-settle group-hover:translate-x-0 group-hover:opacity-100 motion-reduce:transition-none" />
           </span>
           {/* max-w-2xl holds the line near 65 characters even though the row runs the full
               width of the container. */}
-          {/* One vertical rhythm inside the block: 4 after the title, 6 before the link. */}
           <span className="mt-4 block max-w-2xl text-sm leading-relaxed text-pretty text-muted-foreground sm:text-[0.95rem]">
             {stripTags(bodyOf(service))}
           </span>
-          {/* The underline grows from the left instead of switching on: a text link is small
-              enough that an instant underline reads as a glitch rather than a response. */}
-          <span className="mt-6 inline-block text-sm font-medium text-primary">
-            <span className="relative">
-              {t(locale).learnMore}
-              <span
-                aria-hidden
-                className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-primary transition-transform duration-500 ease-settle group-hover:scale-x-100 motion-reduce:transition-none"
-              />
-            </span>
-          </span>
         </span>
-      </Link>
+      </div>
     </li>
   );
 }

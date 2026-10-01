@@ -17,7 +17,7 @@ export default async function About({ locale }: { locale: Locale }) {
   });
 
   return (
-    <section id="about" className="scroll-mt-20 bg-background px-4 py-20 sm:px-6 lg:py-28">
+    <section id="about" className="scroll-mt-20 bg-background px-4 pt-12 pb-20 sm:px-6 md:pt-16 lg:pt-20 lg:pb-28">
       <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
         <div>
           <p className="reveal flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-primary">

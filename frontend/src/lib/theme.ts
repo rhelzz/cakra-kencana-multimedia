@@ -10,10 +10,15 @@
 
 type Oklch = { l: number; c: number; h: number };
 
+/** localStorage key for the visitor's theme choice. Plain module on purpose:
+ *  imported by both the server layout (blocking boot script) and the client
+ *  provider — a 'use client' module cannot export values to a server file. */
+export const THEME_STORAGE_KEY = 'ckm-theme';
+
 /** sRGB hex → Oklab → polar. */
 export function hexToOklch(hex: string): Oklch {
   const m = /^#?([0-9a-f]{6})$/i.exec(hex.trim());
-  if (!m) return { l: 0.552, c: 0.216, h: 26.5 };
+  if (!m) return { l: 0.398, c: 0.1435, h: 257.4 };
   const n = parseInt(m[1], 16);
   const lin = (v: number) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
   const r = lin(((n >> 16) & 255) / 255);
@@ -52,7 +57,7 @@ function palette(bgHex: string, brand: Oklch, fallbackBgL: number, brandOverride
   const C = brand.c;
 
   // Offset lightness dan rasio chroma diambil dari palet yang sudah berjalan, supaya
-  // default `#d31520 / #ffffff / #0b0c0e` menghasilkan warna yang identik dengan sebelumnya.
+  // default `#004392 / #ffffff / #0b0c0e` menghasilkan warna yang identik dengan sebelumnya.
   // Rasio chroma di bawah ditulis dengan asumsi background netral (putih atau nyaris hitam),
   // dan permukaan mendapat warnanya dari brand. Asumsi itu runtuh begitu editor mengisi
   // background dengan warna sungguhan: navy dengan kartu bertint merah menghasilkan kartu
@@ -124,7 +129,7 @@ export type ThemeInput = {
 
 /** Dua palet lengkap dari tiga hex. Nilai kosong jatuh ke default yang sekarang berlaku. */
 export function deriveTheme(input: ThemeInput) {
-  const brand = hexToOklch(input.brand || '#d31520');
+  const brand = hexToOklch(input.brand || '#004392');
   const brandDark = input.brandDark?.trim() ? hexToOklch(input.brandDark) : undefined;
   return {
     light: palette(input.backgroundLight || '#ffffff', brand, 1),

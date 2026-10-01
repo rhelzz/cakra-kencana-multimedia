@@ -60,11 +60,11 @@ export function SiteHeader({
   // "#about" only resolves on the home page; from a detail page it has to go home first.
   const atHome = pathname === (base || '/');
   const resolve = (href: string) => (href.startsWith('#') && !atHome ? `${base}/${href}` : href);
-  // The header starts tall and transparent over the hero, then shrinks and earns a solid
-  // background once you've scrolled past that first section. Only the home page has a dark
-  // hero to float over — everywhere else it's solid and compact from the start, or its white
-  // text vanishes. The trigger is the viewport height, not a fixed pixel count, because the
-  // hero is sized in svh.
+  // The header starts tall over the hero, then shrinks and earns a solid background
+  // once you've scrolled past that first section. The hero is light (copy sits on the
+  // background colour), so the top state uses foreground text — everywhere else it's
+  // solid and compact from the start. The trigger is the viewport height, not a fixed
+  // pixel count, because the hero is sized in svh.
   const [scrolledPast, setScrolledPast] = useState(false);
   const scrolled = scrolledPast || !atHome;
   const [open, setOpen] = useState(false);
@@ -79,10 +79,10 @@ export function SiteHeader({
   return (
     <header
       className={cn(
-        'fixed inset-x-0 top-0 z-50 transition-colors duration-300 motion-reduce:transition-none',
+        'fixed inset-x-0 top-0 z-50 text-foreground transition-colors duration-300 motion-reduce:transition-none',
         scrolled
-          ? 'border-b border-border bg-background/80 text-foreground backdrop-blur-md'
-          : 'border-b border-transparent text-white',
+          ? 'border-b border-border bg-background/80 backdrop-blur-md'
+          : 'border-b border-transparent',
       )}
     >
       <nav
@@ -91,52 +91,40 @@ export function SiteHeader({
           scrolled ? 'h-20' : 'h-24 md:h-32',
         )}
       >
-        {/* Over the hero the mark is the company name set as type — white, so it reads on the
-            photo, which the dark full-colour logo does not. Once the bar goes solid there is a
-            light background to sit on and it becomes the logo itself. */}
-        {/* Both marks are always rendered, stacked in one grid cell and cross-faded, so the
-            link keeps a stable width and nothing reflows mid-transition. The <img> is
-            decorative (alt="") — the always-present text is what names the link. */}
+        {/* The brand is always the logo image: large over the hero, shrinking to the
+            compact bar size once scrolled — one <img> whose height animates, so the mark
+            visibly draws itself smaller instead of cross-fading between two marks.
+            alt="" keeps it decorative; aria-label on the link names the destination. */}
         <NavLink
           href={resolve('#top')}
-          className="grid min-w-0 max-w-[10rem] flex-1 items-center *:col-start-1 *:row-start-1 sm:max-w-none sm:flex-none"
+          aria-label={siteName}
+          className="flex min-w-0 flex-1 items-center sm:flex-none"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={logo}
             alt=""
             className={cn(
-              // A concrete height, not h-full: inside the grid, a percentage height would
-              // resolve against an auto-sized row whose height is this image — circular, so
-              // the browser falls back to the PNG's natural 341px and it bursts out of the bar.
-              // The logo only ever shows while the bar is `h-20` (80px).
-              'h-13 w-auto justify-self-start transition-opacity duration-300 motion-reduce:transition-none',
-              scrolled ? 'opacity-100' : 'opacity-0',
+              'w-auto transition-[height] duration-300 motion-reduce:transition-none',
+              scrolled ? 'h-13' : 'h-16 md:h-20',
             )}
           />
-          <span
-            className={cn(
-              'truncate whitespace-nowrap text-sm font-semibold uppercase leading-tight tracking-wide transition-opacity duration-300 motion-reduce:transition-none',
-              scrolled ? 'opacity-0' : 'opacity-100',
-            )}
-          >
-            {siteName}
-          </span>
         </NavLink>
 
         <ul className="ml-auto hidden items-center gap-1 md:flex">
           {items.map((i) => {
-            const active = !i.href.startsWith('#') && pathname === resolve(i.href);
+            const href = resolve(i.href);
+            const active = !i.href.startsWith('#') && (pathname === href || pathname.startsWith(`${href}/`));
             return (
             <li key={i.id}>
               <NavLink
-                href={resolve(i.href)}
+                href={href}
                 aria-current={active ? 'page' : undefined}
                 className={cn(
                   'whitespace-nowrap rounded-md px-3 py-2 text-sm font-semibold tracking-[0.015em] transition-colors',
                   active
-                    ? scrolled ? 'bg-accent text-accent-foreground' : 'bg-white/10'
-                    : scrolled ? 'hover:bg-accent hover:text-accent-foreground' : 'hover:bg-white/10',
+                    ? 'bg-accent text-accent-foreground'
+                    : 'hover:bg-accent hover:text-accent-foreground',
                 )}
               >
                 {i.title}
@@ -147,8 +135,21 @@ export function SiteHeader({
         </ul>
 
         <div className="ml-auto flex shrink-0 items-center gap-0.5 sm:gap-1">
-          <LanguageSwitcher locale={locale} />
-          <ThemeToggle locale={locale} />
+          {/* Floating chip: over the hero the bar is transparent, so the two icon
+              buttons ride on a blurred pill for legibility. Once scrolled the bar
+              is solid glass itself, so the pill fades to nothing. Colour-only
+              transition — backdrop-filter stays put, it can't be interpolated. */}
+          <div
+            className={cn(
+              'flex items-center gap-0.5 rounded-full border p-1 transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300 ease-exit motion-reduce:transition-none',
+              scrolled
+                ? 'border-transparent bg-transparent shadow-none backdrop-blur-none'
+                : 'border-border/60 bg-background/60 shadow-sm backdrop-blur-md',
+            )}
+          >
+            <LanguageSwitcher locale={locale} />
+            <ThemeToggle locale={locale} />
+          </div>
 
           <Sheet open={open} onOpenChange={setOpen}>
             {/* Base UI (not Radix) is the primitive here, so composition uses `render`, not `asChild`. */}
@@ -176,7 +177,9 @@ export function SiteHeader({
               <ul className="flex flex-col gap-1 px-3 py-4">
                 {items.map((i, index) => {
                   const resolvedHref = resolve(i.href);
-                  const active = !i.href.startsWith('#') && pathname === resolvedHref;
+                  const active =
+                    !i.href.startsWith('#') &&
+                    (pathname === resolvedHref || pathname.startsWith(`${resolvedHref}/`));
                   return (
                     <li key={i.id}>
                       <NavLink

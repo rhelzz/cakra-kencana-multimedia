@@ -65,8 +65,8 @@ export type Article = {
     icon?: Record<string, string> | string;
     map?: string;
     link?: string;
-    // Name has a hyphen because Joomla slugified "parent_service" itself when the field was made.
-    'parent-service'?: Record<string, string> | string;
+    // Phrase inside the hero headline that gets the brand colour.
+    'hero-accent'?: string;
   };
 };
 
@@ -108,22 +108,6 @@ function hrefFor({ type, link }: MenuItem['attributes']) {
  * suffix ("service-road-signs-id"). The alias without it identifies the translation set.
  */
 export const baseAlias = (alias: string) => alias.replace(/-(id|en|zh)$/, '');
-
-/**
- * The URL segment for a service detail page.
- *
- * Deliberately NOT the article id: Joomla gives each translation of a set its own id
- * (238 / 479 / 575 for the same service), so an id in the URL only resolves in the language
- * it was created for — switching language on a detail page 404s. The base alias is the one
- * identity shared across a translation set, which is the same thing `pickTranslations()` and
- * `getSubServices()` key on. The `service-` prefix is dropped because it says nothing in a URL.
- *
- * Compare with this function rather than rebuilding an alias from a slug — that way an
- * article whose alias does not follow the convention simply never matches, instead of
- * matching the wrong thing.
- */
-export const serviceSlug = (article: Article) =>
-  baseAlias(article.attributes.alias).replace(/^service-/, '');
 
 /**
  * One article per translation set, preferring the requested language and falling back to
@@ -219,15 +203,8 @@ export const CATEGORY = {
   offices: 12,
   social: 13,
   headings: 14,
-  serviceSubItems: 15,
   contact: 16,
 } as const;
-
-/** Sub-services of one service, matched via the `parent-service` field to the service's base alias. */
-export async function getSubServices(parentAlias: string, locale: Locale) {
-  const all = await getCategory(CATEGORY.serviceSubItems, locale);
-  return all.filter((a) => fieldValue(a.attributes['parent-service']) === parentAlias);
-}
 
 /** The named entities TinyMCE actually emits. Anything else falls through untouched. */
 const ENTITIES: Record<string, string> = {

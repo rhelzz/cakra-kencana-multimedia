@@ -21,6 +21,13 @@ Dokumen ini ditulis dalam bahasa Indonesia karena pembacanya adalah kamu dan tim
 | **Rencana restrukturisasi Service → Detail → Sub-service** | [10 — Rencana Restrukturisasi Layanan](10-rencana-restrukturisasi-layanan.md) |
 | **Deploy ke hosting / serah terima ke orang lain** | [11 — Deploy & Serah Terima](11-deploy.md) |
 | **Menaikkan fitur warna tema ke produksi** | [12 — Rilis Warna Tema](12-rilis-warna-tema.md) |
+| **Patch note: hapus bagian Compro (Contact)** | [13 — Hapus Compro](13-patch-note-hapus-compro.md) |
+| **Patch note: layout Contact tanpa Compro** | [14 — Layout Contact](14-patch-note-contact-tanpa-compro.md) |
+| **Patch note: bersihkan marker [DIUBAH]** | [15 — Marker DIUBAH](15-patch-note-bersih-marker-diubah.md) |
+| **Patch note: hapus sub-service & detail** | [16 — Hapus Subservice](16-patch-note-hapus-subservice.md) |
+| **Patch note: navbar baru + logo** | [17 — Navbar & Logo](17-patch-note-navbar-logo.md) |
+| **Patch note: hero terang + biru** | [18 — Hero Biru](18-patch-note-hero-biru.md) |
+| **Patch note: hero 1:1 referensi (two-tone)** | [19 — Hero Two-Tone](19-patch-note-hero-twotone.md) |
 | **Memberi panduan ke klien / tim konten** | [Panduan Pengguna CMS (PDF)](panduan-pengguna-cms.pdf) |
 
 ### Panduan Pengguna CMS

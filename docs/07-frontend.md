@@ -44,7 +44,7 @@ frontend/src/
 | `SiteHeader` | status scroll, sheet mobile, `usePathname` |
 | `Gallery` | embla carousel + autoplay |
 | `LanguageSwitcher` | dropdown + `usePathname` |
-| `ThemeToggle` | `useTheme` dari next-themes |
+| `ThemeToggle` | `useTheme` dari provider lokal (`theme-provider.tsx`) |
 
 Polanya selalu: **server component mengambil data → oper props biasa ke client component.**
 `Navbar.tsx` (server) → `SiteHeader.tsx` (client) adalah contohnya.
@@ -131,8 +131,13 @@ Dua tempat sengaja **selalu gelap** di kedua tema: hero (foto + gradien) dan pit
 
 ### Dark mode
 
-`next-themes` dengan `attribute="class"`, `defaultTheme="system"`. `<html>` memakai
-`suppressHydrationWarning` karena next-themes menempelkan class sebelum React hydrate.
+Provider tema lokal (`theme-provider.tsx`, bukan `next-themes` — paket itu tidak
+terawat dan menyuntik boot script lewat `createElement('script')` sehingga React 19
+di Next 16 melempar error "script tag while rendering") dengan `attribute="class"`,
+default `system`. Skrip boot blocking via `next/script` (`beforeInteractive`, key
+`ckm-theme` di `lib/theme.ts`) menempelkan class sebelum paint pertama — `<script>`
+mentah di komponen dilarang React 19. `<html>` memakai `suppressHydrationWarning`
+karena class ditempel sebelum React hydrate.
 
 `ThemeToggle` tidak memakai state `mounted` — ikonnya dipilih CSS (`dark:hidden` /
 `dark:block`), sehingga server dan client merender markup yang sama.

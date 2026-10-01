@@ -96,7 +96,7 @@ Yogyakarta, Malang, Bali, Makassar, Lampung, Palembang, Pekanbaru, Medan, Balikp
 ### 墙绘与其他品牌方案
 墙面彩绘及标准标识类别之外的定制品牌方案，按客户需求执行。
 
-## 税务、许可、IMB 与 PBG 服务
+## 税务与许可服务
 室内外广告的许可与税务代办服务，投放期限按需设定，并包含IMB与PBG建筑审批办理。
 
 ### 广告税代办
@@ -228,7 +228,7 @@ Yogyakarta, Malang, Bali, Makassar, Lampung, Palembang, Pekanbaru, Medan, Balikp
 ### 送货单与签收单
 用于货物配送与交接的印刷单据。
 
-## POP 周边商品
+## 周边商品
 面向促销、企业赠礼与特殊场合的定制周边商品与纪念品。
 
 ### 摇摇卡与价格牌
@@ -344,3 +344,12 @@ Yogyakarta, Malang, Bali, Makassar, Lampung, Palembang, Pekanbaru, Medan, Balikp
 
 ### 建筑外立面
 定制建筑外立面的施工与安装。
+
+## 剪板
+按尺寸与厚度精确剪切金属板材，满足钣金加工、建筑与展示需求。
+
+## 折弯
+精确折弯金属板材，制作框架、面板及定制构件。
+
+## CNC
+高精度数控加工（切割、雕刻、镂铣），适用于多种材料，结果稳定精确。

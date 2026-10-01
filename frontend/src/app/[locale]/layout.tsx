@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans, IBM_Plex_Serif } from "next/font/google";
 import { notFound } from "next/navigation";
+import Script from "next/script";
 import "../globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
+import { THEME_STORAGE_KEY } from "@/lib/theme";
 import { HTML_LANG, isLocale, localePath, LOCALES, t } from "@/lib/i18n";
 import { bodyOf, CATEGORY, getArticle, getSiteName, getTheme, stripTags } from "@/lib/joomla";
 import { themeCss } from "@/lib/theme";
@@ -62,7 +64,8 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
   const css = themeCss(await getTheme());
 
   return (
-    // suppressHydrationWarning: next-themes sets the class on <html> before React hydrates.
+    // suppressHydrationWarning: the theme script below sets the class on <html>
+    // before React hydrates, so the server-rendered markup may differ by design.
     <html
       lang={HTML_LANG[locale]}
       suppressHydrationWarning
@@ -70,6 +73,13 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
     >
       <head>
         <style dangerouslySetInnerHTML={{ __html: css }} />
+        {/* Blocking theme boot (no FOUC): mirrors the provider's resolution, so the
+            first paint already carries the right class. next/script hoists this
+            properly — a raw <script> in a component trips React 19's warning. */}
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
+        >{`try{var t=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)})||"system";if(t==="dark"||(t==="system"&&matchMedia("(prefers-color-scheme: dark)").matches))document.documentElement.classList.add("dark")}catch(e){}`}</Script>
       </head>
       <body className="min-h-full flex flex-col">
         <ThemeProvider>

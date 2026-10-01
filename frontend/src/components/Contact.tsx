@@ -8,12 +8,13 @@ export default async function Contact({ locale }: { locale: Locale }) {
     getHeading('contact', locale),
   ]);
   const request = items.find((item) => baseAlias(item.attributes.alias) === 'request-compro');
+  const hasRequest = Boolean(request?.attributes.link);
   const ui = t(locale);
   const contacts = items.filter(
     (item) => item !== request && item.attributes.link?.trim(),
   );
 
-  if (contacts.length === 0 && !request?.attributes.link) return null;
+  if (contacts.length === 0 && !hasRequest) return null;
 
   return (
     <section id="contact" className="scroll-mt-20 border-t border-border bg-muted/30 px-4 py-20 sm:px-6 lg:py-28">
@@ -23,8 +24,14 @@ export default async function Contact({ locale }: { locale: Locale }) {
         </h2>
         <span aria-hidden className="reveal mt-5 block h-1 w-14 rounded-full bg-primary" />
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-[3fr_1fr]">
-          <ul className="reveal-stagger grid gap-4 sm:grid-cols-2">
+        <div className={hasRequest ? 'mt-12 grid gap-6 lg:grid-cols-[3fr_1fr]' : 'mt-12'}>
+          <ul
+            className={
+              hasRequest
+                ? 'reveal-stagger grid gap-4 sm:grid-cols-2'
+                : 'reveal-stagger grid gap-4 sm:grid-cols-2 lg:grid-cols-4'
+            }
+          >
             {contacts.map((item) => {
               const link = item.attributes.link!.trim();
               const whatsapp = link.includes('wa.me');
