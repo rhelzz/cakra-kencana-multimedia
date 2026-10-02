@@ -7,8 +7,8 @@ Struktur:
   ## judul            -> item di dalam section itu (blok About, kantor, layanan)
   ### judul            -> sub-layanan di dalam satu layanan (cuma di bawah SERVICES)
 
-Section yang TIDAK ada di file ini dan sengaja dikecualikan: GALLERY, CUSTOMERS, SOCIAL.
-Ketiganya cuma berisi gambar/link (logo klien, foto galeri, ikon sosial), tidak ada teks
+Section yang TIDAK ada di file ini dan sengaja dikecualikan: CUSTOMERS, SOCIAL.
+Keduanya cuma berisi gambar/link (logo klien, ikon sosial), tidak ada teks
 yang perlu diterjemahkan — makanya di Joomla artikelnya berbahasa "*" (dipakai bersama
 ketiga bahasa), bukan kelupaan didata di sini.
 

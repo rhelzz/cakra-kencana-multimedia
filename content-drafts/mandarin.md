@@ -5,7 +5,7 @@ Sama seperti english.md: section HERO/ABOUT/HEADINGS/OFFICES/FOOTER sudah terisi
 terjemahan Mandarin yang SUDAH ADA di Joomla. Section SERVICES sengaja kosong di bawah
 tiap judul, silakan isi bertahap/parsial — yang kosong otomatis fallback ke Indonesia di /zh.
 
-Section GALLERY/CUSTOMERS/SOCIAL tidak disertakan (tidak ada teks untuk diterjemahkan).
+Section CUSTOMERS/SOCIAL tidak disertakan (tidak ada teks untuk diterjemahkan).
 -->
 
 # HERO

@@ -71,7 +71,7 @@ Teks Indonesia dan Mandarin ditulis mesin dan **belum pernah diperiksa penutur a
 Istilah teknis percetakan paling rawan: 胶印 (offset), 丝网印刷 (sablon), 车间 (workshop).
 
 ### 3. Kompres gambar
-Carousel ~7.6 MB untuk 4 gambar, hero ~512 KB. Berat untuk pengunjung mobile Indonesia.
+Hero ~512 KB. Berat untuk pengunjung mobile Indonesia.
 Turunkan ke lebar ~1600px dan konversi WebP — biasanya jadi 150–250 KB per gambar tanpa
 perbedaan yang terlihat.
 
@@ -122,5 +122,3 @@ Tiga hal yang paling sering menggagalkan deploy, diringkas di sini:
 - Tidak ada staging
 - Tidak ada monitoring/alerting
 - Tidak ada halaman 404 kustom (masih bawaan Next)
-- `alt` gambar carousel hanya bahasa Indonesia (keputusan sadar, lihat
-  [03 — Model Konten](03-model-konten.md#artikel-tanpa-bahasa-))

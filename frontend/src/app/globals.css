@@ -186,6 +186,38 @@
   );
 }
 
+/* Coverage map backdrop: plain CSS (not Tailwind arbitrary) so the geometry
+   is guaranteed — layer 12% wider than the section, pinned left, so the sea
+   gap and Papua bleed off past the right viewport edge. The left fade keeps
+   text readable; both mask declarations are needed (WebKit + standard). */
+.coverage-map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 112%;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 65%);
+  mask-image: linear-gradient(to right, transparent 0%, black 65%);
+}
+
+.coverage-map img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 100% 50%;
+}
+
+@media (min-width: 1024px) {
+  .coverage-map {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 48%);
+    mask-image: linear-gradient(to right, transparent 0%, black 48%);
+  }
+
+  .coverage-map img {
+    object-position: center;
+  }
+}
+
 @keyframes reveal-rise {
   from {
     opacity: 0;
@@ -205,28 +237,6 @@
   from {
     opacity: 0;
     transform: translateX(3.5rem);
-  }
-}
-
-@keyframes customer-marquee {
-  to {
-    transform: translateX(calc(-50% - 0.75rem));
-  }
-}
-
-.customer-marquee {
-  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .customer-marquee-track {
-    animation: customer-marquee 42s linear infinite;
-  }
-
-  .customer-marquee:hover .customer-marquee-track,
-  .customer-marquee:focus-within .customer-marquee-track {
-    animation-play-state: paused;
   }
 }
 

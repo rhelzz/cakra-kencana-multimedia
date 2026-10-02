@@ -94,7 +94,7 @@ Rencana konkret:
 | Kategori baru, mis. **"Service Sub-items"** | ±130 artikel, satu per sub-service. Judul = nama sub-service (mis. "Roll Up Banner"). Isi (`introtext`) = deskripsi pendek (boleh placeholder text kalau poster tidak menjelaskan). `image_intro` = gambar placeholder. |
 | Custom field baru **`parent_service`**, tipe **List** | Dipasang di kategori sub-service saja. 10 opsi, value = alias dasar tiap layanan induk (mis. `service-digital-printing`), label = judulnya. Sama persis pola `icon` yang sudah didokumentasikan di §"Menambah pilihan baru butuh dua langkah" — jadi tidak ada konsep field baru untuk dipelajari, cuma field ke-4. |
 
-Alias & bahasa: sub-service artikel language `*` (seperti Gallery/Customers) — deskripsi
+Alias & bahasa: sub-service artikel language `*` (seperti Customers) — deskripsi
 placeholder tidak butuh terjemahan sampai konten final. Kalau nanti sub-service butuh teks
 per bahasa, pola `-id/-en/-zh` yang sudah ada tinggal dipakai ulang.
 
@@ -134,7 +134,8 @@ selain urutan di atas (Joomla harus lebih dulu ada datanya sebelum kode membacan
   kena, id 9–17, 42–59.
 - Placeholder gambar: **hero 10 layanan** dirotasi dari 4 foto yang sudah ada di
   `backend/images/gallery/*.jpg` (color-proofing, offset-press, paper-stock, screen-printing —
-  ini sudah dipakai Gallery carousel, jadi tidak menambah aset baru). **145 sub-service**
+  ini sudah dipakai Gallery carousel, jadi tidak menambah aset baru). *(Kedaluarsa Okt 2026:
+  carousel + kategori Gallery + keempat file gambar dihapus.)* **145 sub-service**
   dirotasi dari 2 foto di `backend/images/banners/` (shop-ad.jpg, shop-ad-books.jpg). Ganti ke
   foto asli begitu klien menyediakannya — cukup `PATCH images.image_intro` per artikel.
 - Sub-service ditulis **language `*`** (bukan per-bahasa) untuk sekarang — deskripsinya cuma

@@ -51,64 +51,33 @@ Jangan. Hero harus tepat satu per bahasa. Menghapusnya membuat seluruh section h
 
 ---
 
-## About (Who we are / Service area / Why choose us)
+## About (Mengapa Cakra / Wilayah Kami)
 
-Kategori **About**. Satu artikel = satu blok. Judul artikel jadi `<h2>`.
+Satu kategori: **About Features** (4 fitur: judul + deskripsi + ikon). Satu artikel = satu kartu. Judul artikel jadi judul
+kartu; ikon dipilih di tab **Fields → Icon**. Bagian Wilayah Kami (Coverage) hanya memakai artikel heading + peta, tanpa item statistik.
 
-### Create — menambah blok baru
+### Create — menambah item baru
 1. **Content → Articles → New**
-2. **Title**: judul blok, mis. `Legalitas`
-3. **Category**: `About`
-4. **Alias**: `about-legalitas-id` (akhiran bahasa wajib)
-5. **Language**: `Bahasa Indonesia`
-6. Isi editor:
-   - **paragraf biasa** → tampil sebagai teks
-   - **bullet list** (tombol daftar di toolbar) → tampil sebagai **checklist ikon centang merah**
-7. **Save**, lalu atur urutannya lewat drag-and-drop.
-8. Ulangi untuk `-en` dan `-zh` bila perlu.
+2. **Title**: mis. `Garansi Pengerjaan`
+3. **Category**: `About Features`
+4. **Alias**: akhiran bahasa wajib (`-id`, `-en`, `-zh`)
+5. **Language**: sesuai alias
+6. Isi editor dengan 1–2 kalimat deskripsi
+7. Tab **Fields** → **Icon**: pilih ikon yang cocok
+8. **Save**, lalu atur urutannya lewat drag-and-drop **artikel `-id`**
+9. Ulangi untuk `-en` dan `-zh` bila perlu.
 
 ### Update
-Buka artikel, ubah Title/isi, Save. Mengubah bullet list jadi paragraf (atau sebaliknya)
-otomatis mengubah bentuk tampilannya.
+Buka artikel, ubah Title/isi/ikon, Save.
 
 ### Delete
-Trash artikelnya. Blok itu hilang, blok lain tetap. Kalau **semua** artikel About dihapus,
-seluruh section About hilang dari halaman.
+Unpublish artikelnya (jangan hapus). Item itu hilang, item lain tetap.
+
+> Kategori lama **About** (3 blok teks) sudah pensiun dan tidak tampil di situs.
 
 ---
 
-## Carousel (galeri di sebelah About)
-
-Kategori **Gallery**. Satu artikel = satu slide. Berbahasa `All`.
-
-| Yang tampil | Diambil dari |
-|---|---|
-| Gambar slide | tab **Images and Links** → **Intro Image** *atau* **Full Article Image** (mana saja yang diisi) |
-| Teks `alt` | **Image Description (Alt)** dari slot yang diisi, cadangan: Title |
-
-### Create — menambah slide
-1. **New** → Title mis. `Finishing`
-2. **Category**: `Gallery`
-3. **Language**: `All`
-4. Tab **Images and Links** → **Intro Image** → pilih gambar → isi **Image Description (Alt)**
-5. **Save** → atur urutan lewat drag-and-drop
-
-Slide bertambah otomatis. Panah dan titik navigasi mengikuti jumlah slide; kalau tinggal
-1 slide, keduanya hilang sendiri dan autoplay berhenti.
-
-### Delete
-Trash artikelnya.
-
-### Catatan
-- Autoplay 5 detik, berhenti saat kursor di atasnya atau saat difokus keyboard.
-- Rasio tampilan 4:3, gambar dipotong `object-cover`. Taruh objek penting di tengah.
-- **Kompres gambar sebelum unggah.** Belum ada optimasi otomatis; foto 2 MB akan dikirim apa adanya.
-
----
-
-## Services (kartu layanan + halaman detail)
-
-Kategori **Services**. Satu artikel = satu kartu **dan** satu halaman detail di `/services/{id}`.
+## Services (tile layanan + halaman daftar)
 
 | Yang tampil | Diambil dari |
 |---|---|
@@ -327,12 +296,12 @@ Label kecil "Tentang kami" di atasnya ada di kode (lihat [07 — Frontend](07-fr
 
 | Bagian | Sumbernya |
 |---|---|
-| Logo | file `images/logo.png` di **Content → Media** |
-| Kalimat di bawah logo | subjudul artikel `home-hero` |
-| Ikon sosmed | kategori **Social** |
-| Judul kolom navigasi | label antarmuka (di kode) |
-| Daftar link | **Menus → Main Menu** |
+| Logo | file `images/logo-footer.png` di **Content → Media** (di atas ubin putih) |
+| Kalimat di bawah logo | artikel `footer-tagline` (baris 1 = Title, baris 2 = isi) |
+| Ikon sosmed | kategori **Social** (hanya yang ada URL-nya yang tampil) |
+| Daftar link Menu | **Menus → Main Menu** (sama dengan navbar) |
 | Alamat | artikel **Kantor Pusat** di kategori Our offices |
+| Telepon/email | kategori **Contact** (yang ada link-nya) + tombol Buka Peta |
 | Baris hak cipta | artikel `footer-copyright` |
 
 ### Mengganti logo
@@ -347,7 +316,8 @@ berjalan, jadi tidak perlu disunting lagi tiap Januari.
 
 ## Menu navigasi
 
-**Menus → Main Menu**.
+Satu menu dipakai navbar dan footer: **Main Menu** (Beranda, Tentang Kami, Layanan, Kontak).
+Jangan tambah item khusus footer — navbar ikut berubah.
 
 ### Create — menambah item menu
 1. **New**
@@ -357,7 +327,7 @@ berjalan, jadi tidak perlu disunting lagi tiap Januari.
 5. **Language**: pilih satu bahasa (jangan `All`, nanti dobel di semua bahasa)
 6. **Save**
 
-`id` section yang tersedia: `#top`, `#about`, `#services`, `#customers`, `#offices`.
+`id` section yang tersedia: `#top`, `#why`, `#services`, `#customers`, `#coverage`, `#offices`, `#contact`.
 
 > Section **Our offices** sudah punya `id="offices"` tapi **belum ada item menunya** —
 > tambahkan dengan langkah di atas kalau mau muncul di navbar.

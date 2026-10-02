@@ -16,7 +16,7 @@ export default async function SocialLinks({ locale }: { locale: Locale }) {
   if (links.length === 0) return null;
 
   return (
-    <ul className="mt-6 flex flex-wrap items-center gap-2">
+    <ul className="mt-6 flex flex-wrap items-center gap-2.5">
       {links.map((link) => {
         const path = link.brand ? BRAND_PATHS[link.brand] : undefined;
         return (
@@ -27,7 +27,7 @@ export default async function SocialLinks({ locale }: { locale: Locale }) {
               rel="noopener noreferrer"
               aria-label={link.label}
               title={link.label}
-              className="grid size-9 place-items-center rounded-md border border-border text-muted-foreground transition duration-500 ease-settle hover:-translate-y-0.5 hover:border-primary hover:text-primary active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+              className="grid size-10 place-items-center rounded-full border border-white/25 text-white/80 transition duration-500 ease-settle hover:-translate-y-0.5 hover:border-white hover:text-white active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
             >
               {path ? (
                 // simple-icons ships one path on a 24×24 grid; currentColor keeps it themeable.

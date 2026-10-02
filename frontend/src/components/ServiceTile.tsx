@@ -15,7 +15,7 @@ function Icon({ field, className }: { field: unknown; className?: string }) {
  */
 export default function ServiceTile({ service }: { service: Article }) {
   return (
-    <li className="flex min-h-[148px] flex-col rounded-xl border border-border bg-surface-container-low p-4 transition-colors duration-300 ease-exit hover:border-primary/40 hover:bg-accent motion-reduce:transition-none sm:p-6 lg:min-h-[168px]">
+    <li className="flex min-h-[148px] flex-col items-center rounded-xl border border-border bg-surface-container-low p-4 text-center transition-colors duration-300 ease-exit hover:border-primary/40 hover:bg-accent motion-reduce:transition-none sm:p-6 lg:min-h-[168px]">
       <Icon
         field={service.attributes.icon}
         className="size-7 text-primary sm:size-8"

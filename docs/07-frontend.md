@@ -18,12 +18,12 @@ frontend/src/
 │   ├── [locale]/
 │   │   ├── layout.tsx               root layout: <html lang>, font, tema, Navbar, Footer
 │   │   ├── page.tsx                 beranda
-│   │   └── services/[id]/page.tsx   halaman detail layanan
+│   │   └── services/page.tsx          halaman daftar layanan
 │   └── api/revalidate/route.ts      webhook dari plugin Joomla
 ├── components/
 │   ├── Navbar.tsx → SiteHeader.tsx  server (ambil data) → client (scroll, sheet)
-│   ├── Hero / About / Services / Customers / Offices / Contact / Footer
-│   ├── Gallery.tsx                  carousel (client)
+│   ├── Hero / WhyUs / Coverage (About) / Services / Customers / Offices / Contact / Footer
+│   ├── ServiceTile.tsx              tile grid layanan (ikon + label + deskripsi)
 │   ├── SocialLinks.tsx, LanguageSwitcher.tsx, ThemeToggle.tsx, theme-provider.tsx
 │   └── ui/                          hasil generate shadcn — jangan disunting tangan
 └── lib/
@@ -42,9 +42,8 @@ frontend/src/
 | Komponen | Kenapa harus client |
 |---|---|
 | `SiteHeader` | status scroll, sheet mobile, `usePathname` |
-| `Gallery` | embla carousel + autoplay |
 | `LanguageSwitcher` | dropdown + `usePathname` |
-| `ThemeToggle` | `useTheme` dari provider lokal (`theme-provider.tsx`) |
+| `ThemeToggle` + `theme-provider` | state tema + `matchMedia`/`localStorage` |
 
 Polanya selalu: **server component mengambil data → oper props biasa ke client component.**
 `Navbar.tsx` (server) → `SiteHeader.tsx` (client) adalah contohnya.
@@ -170,8 +169,7 @@ alasannya di [01 — Arsitektur](01-arsitektur.md#ikon-daftar-terkurasi-bukan-lu
 
 - Style **new-york**, primitive **Base UI** (bukan Radix)
 - Komposisi memakai `render={<Button/>}`, **bukan** `asChild`
-- `src/components/ui/**` **dikecualikan dari ESLint** — kode hasil generate, dan carousel-nya
-  melanggar `react-hooks/set-state-in-effect`
+- `src/components/ui/**` **dikecualikan dari ESLint** — kode hasil generate shadcn CLI
 - Jangan menyunting file di `ui/` dengan tangan; jalankan ulang CLI-nya
 
 ## Caching
@@ -183,8 +181,6 @@ untuk membuang cache halaman sekaligus layout (navbar & footer ikut segar).
 ## Aksesibilitas yang sudah ada
 
 - Smooth scroll dimatikan pada `prefers-reduced-motion: reduce`
-- Autoplay carousel juga mati pada preferensi yang sama, dan berhenti saat hover/fokus
-- Titik navigasi carousel punya `aria-label` dan `aria-current`
 - Alamat memakai tag `<address>`
 - Link keluar memakai `rel="noopener noreferrer"`
 - Semua tombol ikon punya `aria-label` yang ikut bahasa

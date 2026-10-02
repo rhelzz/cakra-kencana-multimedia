@@ -11,9 +11,9 @@ Jangan menghapus lalu membuat ulang kategori — ID-nya akan berubah dan section
 | ID | Kategori | Isi | Dirender oleh |
 |---|---|---|---|
 | 2 | Uncategorised | `home-hero`, `footer-copyright` | Hero, Footer |
-| 8 | Gallery | 4 slide carousel (gambar saja) | Gallery |
-| 9 | About | 3 blok teks | About |
-| 10 | Services | 11 layanan | Services + halaman detail |
+| 9 | About (pensiun) | 3 blok teks lama, unpublished | tidak dirender |
+| 17 | About Features | 4 fitur (judul + deskripsi + `icon`) | WhyUs |
+| 10 | Services | 11 layanan | Services + `/services` |
 | 11 | Our customers | 84 logo klien | Customers |
 | 12 | Our offices | 5 lokasi | Offices + Footer |
 | 13 | Social | 5 akun sosmed | SocialLinks |
@@ -81,11 +81,10 @@ Praktisnya: **tulis di kotak editor utama, sebelum "Read more".**
 | Section | Judul artikel jadi | Isi artikel jadi | Gambar diambil dari |
 |---|---|---|---|
 | Hero | `<h1>` | subjudul | `image_fulltext` |
-| About | `<h2>` tiap blok | paragraf **atau** checklist | — |
-| Services | judul kartu & halaman detail | deskripsi singkat | — |
+| About lama | `<h2>` tiap blok | paragraf **atau** checklist | — |
+| Services | judul tile & baris listing | deskripsi singkat | — |
 | Customers | `alt` logo | *(tidak dipakai)* | `image_intro` |
 | Offices | nama lokasi | alamat | — |
-| Gallery | *(cadangan alt)* | *(tidak dipakai)* | `image_intro` |
 | Social | `aria-label` & tooltip | *(tidak dipakai)* | — |
 | Headings | teks heading | *(tidak dipakai)* | — |
 
@@ -161,10 +160,8 @@ Halaman tetap utuh.
 
 ### Artikel tanpa bahasa (`*`)
 
-Kategori **Gallery**, **Customers**, dan **Social** sengaja berbahasa `*` karena isinya tidak
-punya teks yang perlu diterjemahkan (logo, foto, URL profil). Konsekuensinya: `alt` gambar
-carousel hanya bahasa Indonesia. Ini trade-off yang diambil sadar — memecahnya per bahasa
-berarti 12 artikel untuk 4 gambar.
+Kategori **Customers** dan **Social** sengaja berbahasa `*` karena isinya tidak
+punya teks yang perlu diterjemahkan (logo, URL profil).
 
 ### Menu
 
@@ -189,11 +186,10 @@ Untuk orientasi saja. **Jangan mengandalkan ID artikel di kode** — pakai alias
 |---|---|---|
 | `home-hero` | 2 | judul + subjudul + gambar hero |
 | `footer-copyright` | 2 | mendukung `{year}` |
-| `gallery-1` … `gallery-4` | 8 | bahasa `*` |
-| `about-who-we-are` | 9 | paragraf |
-| `about-service-area` | 9 | paragraf |
-| `about-why-choose-us` | 9 | bullet list → checklist |
-| `service-*` (10 buah per bahasa) | 10 | punya field `icon` |
+| `about-who-we-are` | 9 (pensiun, unpublished) | paragraf |
+| `about-service-area` | 9 (pensiun, unpublished) | paragraf |
+| `about-why-choose-us` | 9 (pensiun, unpublished) | bullet list → checklist |
+| `service-*` (11 buah per bahasa) | 10 | punya field `icon` |
 | `customer-*` (84 buah) | 11 | bahasa `*`; 18 pertama tampil sebagai unggulan |
 | `office-head-office`, `office-workshop-i…iii` | 12 | punya `icon` + `map` |
 | `social-*` (5 buah) | 13 | bahasa `*`, punya `icon` + `link` |

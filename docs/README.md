@@ -59,7 +59,7 @@ c:\laragon\www\company-profile\
 ├── docs/          dokumen ini
 ├── backend/       Joomla 5.4.7   → http://company-profile.test/backend/
 │   ├── plugins/system/nextrevalidate/   ← satu-satunya kode PHP buatan kita
-│   └── images/    logo, hero, gallery, customers  ← unggahan kita
+│   └── images/    logo, hero, customers  ← unggahan kita
 └── frontend/      Next.js 16.3   → http://localhost:3000
     └── src/lib/joomla.ts   ← semua akses API ada di sini
 ```

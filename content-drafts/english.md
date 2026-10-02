@@ -11,7 +11,7 @@ tampil di /en); isi deskripsinya di baris di bawah judul.
 Boleh diisi bertahap/parsial. Yang dibiarkan kosong otomatis tampil bahasa Indonesia di
 /en sampai diisi — itu bukan bug, memang begitu desainnya (lihat docs/03-model-konten.md).
 
-Section GALLERY/CUSTOMERS/SOCIAL tidak ada di file ini — sama seperti indonesian.md,
+Section CUSTOMERS/SOCIAL tidak ada di file ini — sama seperti indonesian.md,
 karena isinya cuma gambar/link tanpa teks yang perlu diterjemahkan.
 -->
 

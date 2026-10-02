@@ -31,9 +31,12 @@ export async function joomla<T = unknown>(path: string, revalidate = 60): Promis
  */
 async function joomlaPaged<T>(path: string, pageSize = 200): Promise<T[]> {
   const rows: T[] = [];
+  // The separator depends on the caller: content paths already carry `?filter…`,
+  // menu paths don't. Hardcoding `&` once 404'd every menu fetch.
+  const sep = path.includes('?') ? '&' : '?';
   for (let page = 0; page < 20; page++) {
     const batch = await joomla<T[]>(
-      `${path}&page[limit]=${pageSize}&page[offset]=${page * pageSize}`,
+      `${path}${sep}page[limit]=${pageSize}&page[offset]=${page * pageSize}`,
     );
     rows.push(...batch);
     if (batch.length < pageSize) return rows;
@@ -79,21 +82,30 @@ type MenuItem = {
     published: number;
     level: number;
     language: string;
+    menutype?: string;
   };
 };
 
-/** Published top-level items of the site's Main Menu for one language. */
-export async function getMenu(locale: Locale) {
+/** Published top-level items of one menu for one language. */
+async function getMenuItems(locale: Locale, menutype: string) {
   const lang = JOOMLA_LANG[locale];
-  const items = await joomla<MenuItem[]>('/menus/site/items');
+  // Paged, not a single request: the endpoint's default page size silently
+  // drops rows once a second menu pushes the total past it.
+  const items = await joomlaPaged<MenuItem>('/menus/site/items');
   return items
     .filter(
       (i) =>
         i.attributes.published === 1 &&
         i.attributes.level === 1 &&
+        i.attributes.menutype === menutype &&
         (i.attributes.language === lang || i.attributes.language === '*'),
     )
     .map((i) => ({ id: i.id, title: i.attributes.title, href: hrefFor(i.attributes) }));
+}
+
+/** Published top-level items of the site's Main Menu for one language. */
+export async function getMenu(locale: Locale) {
+  return getMenuItems(locale, 'mainmenu');
 }
 
 function hrefFor({ type, link }: MenuItem['attributes']) {
@@ -196,8 +208,7 @@ export async function getSiteName() {
 /** Category ids, so components don't carry magic numbers. */
 export const CATEGORY = {
   uncategorised: 2,
-  about: 9,
-  gallery: 8,
+  aboutFeatures: 17,
   services: 10,
   customers: 11,
   offices: 12,

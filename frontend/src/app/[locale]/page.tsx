@@ -3,8 +3,6 @@ import Hero from '@/components/Hero';
 import About from '@/components/About';
 import Services from '@/components/Services';
 import Customers from '@/components/Customers';
-import Offices from '@/components/Offices';
-import Contact from '@/components/Contact';
 import { isLocale } from '@/lib/i18n';
 
 export default async function Home({ params }: PageProps<'/[locale]'>) {
@@ -17,8 +15,6 @@ export default async function Home({ params }: PageProps<'/[locale]'>) {
       <Services locale={locale} />
       <About locale={locale} />
       <Customers locale={locale} />
-      <Offices locale={locale} />
-      <Contact locale={locale} />
     </main>
   );
 }

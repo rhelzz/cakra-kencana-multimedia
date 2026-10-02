@@ -45,7 +45,7 @@ GET /                                     (Indonesia, tanpa prefix)
   │
   └─ app/[locale]/page.tsx
         ├─ Hero      → getArticle('home-hero', 'id')
-        ├─ About     → getCategory(9) + getCategory(8)
+        ├─ About     → getCategory(9)
         ├─ Services  → getCategory(10) + getHeading('services')
         ├─ Customers → getCategory(11) + getHeading('customers')
         └─ Offices   → getCategory(12) + getHeading('offices')
@@ -79,7 +79,7 @@ Detail: [05 — Kustomisasi Joomla](05-kustomisasi-joomla.md#plugin-plg_system_n
 | Hal | Aturan |
 |---|---|
 | `JOOMLA_TOKEN` | Hanya ada di server. Semua pengambilan data terjadi di Server Component. |
-| Client Component | `SiteHeader`, `Gallery`, `LanguageSwitcher`, `ThemeToggle` — menerima props biasa, tidak pernah memanggil API. |
+| Client Component | `SiteHeader`, `LanguageSwitcher`, `ThemeToggle` — menerima props biasa, tidak pernah memanggil API. |
 | `/api/revalidate` | Menolak 403 kalau `secret` salah **atau** `REVALIDATE_SECRET` belum diset. |
 | `configuration.php` | Tidak pernah masuk git (berisi kredensial DB dan `$secret` Joomla). |
 

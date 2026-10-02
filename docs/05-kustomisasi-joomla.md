@@ -78,11 +78,10 @@ muncul di daftar. Diambil yang kedua.
 
 ## 3. Kategori
 
-Tujuh kategori dibuat sebagai wadah section. Semuanya berbahasa `All`.
+Enam kategori dibuat sebagai wadah section. Semuanya berbahasa `All`.
 
 | ID | Judul | Alias |
 |---|---|---|
-| 8 | Gallery | `gallery` |
 | 9 | About | `about` |
 | 10 | Services offered | `services` |
 | 11 | Our customers | `customers` |
@@ -90,6 +89,8 @@ Tujuh kategori dibuat sebagai wadah section. Semuanya berbahasa `All`.
 | 13 | Social | `social` |
 | 14 | Headings | `headings` |
 | 15 | Service sub-items | `service-sub-items` |
+
+(Kategori 8 `Gallery` beserta 4 slidenya dihapus Okt 2026 bersama carousel About.)
 
 Kategori 2 (`Uncategorised`) bawaan Joomla dipakai untuk `home-hero` dan `footer-copyright`.
 
@@ -146,10 +147,6 @@ Berkas yang kita unggah ke `backend/images/`:
 ```
 logo.png                    logo perusahaan (navbar + footer)
 hero.jpg                    latar hero
-gallery/offset-press.jpg    ┐
-gallery/screen-printing.jpg │ 4 slide carousel
-gallery/color-proofing.jpg  │
-gallery/paper-stock.jpg     ┘
 customers/pgn.png           ┐
 customers/indosat.png       │
 customers/daihatsu.png      │ 6 logo klien
@@ -207,7 +204,7 @@ update hanyalah plugin kita masih terdaftar dan cache autoloader sudah dibersihk
 4. Buat API token untuk Super User
 5. Tambah Content Language `id-ID` dan `zh-CN`
 6. Ubah Site Name
-7. Buat 7 kategori — **catat ID-nya**, lalu samakan `CATEGORY` di `joomla.ts`
+7. Buat 6 kategori — **catat ID-nya**, lalu samakan `CATEGORY` di `joomla.ts`
 8. Buat 3 custom field beserta opsinya, pasang ke kategori yang sesuai
 9. Salin folder plugin, daftarkan lewat SQL, hapus `autoload_psr4.php`
 10. Isi URL dan secret di **System → Plugins → Next Revalidate**

@@ -172,8 +172,8 @@ backend/images/                             →  images/                        
 Jadi kalau Joomla ada di `public_html/backend/`, file plugin berakhir di
 `public_html/backend/plugins/system/nextrevalidate/` — bukan `.../backend/backend/...`.
 
-Isi `images/` yang harus ada: `customers/` (6), `gallery/` (4), `logo.png`, `logo-footer.png`,
-`hero.jpg`. Kalau salah satu hilang, gambarnya kosong di situs tanpa pesan error apa pun —
+Isi `images/` yang harus ada: `customers/` (6), `logo.png`, `logo-footer.png`,
+`hero.jpg`, `coverage-map.jpg`. Kalau salah satu hilang, gambarnya kosong di situs tanpa pesan error apa pun —
 artikel Joomla hanya menyimpan path, bukan filenya.
 
 ### 2. Jalankan installer Joomla
@@ -314,7 +314,22 @@ seperti Vercel, isikan lewat panelnya, jangan buat file.
 JOOMLA_API=https://cms.domain-anda.com/api/index.php/v1
 JOOMLA_TOKEN=<token dari Bagian B langkah 6>
 REVALIDATE_SECRET=<string acak baru, dipakai lagi di Bagian D>
+SMTP_HOST=<host SMTP, mis. mail.domain-anda.com>
+SMTP_PORT=<465 atau 587>
+SMTP_USER=<akun pengirim>
+SMTP_PASS=<password / app-password>
+CONTACT_TO=<penerima form kontak>
+CONTACT_FROM=<opsional, default = SMTP_USER>
 ```
+
+### SMTP: env, bukan Global Config Joomla
+
+Form kontak dikirim oleh **Next.js** (`nodemailer` di `/api/contact`), bukan oleh PHP —
+jadi kredensialnya milik env di atas, **bukan** System → Global Configuration → Mail.
+Setting SMTP di Global Config (`backend/configuration.php`, berupa file, bukan database)
+hanya berlaku bila Joomla/PHP sendiri yang mengirim email; hari ini tidak dipakai dan
+boleh kosong. Kalau suatu hari PHP perlu kirim juga, isi nilai yang **sama** di sana —
+satu kredensial, dua tempat baca.
 
 ⚠️ `JOOMLA_API` = URL yang **terbukti berhasil** di Bagian B langkah 8, disalin apa adanya.
 Boleh mengandung `/backend` atau tidak, tergantung tata letak yang dipilih. Jangan mengarangnya

@@ -201,15 +201,14 @@ Skor: 🟢 mudah · 🟡 bisa tapi ada jebakan · 🔴 butuh developer
 |---|:--:|:--:|:--:|:--:|---|
 | Hero | 🔴 | 🟢 | 🔴 | 🟡 | Singleton — tidak boleh ditambah/dihapus, tapi Joomla tidak mencegahnya |
 | About | 🟢 | 🟢 | 🟢 | 🟡 | Bullet list vs paragraf mengubah bentuk tanpa penjelasan |
-| Carousel | 🟢 | 🟢 | 🟢 | — | Paling mulus. Bahasa `All`, tidak ada alias konvensi |
-| Services | 🟡 | 🟢 | 🟢 | 🟡 | Pilihan ikon terbatas; isi halaman detail harus di balik Read more |
+| Services | 🟡 | 🟢 | 🟢 | 🟡 | Pilihan ikon terbatas |
 | Customers | 🟡 | 🟢 | 🟢 | — | Logo blok jadi gumpalan putih; syaratnya tidak tertulis di mana pun dalam admin |
 | Offices | 🟢 | 🟡 | 🟡 | 🟡 | Urutan diam-diam menentukan isi footer |
 | Social | 🟢 | 🟢 | 🟢 | — | Link kosong = ikon hilang; tidak dijelaskan… (sebenarnya dijelaskan, field ini punya deskripsi) |
 | Headings | 🔴 | 🟢 | 🔴 | 🟡 | Konsepnya tidak akan tertebak tanpa dokumentasi |
 | Menu | 🟢 | 🟢 | 🟢 | 🟡 | Harus tahu daftar `#id` section yang valid |
 
-**Pola yang terlihat:** yang berbahasa `All` (Carousel, Customers, Social) paling mudah —
+**Pola yang terlihat:** yang berbahasa `All` (Customers, Social) paling mudah —
 persis karena bebas dari konvensi alias. Yang multibahasa semuanya kena 🟡 di kolom
 Terjemahkan. Itu satu akar masalah, bukan tujuh.
 

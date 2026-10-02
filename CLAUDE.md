@@ -58,15 +58,15 @@ frontend/src/
 │   ├── globals.css               Tailwind v4 theme tokens + light/dark palette
 │   ├── [locale]/
 │   │   ├── layout.tsx            Root layout: <html lang>, fonts, ThemeProvider, Navbar, Footer
-│   │   ├── page.tsx              Home = Hero + Services + About + Customers + Offices
+│   │   ├── page.tsx              Home = Hero + Services + About + Customers
 │   │   ├── services/page.tsx     Service listing (all services, no limit)
-│   │   └── services/[slug]/page.tsx Service detail: hero image + body + sub-service grid
+│   │   ├── offices/page.tsx      Office listing (all locations + map links)
+│   │   └── contact/page.tsx      Contact cards + company-profile CTA
 │   └── api/revalidate/route.ts   Webhook target for the Joomla plugin
 ├── components/
 │   ├── Navbar.tsx → SiteHeader.tsx   server fetch → client shell (scroll state, sheet)
-│   ├── Hero / About / Services / Customers / Offices / Footer   section components
-│   ├── ServiceCard.tsx           shared card, used by Services.tsx and services/page.tsx
-│   ├── Gallery.tsx               carousel (client, autoplay)
+│   ├── Hero / WhyUs / Coverage (About) / Services / Customers / Footer   section components (+ OfficesPage rows inline in offices/page.tsx)
+│   ├── ServiceTile.tsx           home grid tile (icon + label + description)
 │   ├── SocialLinks.tsx, LanguageSwitcher.tsx, ThemeToggle.tsx
 │   └── ui/                       shadcn-generated — DO NOT hand-edit, excluded from lint
 └── lib/
@@ -77,7 +77,7 @@ frontend/src/
 ```
 
 **Rule: the Joomla token never crosses to the client.** Data fetching lives in server
-components; client components (`SiteHeader`, `Gallery`, `LanguageSwitcher`, `ThemeToggle`)
+components; client components (`SiteHeader`, `LanguageSwitcher`, `ThemeToggle`)
 receive plain props only.
 
 ---
@@ -89,21 +89,20 @@ Categories (ids are hardcoded in `CATEGORY` in `lib/joomla.ts` — do not renumb
 | id | Category | Holds | Rendered by |
 |---|---|---|---|
 | 2 | Uncategorised | `home-hero`, `footer-copyright` | Hero, Footer |
-| 8 | Gallery | carousel slides (image only) | Gallery |
-| 9 | About | the 3 text blocks | About |
-| 10 | Services | 11 services | Services, `/services`, service detail |
+| 9 | About (retired) | 3 old text blocks, unpublished | nothing (kept for history) |
+| 10 | Services | 11 services | Services, `/services` |
 | 11 | Our customers | 84 client logos | Customers |
 | 12 | Our offices | 5 locations | Offices, Footer |
 | 13 | Social | 5 social accounts | SocialLinks |
-| 14 | Headings | translated section headings, incl. `services-eyebrow` / `services-subtitle` | `getHeading()` |
-| 15 | Service sub-items | sub-services per service | sub-service grid on the service detail page |
+| 14 | Headings | translated section headings, incl. `services-eyebrow` / `services-subtitle`, `about-why/coverage` (+ `-eyebrow` each) | `getHeading()` / `getArticle()` |
 | 16 | Contact | WhatsApp, email, and company-profile CTA | Contact |
+| 17 | About Features | 4 features (title + desc + `icon`) | WhyUs |
 
 ### Custom fields (Content → Fields)
 
 | Field | Type | Assigned to | Purpose |
 |---|---|---|---|
-| `icon` | list | Services, Offices, Social | 29 values (22 mapped in `lib/icons.ts`); value must match a key in `lib/icons.ts` or `BRAND_PATHS` in `lib/social.ts` |
+| `icon` | list | Services, Offices, Social, About Features | 29 values (22 mapped in `lib/icons.ts`); value must match a key in `lib/icons.ts` or `BRAND_PATHS` in `lib/social.ts` |
 | `map` | url | Offices | Google Maps link. **Empty = the Open Map button disappears** |
 | `link` | url | Social, Contact | Destination URL. **Empty = that item disappears** |
 | `parent-service` | list | Service sub-items (15) | Which of the 10 services this sub-item belongs to; value is the service's base alias (e.g. `service-digital-printing`). **Named `parent-service` with a hyphen, not `parent_service`** — Joomla slugified it on creation regardless of what was requested. Read via `attributes['parent-service']`, see `getSubServices()` in `joomla.ts`. |
@@ -126,12 +125,12 @@ Two levels only, by design — a sub-service does not get its own detail page, i
 
 ### Per-article conventions
 
-- **About blocks**: a bullet list in the editor renders as a red checklist; anything else
-  renders as prose. `listItems()` decides.
+- **About blocks (retired category 9)**: a bullet list in the editor renders as a red checklist; anything else
+  renders as prose. `listItems()` decides. (No longer rendered anywhere.)
 - **Section headings**: articles in category 14, alias `heading-<key>-<lang>`. `getHeading('services', locale)`.
   Headings are *not* category titles — a category has only one title and cannot be translated.
 - **Footer copyright**: article `footer-copyright`, supports a `{year}` token.
-- **Gallery / Customers / Social** articles are language `*` (shared by all locales) because
+- **Customers / Social** articles are language `*` (shared by all locales) because
   they carry no translatable text. Their alt text is Indonesian only — known tradeoff.
 
 ---
@@ -188,7 +187,8 @@ Fallback is **per item, not per page** — a missing Chinese article shows only 
 in Indonesian. Joomla Associations are not used and not needed.
 
 Menu items are per-language too (`Menus → Main Menu`, each item tagged with a language).
-`getMenu(locale)` returns items matching the locale plus `*`.
+`getMenu(locale)` returns items matching the locale plus `*` — shared by the navbar
+and the footer. `/menus/site/items` needs an explicit `page[limit]` past 20 rows total.
 
 **Interface labels live in code**, in the `UI` dictionary in `lib/i18n.ts`: "Selengkapnya",
 "Buka Peta", "Tentang kami", "Menu", "Navigasi", "Layanan lainnya". Reason: if they lived in
@@ -292,8 +292,7 @@ Measured end to end: ~3.3s from save to updated page.
   `view()` timeline replays in reverse when you scroll back up — that is free, and is why there
   is no "already animated" flag anywhere. The container needs `overflow-x-clip` or the ±3.5rem
   horizontal travel adds a page-wide horizontal scrollbar on narrow screens.
-- **`src/components/ui/**` is excluded from ESLint** — generated by the shadcn CLI, and its
-  carousel violates `react-hooks/set-state-in-effect`.
+- **`src/components/ui/**` is excluded from ESLint** — generated by the shadcn CLI.
 - **shadcn uses Base UI, not Radix.** Composition is `render={<Button/>}`, **not** `asChild`.
 - **Fonts**: Poppins only, weights 300/400/500/600/700 listed explicitly (not a variable font
   on Google Fonts — an unlisted weight gets faked and looks wrong). No mono font is shipped.
@@ -343,11 +342,23 @@ Home page sections, all dynamic, all three languages:
    11 as a zig-zag (`ServiceRow`). Tiles and rows are static — there is no service
    detail route. Retired services (POP Display, Rambu-Rambu, Shearing-dan-Bending)
    stay unpublished, never deleted.
-3. **About** — 3 blocks from category 9 + a 4-slide autoplay carousel from category 8
-4. **Our customers** — 18 featured logos in a CSS-only marquee plus a link to `/customers`, which lists all 84 logos
-5. **Our offices** — 5 locations, icon per type, Open Map only when a link exists
-6. **Contact** — CRUD-managed WhatsApp/email links plus the company-profile CTA
-7. **Footer** — logo, tagline, social icons, menu, head office, `{year}` copyright
+2. **About** — two Joomla-driven parts: `WhyUs` (pitch + 4 features from category 17),
+   `Coverage` (pitch + Indonesia map as section background from `images/coverage-map.jpg`
+   on the coverage heading article). All copy/icons dynamic; no pins
+   on the map; map file pending from owner (neutral placeholder until then).
+4. **Our customers** — light gradient island (blue → bluish grey): header left,
+   8 featured logos (first 8 by ordering) in a 4+4 original-colour grid right, plus
+   a kept link to `/customers`, which lists all 84 logos
+5. **Our offices** — `/offices` listing page (was a home section): 5 locations, icon
+   per type, Open Map only when a link exists; linked from the navbar (after About)
+   and the Coverage CTA
+6. **Contact** — `/contact` page (was a home section): form card (fields in `UI` dict,
+   service dropdown from category 10, POSTs to `/api/contact` → nodemailer SMTP
+   via `SMTP_*` env, honeypot + rate-limit + allowlist) + info card (contact rows,
+   head-office address, `working-hours` articles) + location with map embed.
+   SMTP unset = graceful banner + WhatsApp fallback; owner fills `.env.local`.
+7. **Footer** — navy island: logo on a white tile (logo file ships on black),
+   tagline, social icons, footermenu, head office + contact rows, `{year}` copyright
 
 Plus: **`/services`** (listing page, all 11 services as a zig-zag of `ServiceRow`),
 **`/customers`** (all client logos), sticky navbar that floats transparent over the home page hero and turns solid on scroll —
@@ -358,7 +369,6 @@ per-locale `hreflang`.
 
 ## 10. Known gaps
 
-- **Carousel images are ~7.6 MB total.** Not compressed yet. Resize to ~1600px / WebP when it matters.
 - **`hreflang` uses relative paths.** Add `metadataBase` in `[locale]/layout.tsx` once the
   production domain exists.
 - **Chinese and Indonesian copy was machine-written** and has never been reviewed by a native
