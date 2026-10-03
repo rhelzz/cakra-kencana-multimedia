@@ -215,6 +215,7 @@ export const CATEGORY = {
   social: 13,
   headings: 14,
   contact: 16,
+  pageHeaders: 20,
 } as const;
 
 /** The named entities TinyMCE actually emits. Anything else falls through untouched. */
@@ -274,6 +275,14 @@ export const cleanImage = (url?: string) => url?.split('#')[0];
  */
 export const imageOf = (a: Article) =>
   cleanImage(a.attributes.images?.image_intro || a.attributes.images?.image_fulltext);
+
+/** Background image for a listing-page header band, from the Page Headers
+ *  category (`page-header-<key>`, language `*` so one article serves all
+ *  locales). Editors swap the image per page without a redeploy. */
+export function pageHeaderImage(articles: Article[], key: string) {
+  const found = articles.find((a) => baseAlias(a.attributes.alias) === `page-header-${key}`);
+  return found ? imageOf(found) : undefined;
+}
 
 /** Alt text from whichever slot has it, falling back to the article title. */
 export const imageAltOf = (a: Article) =>

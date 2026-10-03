@@ -61,16 +61,20 @@ export function SiteHeader({
   const atHome = pathname === (base || '/');
   const resolve = (href: string) => (href.startsWith('#') && !atHome ? `${base}/${href}` : href);
   // The header starts tall over the hero, then shrinks and earns a solid background
-  // once you've scrolled past that first section. The hero is light (copy sits on the
-  // background colour), so the top state uses foreground text — everywhere else it's
-  // solid and compact from the start. The trigger is the viewport height, not a fixed
-  // pixel count, because the hero is sized in svh.
+  // once you've scrolled past a quarter of that first section. Measured from the
+  // hero element itself, so it tracks content height — with a viewport fallback.
+  // The hero is light (copy sits on the background colour), so the top state uses
+  // foreground text — everywhere else it's solid and compact from the start.
   const [scrolledPast, setScrolledPast] = useState(false);
   const scrolled = scrolledPast || !atHome;
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolledPast(window.scrollY > window.innerHeight * 0.6);
+    const onScroll = () => {
+      const hero = document.getElementById('top');
+      const limit = hero ? hero.offsetHeight * 0.25 : window.innerHeight * 0.25;
+      setScrolledPast(window.scrollY > limit);
+    };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);

@@ -1,3 +1,5 @@
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 import { bodyOf, stripTags, type Article } from '@/lib/joomla';
 import { iconFrom } from '@/lib/icons';
 
@@ -9,23 +11,44 @@ function Icon({ field, className }: { field: unknown; className?: string }) {
 }
 
 /**
- * One tile of the home services grid: line-art icon, label, and a short
- * description. The tile is static — the full listing lives on /services —
- * and the inner heading names it to assistive tech.
+ * One card of the home services teaser: tinted icon, title, full
+ * description, and a "Learn More" link. Descriptions render in full — the
+ * old clamped teaser truncated mid-sentence, which is what made the grid
+ * feel cheap. There is no per-service detail page, so every card links to
+ * the full /services list; the aria-label names the service so repeated
+ * identical link text stays navigable. The tile is a static <li>, so the
+ * link is the only interactive element inside.
  */
-export default function ServiceTile({ service }: { service: Article }) {
+export default function ServiceTile({
+  service,
+  base,
+  learnMore,
+}: {
+  service: Article;
+  base: string;
+  learnMore: string;
+}) {
+  const title = service.attributes.title;
+
   return (
-    <li className="flex min-h-[148px] flex-col items-center rounded-xl border border-border bg-surface-container-low p-4 text-center transition-colors duration-300 ease-exit hover:border-primary/40 hover:bg-accent motion-reduce:transition-none sm:p-6 lg:min-h-[168px]">
-      <Icon
-        field={service.attributes.icon}
-        className="size-7 text-primary sm:size-8"
-      />
-      <h3 className="mt-4 text-balance text-[13px] font-semibold leading-snug sm:text-[15px]">
-        {service.attributes.title}
+    <li className="group flex flex-col rounded-2xl border border-border bg-card p-6 text-left transition-all duration-300 ease-exit hover:-translate-y-1 hover:border-primary/40 hover:shadow-brand motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+      <span className="grid size-12 place-items-center rounded-xl bg-primary/[0.07] text-primary">
+        <Icon field={service.attributes.icon} className="size-6" />
+      </span>
+      <h3 className="mt-5 text-balance text-lg font-bold leading-snug">
+        {title}
       </h3>
-      <p className="mt-2 line-clamp-3 text-xs leading-relaxed text-muted-foreground sm:text-[13px]">
+      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
         {stripTags(bodyOf(service))}
       </p>
+      <Link
+        href={`${base}/services`}
+        aria-label={`${learnMore}: ${title}`}
+        className="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-primary"
+      >
+        {learnMore}
+        <ArrowRight className="size-4 transition-transform duration-300 ease-settle group-hover:translate-x-1 motion-reduce:transition-none" />
+      </Link>
     </li>
   );
 }

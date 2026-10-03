@@ -7,6 +7,7 @@ import {
   CATEGORY,
   getCategory,
   getHeading,
+  pageHeaderImage,
   stripTags,
   type Article,
 } from '@/lib/joomla';
@@ -25,10 +26,12 @@ export default async function OfficesPage({ params }: PageProps<'/[locale]/offic
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
 
-  const [offices, heading] = await Promise.all([
+  const [offices, heading, headers] = await Promise.all([
     getCategory(CATEGORY.offices, locale as Locale),
     getHeading('offices', locale as Locale),
+    getCategory(CATEGORY.pageHeaders, locale as Locale),
   ]);
+  const headerBg = pageHeaderImage(headers, 'offices');
   const base = localePath(locale as Locale) === '/' ? '' : localePath(locale as Locale);
   const ui = t(locale as Locale);
 
@@ -40,6 +43,25 @@ export default async function OfficesPage({ params }: PageProps<'/[locale]/offic
         {/* Two layers, both fading out, so the band is furnished without becoming busy:
             the diagonal print rules give it texture and the bloom gives it a light source.
             Everything sits behind the content and neither tints a single glyph. */}
+        {/* Custom header photo from Joomla (Page Headers category); the scrim
+            keeps text readable while the band texture stays on top. */}
+        {headerBg && (
+          <>
+            <div aria-hidden className="absolute inset-0 -z-20">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={headerBg}
+                alt=""
+                loading="lazy"
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <div
+              aria-hidden
+              className="absolute inset-0 -z-10 bg-gradient-to-r from-surface-container-low via-surface-container-low/85 to-surface-container-low/35"
+            />
+          </>
+        )}
         <div
           aria-hidden
           className="pattern-diagonal pointer-events-none absolute inset-0 -z-10 opacity-[0.07]"
@@ -77,8 +99,8 @@ export default async function OfficesPage({ params }: PageProps<'/[locale]/offic
               and it is a real number from Joomla rather than decoration. */}
           <div className="mt-10 flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-                <span aria-hidden className="h-px w-8 bg-primary" />
+              <p className="flex items-center gap-3 text-base font-bold uppercase tracking-[0.18em] text-primary">
+                <span aria-hidden className="h-1 w-12 bg-primary" />
                 {ui.allOffices}
               </p>
               <h1 className="mt-5 max-w-3xl text-balance text-4xl font-semibold tracking-tight sm:text-5xl">
@@ -86,10 +108,11 @@ export default async function OfficesPage({ params }: PageProps<'/[locale]/offic
               </h1>
             </div>
 
-            <p className="flex shrink-0 items-baseline gap-2 border-l-2 border-primary pl-4 sm:border-l-0 sm:border-r-2 sm:pl-0 sm:pr-4 sm:text-right">
+            <p className="flex shrink-0 items-center gap-3 self-start rounded-xl border border-border/60 bg-background/70 px-5 py-3 backdrop-blur-sm sm:self-auto">
               <span className="text-3xl font-semibold tabular-nums text-primary sm:text-4xl">
                 {offices.length}
               </span>
+              <span aria-hidden className="h-8 w-px bg-primary/30" />
               <span className="text-sm text-muted-foreground">{ui.officeUnit}</span>
             </p>
           </div>

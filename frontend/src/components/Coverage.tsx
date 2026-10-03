@@ -5,16 +5,17 @@ import {
   CATEGORY,
   getArticle,
   getHeading,
-  imageOf,
   stripTags,
 } from '@/lib/joomla';
 import { localePath, t, type Locale } from '@/lib/i18n';
 
+/** Local cut-out map (transparent background), served from `public/`. */
+const MAP_SRC = '/images/indonesia-map.png';
+
 /**
- * "Wilayah Kami" — the Indonesia map is the section *background* (full-bleed,
- * dissolving into the band on the left), with pitch + outline CTA on top-left.
- * The file lives on the coverage heading article (`image_intro`); without it
- * the band simply renders clean.
+ * "Wilayah Kami" — the Indonesia map is the section *background*, parked on
+ * the right at reduced size so it never sits behind the pitch text. The left
+ * edge dissolves with a mask so it melts into the band.
  */
 export default async function Coverage({ locale }: { locale: Locale }) {
   const [eyebrow, head] = await Promise.all([
@@ -25,7 +26,6 @@ export default async function Coverage({ locale }: { locale: Locale }) {
 
   const title = head?.attributes.title ?? '';
   const description = head ? stripTags(bodyOf(head)) : '';
-  const mapSrc = head ? imageOf(head) : undefined;
   const ui = t(locale);
   const base = localePath(locale) === '/' ? '' : localePath(locale);
 
@@ -34,23 +34,24 @@ export default async function Coverage({ locale }: { locale: Locale }) {
       id="coverage"
       className="relative isolate scroll-mt-20 overflow-hidden border-t border-border bg-surface-container-low px-4 py-20 sm:px-6 lg:py-28"
     >
-      {mapSrc && (
-        <div
-          aria-hidden
-          // Plain .coverage-map class (see globals.css): 112% wide, pinned
-          // left, so the map runs off past the right edge with no gap.
-          className="coverage-map -z-10 opacity-15 lg:opacity-35 dark:opacity-10 dark:brightness-[.85] lg:dark:opacity-20"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={mapSrc} alt="" loading="lazy" />
-        </div>
-      )}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute bottom-0 right-0 -z-10 flex h-[42%] w-full items-center justify-end sm:inset-y-0 sm:h-auto sm:w-3/4 lg:w-3/5"
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={MAP_SRC}
+          alt=""
+          loading="lazy"
+          className="h-full w-full object-contain object-right opacity-50 [mask-image:linear-gradient(to_right,transparent_0%,black_30%)] sm:opacity-70 dark:opacity-40 dark:brightness-[.85]"
+        />
+      </div>
 
       <div className="mx-auto max-w-6xl">
         <div className="reveal max-w-xl">
           {eyebrow && (
-            <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-              <span aria-hidden className="block h-[3px] w-8 rounded-full bg-primary" />
+            <p className="flex items-center gap-3 text-base font-bold uppercase tracking-[0.18em] text-primary">
+              <span aria-hidden className="block h-1 w-12 rounded-full bg-primary" />
               {eyebrow}
             </p>
           )}

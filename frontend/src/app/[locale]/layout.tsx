@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans, IBM_Plex_Serif } from "next/font/google";
+import { Inter, Sora } from "next/font/google";
 import { notFound } from "next/navigation";
 import Script from "next/script";
 import "../globals.css";
@@ -13,17 +13,17 @@ import { themeCss } from "@/lib/theme";
 
 // Keep the editorial pairing explicit so fallback metrics remain predictable during loading.
 // explicitly — anything not listed here simply won't download.
-const plexSans = IBM_Plex_Sans({
-  variable: "--font-plex-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
-const plexSerif = IBM_Plex_Serif({
-  variable: "--font-plex-serif",
+const sora = Sora({
+  variable: "--font-sora",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["600", "700"],
   display: "swap",
 });
 
@@ -69,7 +69,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
     <html
       lang={HTML_LANG[locale]}
       suppressHydrationWarning
-      className={`${plexSans.variable} ${plexSerif.variable} h-full antialiased`}
+      className={`${inter.variable} ${sora.variable} h-full antialiased`}
     >
       <head>
         <style dangerouslySetInnerHTML={{ __html: css }} />

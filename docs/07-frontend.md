@@ -143,13 +143,14 @@ karena class ditempel sebelum React hydrate.
 
 ## Font
 
-Poppins saja, bobot 300/400/500/600/700 didaftarkan eksplisit.
+Pasangan **Sora** (semua `h1`/`h2`/`h3` via satu rule base) + **Inter** (body).
+Bobot terdaftar eksplisit: Sora 600/700, Inter 400/500/600/700.
 
 **Poppins bukan variable font di Google Fonts** — bobot yang tidak didaftarkan tidak ikut
 diunduh, dan browser akan memalsukan tebalnya (hasilnya jelek). Kalau memakai `font-extrabold`,
 tambahkan `"800"`.
 
-Di `@theme inline` **wajib nama font literal**; `var(--font-poppins)` di sana menghasilkan
+Di `@theme inline` **wajib nama font literal**; `var(--font-sora)` di sana menghasilkan
 kosong karena Tailwind v4 menyelesaikannya saat parse. Ini jebakan bawaan `shadcn init`.
 
 Tidak ada font mono yang dikirim — tidak ada kode di situs ini.

@@ -13,6 +13,7 @@ Jangan menghapus lalu membuat ulang kategori — ID-nya akan berubah dan section
 | 2 | Uncategorised | `home-hero`, `footer-copyright` | Hero, Footer |
 | 9 | About (pensiun) | 3 blok teks lama, unpublished | tidak dirender |
 | 17 | About Features | 4 fitur (judul + deskripsi + `icon`) | WhyUs |
+| 20 | Page Headers | foto latar band per halaman (`*`, gambar saja) | services/offices/customers/contact |
 | 10 | Services | 11 layanan | Services + `/services` |
 | 11 | Our customers | 84 logo klien | Customers |
 | 12 | Our offices | 5 lokasi | Offices + Footer |

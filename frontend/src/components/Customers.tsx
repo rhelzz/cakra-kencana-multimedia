@@ -1,11 +1,53 @@
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Plus } from 'lucide-react';
 import { CATEGORY, getCategory, getHeading, imageOf } from '@/lib/joomla';
 import { localePath, t, type Locale } from '@/lib/i18n';
 
 export type CustomerLogo = { id: number; src: string; alt: string };
 
 const FEATURED_COUNT = 8;
+
+/**
+ * Backdrop unique to this section — deliberately NOT the WhyUs wedge:
+ * a dot-matrix strip, a thin outline ring peeking from behind the logo
+ * wall, and two plus marks. All solid shapes, no gradients. The ring and
+ * pluses hide on phones to keep the small viewport clean.
+ */
+function CustomerBackdrop() {
+  return (
+    <>
+      <svg
+        aria-hidden
+        fill="none"
+        viewBox="0 0 100 180"
+        className="pointer-events-none absolute left-3 top-10 w-16 text-primary sm:left-6 lg:w-24"
+      >
+        {Array.from({ length: 45 }, (_, k) => (
+          <circle
+            key={k}
+            cx={10 + (k % 5) * 20}
+            cy={10 + Math.floor(k / 5) * 20}
+            r="3"
+            fill="currentColor"
+            opacity="0.3"
+          />
+        ))}
+      </svg>
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -bottom-44 -right-44 hidden size-[24rem] rounded-full border-[22px] border-primary/10 sm:block"
+      />
+      <Plus
+        aria-hidden
+        className="absolute right-8 top-8 hidden size-5 text-primary/40 sm:block"
+      />
+      <Plus
+        aria-hidden
+        className="absolute bottom-10 left-1/3 hidden size-4 text-primary/30 lg:block"
+      />
+    </>
+  );
+}
 
 export default async function Customers({ locale }: { locale: Locale }) {
   const [customers, eyebrow, heading] = await Promise.all([
@@ -24,27 +66,22 @@ export default async function Customers({ locale }: { locale: Locale }) {
   const base = localePath(locale) === '/' ? '' : localePath(locale);
 
   return (
-    // Light island in both modes: fixed pale stage + blue/grey-blue frame, so
-    // original-colour logos keep a light ground. One etched top edge instead
-    // of a flat hairline; a soft lift shadow only in dark mode.
+    // Solid ground in both modes, so original-colour logos always sit on
+    // white tiles. All colour comes from theme tokens — dark mode just works.
     <section
       id="customers"
-      className="scroll-mt-20 border-t border-t-[#004392]/10 px-4 py-14 dark:shadow-[0_-24px_48px_-24px_rgb(0_0_0/0.45)] sm:px-6 lg:py-20"
-      style={{
-        backgroundImage:
-          'radial-gradient(600px 320px at 68% 56%, rgb(255 255 255 / 0.95) 0%, rgb(255 255 255 / 0) 70%), radial-gradient(680px 360px at 0% 0%, rgb(0 67 146 / 0.10) 0%, transparent 70%), radial-gradient(720px 400px at 100% 100%, rgb(0 67 146 / 0.07) 0%, transparent 70%), linear-gradient(112deg, #DCE8FB 0%, #E6EEFA 30%, #F5F7FA 60%, #E4E9EF 100%)',
-        boxShadow: 'inset 0 1px 0 rgb(255 255 255 / 0.65)',
-      }}
+      className="relative scroll-mt-20 overflow-hidden border-t border-border bg-background px-4 py-14 sm:px-6 lg:py-20"
     >
-      <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-12 lg:items-start lg:gap-8 xl:gap-12">
+      <CustomerBackdrop />
+      <div className="relative mx-auto grid max-w-6xl gap-10 lg:grid-cols-12 lg:items-start lg:gap-8 xl:gap-12">
         <div className="reveal lg:col-span-5 lg:pt-2">
           {eyebrow && (
-            <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#004392]">
-              <span aria-hidden className="block h-[3px] w-8 rounded-full bg-[#004392]" />
+            <p className="flex items-center gap-3 text-base font-bold uppercase tracking-[0.18em] text-primary">
+              <span aria-hidden className="block h-1 w-12 rounded-full bg-primary" />
               {eyebrow}
             </p>
           )}
-          <h2 className="mt-4 text-balance text-3xl font-bold tracking-tight text-[#0A1E3C] sm:text-4xl lg:text-[2.5rem] lg:leading-[1.12]">
+          <h2 className="mt-4 text-balance text-3xl font-bold tracking-tight sm:text-4xl lg:text-[2.5rem] lg:leading-[1.12]">
             {heading}
           </h2>
           {logos.length > FEATURED_COUNT && (
@@ -58,19 +95,21 @@ export default async function Customers({ locale }: { locale: Locale }) {
           )}
         </div>
 
-        {/* Optical boost: sari-roti (#5) & mie-gacoan (#6) are compact/thin-stroked
-            and read tiny next to wide wordmarks at uniform height. COUPLED to
-            the curated top-8 ordering — re-check if the order changes. */}
+        {/* White tiles in both modes, so original-colour logos always have
+            a light ground — the same device the deck uses. */}
         <ul className="reveal-stagger grid grid-cols-2 items-center gap-x-8 gap-y-8 self-center sm:grid-cols-4 lg:col-span-7 lg:gap-x-8 lg:gap-y-10 [&_li:nth-child(5)_img]:h-9 [&_li:nth-child(5)_img]:max-w-[140px] [&_li:nth-child(6)_img]:h-9 [&_li:nth-child(6)_img]:max-w-[140px] lg:[&_li:nth-child(5)_img]:h-10 lg:[&_li:nth-child(5)_img]:max-w-[150px] lg:[&_li:nth-child(6)_img]:h-10 lg:[&_li:nth-child(6)_img]:max-w-[150px]">
           {logos.slice(0, FEATURED_COUNT).map((logo) => (
-            <li key={logo.id} className="flex h-16 items-center justify-center sm:h-[72px]">
+            <li
+              key={logo.id}
+              className="flex h-20 items-center justify-center rounded-xl border border-border bg-white p-3 transition duration-300 ease-exit hover:-translate-y-0.5 hover:shadow-brand motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:h-[88px]"
+            >
               {/* Logos come from Joomla at runtime, so they intentionally remain plain images. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={logo.src}
                 alt={logo.alt}
                 loading="lazy"
-                className="h-7 w-auto max-w-[104px] object-contain mix-blend-multiply sm:max-w-[112px] lg:h-8 lg:max-w-[120px]"
+                className="h-7 w-auto max-w-[104px] object-contain sm:max-w-[112px] lg:h-8 lg:max-w-[120px]"
               />
             </li>
           ))}

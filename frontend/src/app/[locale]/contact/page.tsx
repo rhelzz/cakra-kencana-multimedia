@@ -18,6 +18,7 @@ import {
   getCategory,
   getHeading,
   listItems,
+  pageHeaderImage,
   stripTags,
 } from '@/lib/joomla';
 import { isLocale, localePath, t, type Locale } from '@/lib/i18n';
@@ -49,6 +50,7 @@ export default async function ContactPage({ params }: PageProps<'/[locale]/conta
     services,
     offices,
     hours,
+    headers,
   ] = await Promise.all([
     getArticle('heading-contact', loc, CATEGORY.headings),
     // These heading articles don't exist in Joomla yet — getHeading falls back to ''
@@ -63,7 +65,10 @@ export default async function ContactPage({ params }: PageProps<'/[locale]/conta
     getCategory(CATEGORY.services, loc),
     getCategory(CATEGORY.offices, loc),
     getArticle('working-hours', loc, CATEGORY.contact),
+    getCategory(CATEGORY.pageHeaders, loc),
   ]);
+
+  const headerBg = pageHeaderImage(headers, 'contact');
 
   const ui = t(loc);
   const base = localePath(loc) === '/' ? '' : localePath(loc);
@@ -104,6 +109,25 @@ export default async function ContactPage({ params }: PageProps<'/[locale]/conta
         {/* Two layers, both fading out, so the band is furnished without becoming busy:
             the diagonal print rules give it texture and the bloom gives it a light source.
             Everything sits behind the content and neither tints a single glyph. */}
+        {/* Custom header photo from Joomla (Page Headers category); the scrim
+            keeps text readable while the band texture stays on top. */}
+        {headerBg && (
+          <>
+            <div aria-hidden className="absolute inset-0 -z-20">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={headerBg}
+                alt=""
+                loading="lazy"
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <div
+              aria-hidden
+              className="absolute inset-0 -z-10 bg-gradient-to-r from-surface-container-low via-surface-container-low/85 to-surface-container-low/35"
+            />
+          </>
+        )}
         <div
           aria-hidden
           className="pattern-diagonal pointer-events-none absolute inset-0 -z-10 opacity-[0.07]"
@@ -147,8 +171,8 @@ export default async function ContactPage({ params }: PageProps<'/[locale]/conta
 
           <div className="mt-10 grid items-center gap-10 lg:grid-cols-[1.25fr_1fr] lg:gap-12">
             <div>
-              <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-                <span aria-hidden className="block h-[3px] w-8 rounded-full bg-primary" />
+              <p className="flex items-center gap-3 text-base font-bold uppercase tracking-[0.18em] text-primary">
+                <span aria-hidden className="block h-1 w-12 rounded-full bg-primary" />
                 {ui.contactUs}
               </p>
               <h1 className="mt-5 max-w-3xl text-balance text-4xl font-bold tracking-tight text-primary sm:text-5xl lg:text-6xl">
@@ -161,28 +185,33 @@ export default async function ContactPage({ params }: PageProps<'/[locale]/conta
               )}
             </div>
             {/* Decorative brand slogans — English in all locales, hidden from
-                assistive tech so they never read as content. */}
+                assistive tech so they never read as content. Each rides its
+                own glass card so the gear and band texture behind can't wash
+                the small caps out. */}
             <div
               aria-hidden="true"
-              className="relative hidden grid-cols-2 gap-6 overflow-visible lg:grid"
+              className="relative z-10 hidden grid-cols-2 gap-5 lg:grid lg:pl-2 lg:pr-10"
             >
-              <div className="border-l border-border pl-8">
-                <p className="text-[11px] font-semibold uppercase leading-loose tracking-[0.2em] text-primary">
+              <div className="rounded-xl border border-border/60 bg-background/70 px-5 py-4 backdrop-blur-sm">
+                <p className="text-xs font-semibold uppercase leading-[1.8] tracking-[0.14em] text-primary">
                   Good ideas
                   <br />
                   bring brands
                   <br />
                   to life
                 </p>
-                <span className="mt-3 block h-[3px] w-8 rounded-full bg-primary" />
+                <span className="mt-4 block h-[3px] w-10 rounded-full bg-primary" />
               </div>
-              <p className="self-start text-[11px] font-semibold uppercase leading-loose tracking-[0.2em] text-primary">
-                Ideas
-                <br />
-                production
-                <br />
-                real impact
-              </p>
+              <div className="self-start rounded-xl border border-border/60 bg-background/70 px-5 py-4 backdrop-blur-sm">
+                <p className="text-xs font-semibold uppercase leading-[1.8] tracking-[0.14em] text-primary">
+                  Ideas
+                  <br />
+                  production
+                  <br />
+                  real impact
+                </p>
+                <span className="mt-4 block h-[3px] w-10 rounded-full bg-primary" />
+              </div>
             </div>
           </div>
         </div>
@@ -194,8 +223,8 @@ export default async function ContactPage({ params }: PageProps<'/[locale]/conta
             {/* Left: the form card. */}
             <div className="reveal rounded-xl border border-border bg-background p-6 sm:p-8">
               {(formEyebrow || ui.contactUs) && (
-                <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-                  <span aria-hidden className="block h-[3px] w-8 rounded-full bg-primary" />
+                <p className="flex items-center gap-3 text-base font-bold uppercase tracking-[0.18em] text-primary">
+                  <span aria-hidden className="block h-1 w-12 rounded-full bg-primary" />
                   {formEyebrow || ui.contactUs}
                 </p>
               )}
@@ -219,8 +248,8 @@ export default async function ContactPage({ params }: PageProps<'/[locale]/conta
             {/* Right: the info card — linked rows reuse the home Contact row markup. */}
             <div className="reveal rounded-xl border border-border bg-background p-6 sm:p-8">
               {(infoEyebrow || ui.contactUs) && (
-                <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-                  <span aria-hidden className="block h-[3px] w-8 rounded-full bg-primary" />
+                <p className="flex items-center gap-3 text-base font-bold uppercase tracking-[0.18em] text-primary">
+                  <span aria-hidden className="block h-1 w-12 rounded-full bg-primary" />
                   {infoEyebrow || ui.contactUs}
                 </p>
               )}
@@ -306,8 +335,8 @@ export default async function ContactPage({ params }: PageProps<'/[locale]/conta
             >
               <div className="grid lg:grid-cols-[1fr_1.2fr]">
                 <div className="p-6 sm:p-8">
-                  <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-                    <span aria-hidden className="block h-[3px] w-8 rounded-full bg-primary" />
+                  <p className="flex items-center gap-3 text-base font-bold uppercase tracking-[0.18em] text-primary">
+                    <span aria-hidden className="block h-1 w-12 rounded-full bg-primary" />
                     {ui.contactUs}
                   </p>
                   {head && (

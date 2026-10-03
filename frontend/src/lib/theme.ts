@@ -78,13 +78,15 @@ function palette(bgHex: string, brand: Oklch, fallbackBgL: number, brandOverride
     ? { card: 0.019, low: 0.019, mid: 0.024, high: 0.029 }
     : { card: 0, low: 0.028, mid: 0.037, high: 0.046 };
 
-  // Di ground gelap brand dinaikkan lightness-nya dan chroma-nya diturunkan sedikit, supaya
-  // tetap kontras tanpa terlihat menyala. Editor boleh menimpanya dengan warna sendiri —
-  // hue dan chroma pilihannya dipakai apa adanya, hanya lightness yang dijaga tetap di atas
-  // latar, karena tombol yang lebih gelap dari background-nya praktis tidak terlihat.
-  const auto = { l: clamp(brand.l + 0.083, 0.55, 0.82), c: C * 0.963, h: H };
-  const pick = dark ? (brandOverride ?? auto) : brand;
-  const primaryL = dark ? clamp(pick.l, bgL + 0.28, 0.92) : pick.l;
+  // Brand dipakai apa adanya di kedua mode: satu nilai di CMS berarti warna
+  // yang sama persis di terang dan gelap. Pengecualian satu-satunya adalah
+  // `brandDark` — kalau editor eksplisit mengisinya, nilai itu yang dipakai di
+  // mode gelap (lengkap dengan guardrail lightness agar tombol tetap terlihat
+  // di atas background gelap). Background, teks, dan permukaan tetap
+  // mengikuti masing-masing mode apa adanya.
+  const pick = dark ? (brandOverride ?? brand) : brand;
+  const primaryL =
+    dark && brandOverride ? clamp(pick.l, bgL + 0.28, 0.92) : pick.l;
   const primary = ok(primaryL, pick.c, pick.h);
   const fg = dark ? 0.975 : 0.145;
 
@@ -121,7 +123,7 @@ function palette(bgHex: string, brand: Oklch, fallbackBgL: number, brandOverride
 
 export type ThemeInput = {
   brand?: string;
-  /** Opsional: aksen mode gelap. Kosong = diturunkan otomatis dari `brand`. */
+  /** Opsional: aksen mode gelap. Kosong = `brand` dipakai sama persis. */
   brandDark?: string;
   backgroundLight?: string;
   backgroundDark?: string;

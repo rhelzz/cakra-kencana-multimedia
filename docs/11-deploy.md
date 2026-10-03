@@ -173,7 +173,7 @@ Jadi kalau Joomla ada di `public_html/backend/`, file plugin berakhir di
 `public_html/backend/plugins/system/nextrevalidate/` — bukan `.../backend/backend/...`.
 
 Isi `images/` yang harus ada: `customers/` (6), `logo.png`, `logo-footer.png`,
-`hero.jpg`, `coverage-map.jpg`. Kalau salah satu hilang, gambarnya kosong di situs tanpa pesan error apa pun —
+`hero.jpg`, `coverage-map.jpg`, `page-header-bg.jpg`. Kalau salah satu hilang, gambarnya kosong di situs tanpa pesan error apa pun —
 artikel Joomla hanya menyimpan path, bukan filenya.
 
 ### 2. Jalankan installer Joomla
