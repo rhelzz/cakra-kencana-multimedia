@@ -24,3 +24,7 @@ npm-debug.log*
 # deploy — isinya token API, secret webhook dan hash password, jadi ketiganya
 # WAJIB dirotasi setelah situs tayang.
 *.sql.gz
+
+# Dump lokal berisi kredensial hidup (Joomla API token, REVALIDATE_SECRET).
+# Repo ini publik — JANGAN pernah commit isi folder ini.
+database-backup/
